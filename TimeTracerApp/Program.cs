@@ -15,6 +15,7 @@ namespace TimeTracerApp
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
+            //99999
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
