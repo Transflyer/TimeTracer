@@ -35,6 +35,8 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\about\about.component.ts" />
+    <None Remove="ClientApp\src\app\interfaces\NodeElement.ts" />
+    <None Remove="ClientApp\src\app\project\project.component.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +45,8 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\about\about.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\NodeElement.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\project\project.component.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
