@@ -8,16 +8,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace TimeTracerApp
+namespace TimeTracker
 {
     public class Program
     {
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
-            //99999
-            //11111
-            //999999
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

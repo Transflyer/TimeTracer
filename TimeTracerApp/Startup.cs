@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TimeTracker.Data;
+using Microsoft.EntityFrameworkCore;
 
-namespace TimeTracerApp
+namespace TimeTracker
 {
     public class Startup
     {
@@ -21,6 +23,10 @@ namespace TimeTracerApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<ApplicationDbContext>(options => 
+            options.UseMySQL(Configuration.GetConnectionString("MySQL"))
+            );
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
