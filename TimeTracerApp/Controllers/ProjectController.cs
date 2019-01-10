@@ -8,9 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TimeTracker.Controllers
 {
+    
     [Route("api/[controller]")]
     public class ProjectController : Controller
     {
+
+#re
         // GET: api/<controller>
         [HttpGet]
         public IEnumerable<string> Get()
