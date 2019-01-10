@@ -11,6 +11,8 @@ namespace TimeTracker.Controllers
     [Route("api/[controller]")]
     public class ProjectController : Controller
     {
+
+
         // GET: api/<controller>
         [HttpGet]
         public IEnumerable<string> Get()
