@@ -39,7 +39,7 @@ namespace TimeTracker.Migrations
                     Type = table.Column<int>(nullable: false),
                     Flags = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
-                    ParentId = table.Column<int>(nullable: false),
+                    ParentId = table.Column<int>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     LastModifiedDate = table.Column<DateTime>(nullable: false)
                 },
@@ -51,7 +51,7 @@ namespace TimeTracker.Migrations
                         column: x => x.ParentId,
                         principalTable: "NodeElements",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_NodeElements_Users_UserId",
                         column: x => x.UserId,

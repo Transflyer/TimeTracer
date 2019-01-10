@@ -31,7 +31,7 @@ namespace TimeTracker.Data.Models
         [DefaultValue(0)]
         public int Flags { get; set; }
         public string UserId { get; set; }
-        public int ParentId { get; set; }
+        public int? ParentId { get; set; }
         [Required]
         public DateTime CreatedDate { get; set; }
         [Required]

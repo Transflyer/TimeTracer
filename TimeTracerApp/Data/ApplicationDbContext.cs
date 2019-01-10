@@ -22,9 +22,9 @@ namespace TimeTracker.Data
             modelBuilder.Entity<ApplicationUser>().HasMany(u => u.RootElements).WithOne(i => i.User);
             modelBuilder.Entity<NodeElement>().ToTable("NodeElements");
             modelBuilder.Entity<NodeElement>().Property(i => i.Id).ValueGeneratedOnAdd();
-            modelBuilder.Entity<NodeElement>().HasMany(u => u.NodeElements).WithOne(i => i.ParentNode);
+            //modelBuilder.Entity<NodeElement>().HasMany(u => u.NodeElements).WithOne(i => i.ParentNode);
             modelBuilder.Entity<NodeElement>().HasOne(i => i.User).WithMany(u => u.RootElements);
-            modelBuilder.Entity<NodeElement>().HasOne(i => i.ParentNode).WithMany(u => u.NodeElements);
+            modelBuilder.Entity<NodeElement>().HasOne(i => i.ParentNode).WithMany(u => u.NodeElements).OnDelete(DeleteBehavior.ClientSetNull);
         }
         #endregion
 

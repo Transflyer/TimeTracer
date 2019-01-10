@@ -1,8 +1,8 @@
 <h2>{{title}}</h2>
-<ul class="project">
-  <li *ngFor="let item of projects"
-      [class.selected]="item === selectedQuiz"
+<ul class="nodeElements">
+  <li *ngFor="let item of nodeElements"
+      [class.selected]="item === selectedElem"
       (click)="onSelect(item)">
-    <span>{{project.Title}}</span>>
+    <span>{{item.Title}}</span>
   </li>
 </ul>

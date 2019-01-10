@@ -11,24 +11,21 @@ import { error } from "protractor";
   styleUrls: ['./project.component.css']
 })
 
-export class ProjectComponent implements OnInit {
-  @Input() class: string;
+
+export class ProjectComponent {
   title: string;
-  selectedNodeElement: NodeElement;
-  NodeElements: NodeElement[];
+  selectedNodeElement: nodeElement;
+  nodeElements: nodeElement[];
 
   constructor(private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string,
-    private router: Router) {  }
-
-  ngOnInit() {
-    console.log("ProjectComponent " +
-      " instantiated with the following class: "
-      + this.class);
-    var url = this.baseUrl + "api/project/";
+    private router: Router) {
+    this.nodeElements = <nodeElement[]>{};
+    var url = this.baseUrl + "api/project/ByTitle/";
+    console.log(url);
     this.title = "My project";
-    this.http.get<NodeElement[]>(url).subscribe(result => {
-      this.NodeElements = result;
+    this.http.get<nodeElement[]>(url).subscribe(result => {
+      this.nodeElements = result;
     }), error => console.error(error);
   }
 }

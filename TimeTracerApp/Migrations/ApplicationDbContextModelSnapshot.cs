@@ -60,7 +60,7 @@ namespace TimeTracker.Migrations
 
                     b.Property<string>("Notes");
 
-                    b.Property<int>("ParentId");
+                    b.Property<int?>("ParentId");
 
                     b.Property<string>("Text");
 
@@ -84,8 +84,7 @@ namespace TimeTracker.Migrations
                 {
                     b.HasOne("TimeTracker.Data.Models.NodeElement", "ParentNode")
                         .WithMany("NodeElements")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ParentId");
 
                     b.HasOne("TimeTracker.Data.Models.ApplicationUser", "User")
                         .WithMany("RootElements")

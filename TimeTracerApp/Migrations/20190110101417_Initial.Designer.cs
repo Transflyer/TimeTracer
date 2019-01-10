@@ -9,7 +9,7 @@ using TimeTracker.Data;
 namespace TimeTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190108153633_Initial")]
+    [Migration("20190110101417_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,7 +62,7 @@ namespace TimeTracker.Migrations
 
                     b.Property<string>("Notes");
 
-                    b.Property<int>("ParentId");
+                    b.Property<int?>("ParentId");
 
                     b.Property<string>("Text");
 
@@ -86,8 +86,7 @@ namespace TimeTracker.Migrations
                 {
                     b.HasOne("TimeTracker.Data.Models.NodeElement", "ParentNode")
                         .WithMany("NodeElements")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ParentId");
 
                     b.HasOne("TimeTracker.Data.Models.ApplicationUser", "User")
                         .WithMany("RootElements")
