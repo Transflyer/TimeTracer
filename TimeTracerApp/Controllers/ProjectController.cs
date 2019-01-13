@@ -159,8 +159,8 @@ namespace TimeTracker.Controllers
         /// <param name="num">the number of NodeElements to retrieve</param>
         /// <returns>{num} NodeElements sorted by Title</returns>
 
-        [HttpGet("ByTitle/{num:int?}")]
-        public IActionResult ByTitle(int num=10)
+        [HttpGet("root/{num:int?}")]
+        public IActionResult Root(int num=10)
         {
             // Set a temporary author using the Admin user's userId
             // as user login isn't supported yet: we'll change this later on.

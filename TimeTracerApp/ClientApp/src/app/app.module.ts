@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
+import { ProjectListComponent } from './project/project-list.component';
 import { AboutComponent } from './about/about.component';
 import { ProjectComponent } from './project/project.component';
 
@@ -17,7 +18,8 @@ import { ProjectComponent } from './project/project.component';
     NavMenuComponent,
     HomeComponent,
     AboutComponent,
-    ProjectComponent
+    ProjectComponent,
+    ProjectListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
