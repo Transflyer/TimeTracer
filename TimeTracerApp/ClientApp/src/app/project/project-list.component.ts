@@ -12,8 +12,8 @@ import { Router } from "@angular/router";
 export class ProjectListComponent implements OnInit {
   @Input() class: string;
   title: string;
-  selectedNodeElement: nodeElement;
-  nodeElements: nodeElement[];
+  selectedNodeElement: NodeElement;
+  nodeElements: NodeElement[];
 
   constructor(private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string, private router: Router) {
@@ -23,12 +23,13 @@ export class ProjectListComponent implements OnInit {
     var url = this.baseUrl + "api/project/root/";
 
     this.title = "Project list";
-    this.http.get<nodeElement[]>(url).subscribe(result => {
+    this.http.get<NodeElement[]>(url).subscribe(result => {
       this.nodeElements = result;
+      
     }), error => console.error(error);
   }
 
-  onSelect(nodeElement: nodeElement) {
+  onSelect(nodeElement: NodeElement) {
     this.selectedNodeElement = nodeElement;
     console.log("Element with ID" + this.selectedNodeElement.Id + " has been selected");
   }

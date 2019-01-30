@@ -29,6 +29,25 @@
                 </span> My Projects
               </a>
             </li>
+            <li *ngIf="!this.auth.isLoggedIn()"
+                [routerLinkActive]="['link-active']">
+              <a [routerLink]="['/login']">
+                <span class='glyphicon glyphicon-log-in'>
+                </span> Login/Register
+              </a>
+            </li>
+            <li *ngIf="this.auth.isLoggedIn()">
+              <a (click)="logout()">
+                <span class='glyphicon glyphicon-log-out'></span> Logout
+              </a>
+            </li>
+            <li *ngIf="this.auth.isLoggedIn()"
+                [routerLinkActive]="['link-active']">
+              <a [routerLink]="['/quiz/create']">
+                <span class='glyphicon glyphicon-user'></span> {{this.auth.getUserName()}}
+              </a>
+            </li>
+
           </ul>
         </div>
     </div>

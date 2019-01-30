@@ -1,21 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Mapster;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Linq;
 using TimeTracker.Data;
 using TimeTracker.Data.Models;
 using TimeTracker.ViewModels;
-using Mapster;
 
 namespace TimeTracker.Controllers
 {
-    
+
     [Route("api/[controller]")]
     public class ProjectController : BaseApiController
     {
         #region Constructor
-        public ProjectController(ApplicationDbContext context) : base(context) { }
+        public ProjectController(ApplicationDbContext context,
+            RoleManager<IdentityRole> roleManager,
+            UserManager<ApplicationUser> userManager,
+            IConfiguration configuration)
+            : base(context, roleManager, userManager, configuration)
+        { }
         #endregion
 
 

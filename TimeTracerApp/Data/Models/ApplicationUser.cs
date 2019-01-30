@@ -1,28 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace TimeTracker.Data.Models
 {
-    public class ApplicationUser
+    public class ApplicationUser : IdentityUser
     {
         #region Constructor
         public ApplicationUser()
         {
         }
         #endregion
+
         #region Properties
-        [Key]
-        [Required]
-        public string Id { get; set; }
-        [Required]
-        [MaxLength(128)]
-        public string UserName { get; set; }
-        [Required]
-        public string Email { get; set; }
+        
         public string DisplayName { get; set; }
+
         public string Notes { get; set; }
         [Required]
         public int Type { get; set; }
@@ -39,6 +35,12 @@ namespace TimeTracker.Data.Models
         /// A list of all root elements created by this user.
         /// </summary>
         public virtual List<NodeElement> RootElements { get; set; }
+
+        /// <summary>
+        /// A list of all the refresh tokens issued for this users.
+        /// </summary>
+        public virtual List<Token> Tokens { get; set; }
+
         #endregion
     }
 }
