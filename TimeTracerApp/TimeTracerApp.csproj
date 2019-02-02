@@ -41,6 +41,7 @@
     <None Remove="ClientApp\src\app\interfaces\token.response.ts" />
     <None Remove="ClientApp\src\app\interfaces\user.ts" />
     <None Remove="ClientApp\src\app\login\login.component.ts" />
+    <None Remove="ClientApp\src\app\nav-menu\after-if-directive.component.ts" />
     <None Remove="ClientApp\src\app\pagenotfound\pagenotfound.component.ts" />
     <None Remove="ClientApp\src\app\project\project-list.component.ts" />
     <None Remove="ClientApp\src\app\project\project.component.ts" />
@@ -56,6 +57,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\token.response.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\user.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\login\login.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\service\after-if.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\pagenotfound\pagenotfound.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project\project-list.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project\project.component.ts" />

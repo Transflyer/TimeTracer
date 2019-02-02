@@ -9,6 +9,7 @@ using TimeTracker.Data.Models;
 using Mapster;
 using System.Text;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TimeTracker.Controllers
 {
@@ -95,7 +96,7 @@ namespace TimeTracker.Controllers
                     viewModel.Errors.Add(er.Description);
                 }
             }
-                       
+
             // return the newly-created User to the client.
             return Json(viewModel, JsonSettings);
         }
@@ -103,12 +104,14 @@ namespace TimeTracker.Controllers
         /// <summary>
         /// GET: api/user
         /// </summary>
-        /// <param name="id"></param>
+  
         /// <returns>Return current user</returns>
         [HttpGet()]
+        [Authorize(Policy = "JwtAuthorization")]
         public IActionResult Get()
         {
-            return Json(User.Adapt<UserViewModel>(), JsonSettings);
+            var user = UserManager.GetUserAsync(HttpContext.User).Result;
+            return Json(user.Adapt<UserViewModel>(), JsonSettings);
         }
 
         #endregion

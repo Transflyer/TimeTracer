@@ -7,9 +7,11 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../app/service/auth.service';
 import { AuthInterceptor } from './service/auth.interceptor';
 import { AuthResponseInterceptor } from './service/auth.response.interceptor';
+import { AfterIfDirective } from './service/after-if.directive';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
+
 import { HomeComponent } from './home/home.component';
 import { ProjectListComponent } from './project/project-list.component';
 import { AboutComponent } from './about/about.component';
@@ -17,6 +19,7 @@ import { ProjectComponent } from './project/project.component';
 
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './user/register.component';
+
 
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 
@@ -31,7 +34,8 @@ import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
     ProjectListComponent,
     LoginComponent,
     RegisterComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    AfterIfDirective
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

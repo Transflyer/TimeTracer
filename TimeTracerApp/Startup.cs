@@ -72,14 +72,23 @@ namespace TimeTracker
                };
            });
 
-
-
-
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+
+            //Set Autherization policy
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("JwtAuthorization", policy =>
+                {
+                    policy.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                    policy.RequireAuthenticatedUser();
+                });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

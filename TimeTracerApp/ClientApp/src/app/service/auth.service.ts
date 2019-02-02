@@ -90,7 +90,7 @@ export class AuthService {
     return true;
   }
 
-    // Retrieves the auth JSON object (or NULL if none)
+  // Retrieves the auth JSON object (or NULL if none)
   getAuth(): TokenResponse | null {
     var i = localStorage.getItem(this.authKey);
     if (i) {
@@ -101,9 +101,7 @@ export class AuthService {
     }
   }
 
-  getUserName(): string {
-    return this.userName;
-  }
+  
 
   // Returns TRUE if the user is logged in, FALSE otherwise.
   isLoggedIn(): boolean {
