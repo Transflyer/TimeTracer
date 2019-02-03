@@ -7,7 +7,7 @@ import { HttpClient } from "@angular/common/http";
 @Component({
   selector: 'app-nav-menu',
   templateUrl: './nav-menu.component.html',
-  styleUrls: ['./nav-menu.component.css']
+  styleUrls: ['./nav-menu.component.less']
 })
 
 
