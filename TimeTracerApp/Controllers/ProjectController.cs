@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 
 
+
 namespace TimeTracker.Controllers
 {
 
@@ -21,11 +22,17 @@ namespace TimeTracker.Controllers
         public ProjectController(ApplicationDbContext context,
             RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            INodeElementRepository elementRepo)
             : base(context, roleManager, userManager, configuration)
-        { }
+        {
+            NodeElementRepo = elementRepo;
+        }
         #endregion
 
+        #region Properties
+        private readonly INodeElementRepository NodeElementRepo;
+        #endregion
 
         #region RESTful conventions methods
         /// <summary>
@@ -43,9 +50,9 @@ namespace TimeTracker.Controllers
             if (nodeElement == null)
             {
                 return NotFound(new
-                    {
-                        Error = String.Format("NodeElement ID {0} has not been found", id)
-                    });
+                {
+                    Error = String.Format("NodeElement ID {0} has not been found", id)
+                });
             }
 
             // output the result in JSON format
@@ -64,26 +71,7 @@ namespace TimeTracker.Controllers
             // if the client payload is invalid.
             if (model == null) return new StatusCodeResult(500);
 
-            //handle the insert (window oblect-mapping)
-            var nodeElement = new NodeElement();
-
-            //properties taken from request
-            nodeElement.Title = model.Title;
-            nodeElement.Description = model.Description;
-
-            //properties set from server-side
-            nodeElement.CreatedDate = DateTime.UtcNow;
-            nodeElement.LastModifiedDate = nodeElement.CreatedDate;
-
-            // Set a temporary author using the Admin user's userId
-            // as user login isn't supported yet: we'll change this later on.
-            nodeElement.UserId = DbContext.Users.Where(u => u.UserName == "Admin").FirstOrDefault().Id;
-
-            //add new nodeElement
-            DbContext.NodeElements.Add(nodeElement);
-
-            //persist the newly-created NodeElement into the Database
-            DbContext.SaveChanges();
+            var nodeElement = NodeElementRepo.AddUserNodeElement(model, UserManager.GetUserAsync(HttpContext.User).Result);
 
             //return the newly-created NodeElement to the client.
             return new JsonResult(nodeElement.Adapt<ProjectViewModel>(),
@@ -108,9 +96,9 @@ namespace TimeTracker.Controllers
             if (nodeElement == null)
             {
                 return NotFound(new
-                    {
-                        Error = String.Format("NodeElement {0} has not been found", model.Id)
-                    });
+                {
+                    Error = String.Format("NodeElement {0} has not been found", model.Id)
+                });
             }
 
             // handle the update (without object-mapping)
@@ -170,11 +158,10 @@ namespace TimeTracker.Controllers
 
         [HttpGet("root/{num:int?}")]
         [Authorize(Policy = "JwtAuthorization")]
-        public IActionResult Root(int num=10)
+        public IActionResult Root(int num = 10)
         {
             var user = UserManager.GetUserAsync(HttpContext.User).Result;
-            var rootElements = DbContext.NodeElements
-                .Where(u => u.UserId == user.Id)
+            var rootElements = NodeElementRepo.UserNodeElements(user)
                 .OrderByDescending(q => q.Title)
                 .Take(num)
                 .ToArray();
