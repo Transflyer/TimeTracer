@@ -7,6 +7,9 @@ using System.Linq;
 using TimeTracker.Data;
 using TimeTracker.Data.Models;
 using TimeTracker.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+
 
 namespace TimeTracker.Controllers
 {
@@ -157,23 +160,21 @@ namespace TimeTracker.Controllers
         #endregion
 
         #region Attribute-based routing methods
+
         /// <summary>
-        /// GET: api/project/ByTitle
+        /// GET: api/project/root
         /// Retrieves the {num} NodeElements sorted by Title (A to Z)
         /// </summary>
         /// <param name="num">the number of NodeElements to retrieve</param>
         /// <returns>{num} NodeElements sorted by Title</returns>
 
         [HttpGet("root/{num:int?}")]
+        [Authorize(Policy = "JwtAuthorization")]
         public IActionResult Root(int num=10)
         {
-            // Set a temporary author using the Admin user's userId
-            // as user login isn't supported yet: we'll change this later on.
-            var userId = DbContext.Users.Where(u => u.UserName == "Admin")
-                .FirstOrDefault().Id;
-
+            var user = UserManager.GetUserAsync(HttpContext.User).Result;
             var rootElements = DbContext.NodeElements
-                .Where(u => u.UserId == userId)
+                .Where(u => u.UserId == user.Id)
                 .OrderByDescending(q => q.Title)
                 .Take(num)
                 .ToArray();
