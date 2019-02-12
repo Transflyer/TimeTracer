@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -24,6 +24,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.13" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore.Design" Version="8.0.13" />
@@ -44,7 +45,7 @@
     <None Remove="ClientApp\src\app\nav-menu\after-if-directive.component.ts" />
     <None Remove="ClientApp\src\app\pagenotfound\pagenotfound.component.ts" />
     <None Remove="ClientApp\src\app\project\project-list.component.ts" />
-    <None Remove="ClientApp\src\app\project\project.component.ts" />
+    <None Remove="ClientApp\src\app\project\projects.component.ts" />
     <None Remove="ClientApp\src\app\service\auth.interceptor.ts" />
     <None Remove="ClientApp\src\app\service\auth.response.interceptor.ts" />
     <None Remove="ClientApp\src\app\service\auth.service.ts" />
@@ -60,11 +61,15 @@
     <TypeScriptCompile Include="ClientApp\src\app\service\after-if.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\pagenotfound\pagenotfound.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\project\project-list.component.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\project\project.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\project\projects.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\auth.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\auth.response.interceptor.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\service\auth.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\user\register.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\app\project-form\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

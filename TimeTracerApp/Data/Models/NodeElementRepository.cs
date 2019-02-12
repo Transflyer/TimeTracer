@@ -34,5 +34,49 @@ namespace TimeTracker.Data.Models
 
             return nodeElement;
         }
+
+        public NodeElement GetNodeElement(int id)
+        {
+            return context.NodeElements.FirstOrDefault(i => i.Id == id);
+        }
+
+        public NodeElement DeleteNodeElement(int id)
+        {
+            // retrieve the nodeElement
+            var detetedElement = context.NodeElements.Where(i => i.Id == id).FirstOrDefault();
+
+            if(detetedElement == null) return null;
+
+            //remove the NodeElement from DbContext
+            context.Remove(detetedElement);
+
+            // persist the changes into the Database.
+            context.SaveChanges();
+
+            return detetedElement;
+        }
+
+        public NodeElement UpdateNodeElement(NodeElement nodeElement)
+        {
+
+            // retrieve the nodeElement to edit
+            var nodeElementToUpdate = context.NodeElements.Where(i => i.Id == nodeElement.Id).FirstOrDefault();
+
+            // handle the update (without object-mapping)
+            // by manually assigning the properties
+            // we want to accept from the request
+            nodeElementToUpdate.Title = nodeElement.Title;
+            nodeElementToUpdate.Description = nodeElement.Description;
+
+            // properties set from server-side
+            nodeElementToUpdate.LastModifiedDate = nodeElement.CreatedDate;
+
+            //Update db element
+            context.NodeElements.Update(nodeElementToUpdate);
+
+            // persist the changes into the Database.
+            context.SaveChanges();
+            return nodeElementToUpdate;
+        }
     }
 }

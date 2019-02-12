@@ -32,5 +32,6 @@ export class ProjectListComponent implements OnInit {
   onSelect(nodeElement: NodeElement) {
     this.selectedNodeElement = nodeElement;
     console.log("Element with ID" + this.selectedNodeElement.Id + " has been selected");
+    this.router.navigate(["project/form", this.selectedNodeElement.Id]);
   }
 }

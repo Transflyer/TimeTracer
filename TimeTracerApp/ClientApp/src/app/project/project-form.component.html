@@ -1,0 +1,54 @@
+<div class="project-form">
+  <div class="project-form-details">
+    <div class="project-form-image">
+      <img src="https://lorempixel.com/150/150/?random={{nodeElement.Id}}"
+           alt="{{nodeElement.Title}}" class="img-circle" />
+    </div>
+    <div class="project-form-info-block">
+      <div class="project-form-heading">
+        <h2>{{nodeElement.Title}}</h2>
+        <span class="help-block">{{nodeElement.Description}}</span>
+      </div>
+      <ul class="navigation">
+        <li class="active">
+          <a data-toggle="tab" href="#descriotion">
+            <span class="glyphicon glyphicon-user"></span>
+            &nbsp; Description
+          </a>
+        </li>
+        <li>
+          <a data-toggle="tab" href="#stats">
+            <span class="glyphicon glyphicon-stats"></span>
+            &nbsp; Stats
+          </a>
+        </li>
+      </ul>
+      <div class="project-form-body">
+        <div class="tab-content">
+          <div class="tab-pane active" id="description">
+            TO-DO
+          </div>
+          <div class="tab-pane" id="stat">
+            TO-DO
+          </div>
+        </div>
+      </div>
+      <div class="commands">
+        <a [routerLink]="['/home']"
+           class="btn btn-default">
+          <span class="glyphicon glyphicon-backward"></span>
+          &nbsp; Back
+        </a>
+        <div *ngIf="auth.isLoggedIn()" class="edit">
+          <input type="button" value="Edit"
+                 (click)="onEdit()"
+                 class="btn btn-sm btn-warning" />
+          <input type="button" value="Delete"
+                 (click)="onDelete()"
+                 class="btn btn-sm btn-danger" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

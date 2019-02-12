@@ -23,9 +23,15 @@
               </a>
             </li>
             <li [routerLinkActive]="['link-active']">
-              <a [routerLink]="['/project']">
+              <a [routerLink]="['/projects']">
                 <span class='glyphicon glyphicon-list'>
                 </span> My Projects
+              </a>
+            </li>
+            <li *ngIf="this.auth.isLoggedIn()"
+                [routerLinkActive]="['link-active']">
+              <a [routerLink]="['/project/create']">
+                <span class='glyphicon glyphicon-plus'></span> Create Element
               </a>
             </li>
             <li *ngIf="!this.auth.isLoggedIn()"
@@ -41,7 +47,7 @@
               </a>
             </li>
             <li *ngIf="this.auth.isLoggedIn()" (after-if)="getUser()">
-              <a (click) ="getUser()">
+              <a (click)="getUser()">
                 <span class='glyphicon glyphicon-user'></span> {{this.email}}
               </a>
             </li>

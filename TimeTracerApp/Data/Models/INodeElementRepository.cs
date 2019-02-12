@@ -9,5 +9,8 @@ namespace TimeTracker.Data.Models
     {
         IEnumerable<NodeElement> UserNodeElements(ApplicationUser user);
         NodeElement AddUserNodeElement(NodeElement nodeElement, ApplicationUser user);
+        NodeElement GetNodeElement(int id);
+        NodeElement DeleteNodeElement(int id);
+        NodeElement UpdateNodeElement(NodeElement nodeElement);
     }
 }

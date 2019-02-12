@@ -14,8 +14,10 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 
 import { HomeComponent } from './home/home.component';
 import { ProjectListComponent } from './project/project-list.component';
+import { ProjectEditComponent } from './project/project-edit.component';
+import { ProjectFormComponent } from './project/project-form.component';
 import { AboutComponent } from './about/about.component';
-import { ProjectComponent } from './project/project.component';
+import { ProjectsComponent } from './project/projects.component';
 
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './user/register.component';
@@ -30,12 +32,14 @@ import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
     NavMenuComponent,
     HomeComponent,
     AboutComponent,
-    ProjectComponent,
+    ProjectsComponent,
     ProjectListComponent,
     LoginComponent,
     RegisterComponent,
     PageNotFoundComponent,
-    AfterIfDirective
+    AfterIfDirective,
+    ProjectEditComponent,
+    ProjectFormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -46,7 +50,11 @@ import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'about', component: AboutComponent },
-      { path: 'project', component: ProjectComponent },
+      { path: 'projects', component: ProjectsComponent },
+      { path: 'project/form/:id', component: ProjectFormComponent },
+      { path: 'project/create', component: ProjectEditComponent },
+      { path: 'project/create/:id', component: ProjectEditComponent },
+      { path: 'project/edit/:id', component: ProjectEditComponent },
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
       { path: '**', component: PageNotFoundComponent }
