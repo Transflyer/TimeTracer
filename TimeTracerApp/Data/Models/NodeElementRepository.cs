@@ -10,21 +10,24 @@ namespace TimeTracker.Data.Models
     public class NodeElementRepository : INodeElementRepository
     {
         private ApplicationDbContext context;
+
+        public IQueryable<NodeElement> Products => context.NodeElements;
+
         public NodeElementRepository(ApplicationDbContext ctx) => context = ctx;
 
-        public IEnumerable<NodeElement> UserNodeElements(ApplicationUser user) => context
+        public IEnumerable<NodeElement> UserNodeElements(string userId) => context
             .NodeElements
-            .Where(u => u.UserId == user.Id)
+            .Where(u => u.UserId == userId)
             .ToArray();
 
-        public NodeElement AddUserNodeElement(NodeElement nodeElement, ApplicationUser user)
+        public NodeElement AddUserNodeElement(NodeElement nodeElement, string userId)
         {
             //properties set from server-side
             nodeElement.CreatedDate = DateTime.UtcNow;
             nodeElement.LastModifiedDate = nodeElement.CreatedDate;
 
             // Set a author using user login
-            nodeElement.UserId = user.Id;
+            nodeElement.UserId = userId;
 
             //add new nodeElement
             context.NodeElements.Add(nodeElement);
@@ -70,9 +73,6 @@ namespace TimeTracker.Data.Models
 
             // properties set from server-side
             nodeElementToUpdate.LastModifiedDate = nodeElement.CreatedDate;
-
-            //Update db element
-            context.NodeElements.Update(nodeElementToUpdate);
 
             // persist the changes into the Database.
             context.SaveChanges();

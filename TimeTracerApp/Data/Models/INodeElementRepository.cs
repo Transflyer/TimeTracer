@@ -7,8 +7,10 @@ namespace TimeTracker.Data.Models
 {
     public interface INodeElementRepository
     {
-        IEnumerable<NodeElement> UserNodeElements(ApplicationUser user);
-        NodeElement AddUserNodeElement(NodeElement nodeElement, ApplicationUser user);
+        IQueryable<NodeElement> Products { get; }
+
+        IEnumerable<NodeElement> UserNodeElements(string userId);
+        NodeElement AddUserNodeElement(NodeElement nodeElement, string userId);
         NodeElement GetNodeElement(int id);
         NodeElement DeleteNodeElement(int id);
         NodeElement UpdateNodeElement(NodeElement nodeElement);

@@ -71,7 +71,7 @@ namespace TimeTracker.Controllers
             // return a generic HTTP Status 500 (Server Error)
             // if the client payload is invalid.
             if (model == null) return new StatusCodeResult(500);
-            var user = UserManager.GetUserAsync(HttpContext.User).Result;
+            var user = UserManager.GetUserAsync(HttpContext.User).Result.Id;
             var nodeElement = NodeElementRepo.AddUserNodeElement(model, user);
 
             //return the newly-created NodeElement to the client.
@@ -79,6 +79,7 @@ namespace TimeTracker.Controllers
                 JsonSettings);
 
         }
+
         /// <summary>
         /// Edit the NodeElement with the given {id}
         /// </summary>
@@ -143,7 +144,7 @@ namespace TimeTracker.Controllers
         [Authorize(Policy = "JwtAuthorization")]
         public IActionResult Root(int num = 10)
         {
-            var user = UserManager.GetUserAsync(HttpContext.User).Result;
+            var user = UserManager.GetUserAsync(HttpContext.User).Result.Id;
             var rootElements = NodeElementRepo.UserNodeElements(user)
                 .OrderByDescending(q => q.Title)
                 .Take(num)
