@@ -11,7 +11,7 @@ namespace TimeTracker.Data.Models
     {
         private ApplicationDbContext context;
 
-        public IQueryable<NodeElement> Products => context.NodeElements;
+        public IQueryable<NodeElement> NodeElements => context.NodeElements;
 
         public NodeElementRepository(ApplicationDbContext ctx) => context = ctx;
 
@@ -40,11 +40,13 @@ namespace TimeTracker.Data.Models
 
         public NodeElement GetNodeElement(int id)
         {
-            return context.NodeElements.FirstOrDefault(i => i.Id == id);
+            return NodeElements.FirstOrDefault(i => i.Id == id);
         }
 
-        public NodeElement DeleteNodeElement(int id)
+        public NodeElement DeleteNodeElement(int? id)
         {
+            if (id == null) return null;
+
             // retrieve the nodeElement
             var detetedElement = context.NodeElements.Where(i => i.Id == id).FirstOrDefault();
 

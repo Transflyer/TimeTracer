@@ -9,8 +9,7 @@ using TimeTracker.Data.Models;
 using TimeTracker.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
-
-
+using TimeTracker.Services;
 
 namespace TimeTracker.Controllers
 {
@@ -21,10 +20,10 @@ namespace TimeTracker.Controllers
         #region Constructor
         public ProjectController(ApplicationDbContext context,
             RoleManager<IdentityRole> roleManager,
-            UserManager<ApplicationUser> userManager,
+            IRequestUserProvider requstUserProvider,
             IConfiguration configuration,
             INodeElementRepository elementRepo)
-            : base(context, roleManager, userManager, configuration)
+            : base(context, roleManager, requstUserProvider, configuration)
         {
             NodeElementRepo = elementRepo;
         }
@@ -44,7 +43,8 @@ namespace TimeTracker.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var nodeElement = NodeElementRepo.GetNodeElement(id);
+            var nodeElement = NodeElementRepo.NodeElements
+                .FirstOrDefault(i => i.Id == id);
 
             //handle requests asking for non-existing NodeElement
             if (nodeElement == null)
@@ -71,8 +71,8 @@ namespace TimeTracker.Controllers
             // return a generic HTTP Status 500 (Server Error)
             // if the client payload is invalid.
             if (model == null) return new StatusCodeResult(500);
-            var user = UserManager.GetUserAsync(HttpContext.User).Result.Id;
-            var nodeElement = NodeElementRepo.AddUserNodeElement(model, user);
+            var userId = RequestUserProvider.GetUserId();
+            var nodeElement = NodeElementRepo.AddUserNodeElement(model, userId);
 
             //return the newly-created NodeElement to the client.
             return new JsonResult(nodeElement.Adapt<ProjectViewModel>(),
@@ -113,7 +113,7 @@ namespace TimeTracker.Controllers
         /// <param name="id">The ID of an existing NodeElement</param>
         [HttpDelete("{id}")]
         [Authorize(Policy = "JwtAuthorization")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int? id)
         {
             var result = NodeElementRepo.DeleteNodeElement(id);
 
@@ -144,9 +144,10 @@ namespace TimeTracker.Controllers
         [Authorize(Policy = "JwtAuthorization")]
         public IActionResult Root(int num = 10)
         {
-            var user = UserManager.GetUserAsync(HttpContext.User).Result.Id;
-            var rootElements = NodeElementRepo.UserNodeElements(user)
-                .OrderByDescending(q => q.Title)
+            var userId = RequestUserProvider.GetUserId();
+            var rootElements = NodeElementRepo.NodeElements
+                .Where(e=>e.UserId == userId)
+                .OrderBy(q => q.Title)
                 .Take(num)
                 .ToArray();
 

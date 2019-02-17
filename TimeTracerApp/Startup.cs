@@ -12,6 +12,7 @@ using System;
 using System.Text;
 using TimeTracker.Data;
 using TimeTracker.Data.Models;
+using TimeTracker.Services;
 
 namespace TimeTracker
 {
@@ -90,6 +91,7 @@ namespace TimeTracker
             });
 
             services.AddTransient<INodeElementRepository, NodeElementRepository>();
+            services.AddTransient<IRequestUserProvider, RequestUserProvider>();
 
         }
 

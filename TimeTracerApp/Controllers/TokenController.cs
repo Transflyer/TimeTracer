@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using TimeTracker.Data;
 using TimeTracker.Data.Models;
 using TimeTracker.ViewModels;
+using TimeTracker.Services;
 
 namespace TimeTracker.Controllers
 {
@@ -27,19 +28,27 @@ namespace TimeTracker.Controllers
         {
             get; private set;
         }
+
+        protected UserManager<ApplicationUser> UserManager
+        {
+            get; private set;
+        }
+
         #endregion
 
         #region Constructor
         public TokenController(
             ApplicationDbContext context,
             RoleManager<IdentityRole> roleManager,
-            UserManager<ApplicationUser> userManager,
+            IRequestUserProvider requstUserProvider,
             SignInManager<ApplicationUser> signInManager,
-            IConfiguration configuration
+            IConfiguration configuration,
+            UserManager<ApplicationUser> userManager
             )
-            : base(context, roleManager, userManager, configuration)
+            : base(context, roleManager, requstUserProvider, configuration)
             {
                 SignInManager = signInManager;
+            UserManager = userManager;
             }
         #endregion
 

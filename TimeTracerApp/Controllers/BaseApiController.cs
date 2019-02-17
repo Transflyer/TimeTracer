@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using TimeTracker.Data;
 using TimeTracker.Data.Models;
+using TimeTracker.Services;
 
 
 namespace TimeTracker.Controllers
@@ -15,13 +16,13 @@ namespace TimeTracker.Controllers
         public BaseApiController(
             ApplicationDbContext context,
             RoleManager<IdentityRole> roleManager,
-            UserManager<ApplicationUser> userManager,
+            IRequestUserProvider requestUserProvider,
             IConfiguration configuration)
         {
             // Instantiate instances through DI
             DbContext = context;
             RoleManager = roleManager;
-            UserManager = userManager;
+            RequestUserProvider = requestUserProvider;
             Configuration = configuration;
 
             // Instantiate a single JsonSerializerSettings object
@@ -36,7 +37,7 @@ namespace TimeTracker.Controllers
         #region Shared Properties
         protected ApplicationDbContext DbContext { get; private set; }
         protected RoleManager<IdentityRole> RoleManager { get; private set; }
-        protected UserManager<ApplicationUser> UserManager { get; private set; }
+        protected IRequestUserProvider RequestUserProvider { get; private set; }
         protected IConfiguration Configuration { get; private set; }
 
         protected JsonSerializerSettings JsonSettings

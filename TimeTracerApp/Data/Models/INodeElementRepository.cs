@@ -7,12 +7,12 @@ namespace TimeTracker.Data.Models
 {
     public interface INodeElementRepository
     {
-        IQueryable<NodeElement> Products { get; }
+        IQueryable<NodeElement> NodeElements { get; }
 
         IEnumerable<NodeElement> UserNodeElements(string userId);
         NodeElement AddUserNodeElement(NodeElement nodeElement, string userId);
         NodeElement GetNodeElement(int id);
-        NodeElement DeleteNodeElement(int id);
+        NodeElement DeleteNodeElement(int? id);
         NodeElement UpdateNodeElement(NodeElement nodeElement);
     }
 }

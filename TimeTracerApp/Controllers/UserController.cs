@@ -10,6 +10,7 @@ using Mapster;
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using TimeTracker.Services;
 
 namespace TimeTracker.Controllers
 {
@@ -19,10 +20,17 @@ namespace TimeTracker.Controllers
         public UserController(
             ApplicationDbContext context,
             RoleManager<IdentityRole> roleManager,
-            UserManager<ApplicationUser> userManager,
-            IConfiguration configuration
+            IRequestUserProvider requestUserProvider,
+            IConfiguration configuration,
+            UserManager<ApplicationUser> userManager
             )
-            : base(context, roleManager, userManager, configuration) { }
+            : base(context, roleManager, requestUserProvider, configuration) {
+            UserManager = userManager;
+        }
+        #endregion
+
+        #region Properties
+        protected UserManager<ApplicationUser> UserManager;
         #endregion
 
         #region RESTful Conventions
@@ -111,6 +119,7 @@ namespace TimeTracker.Controllers
         public IActionResult Get()
         {
             var user = UserManager.GetUserAsync(HttpContext.User).Result;
+          
             return Json(user.Adapt<UserViewModel>(), JsonSettings);
         }
 
