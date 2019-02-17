@@ -17,12 +17,12 @@ namespace TimeTracker.Tests
     public class ProjectControllerTest
     {
         #region Properties
+
         private Mock<INodeElementRepository> mockNodeElements;
         private Mock<IRequestUserProvider> mockRequestUserProvider;
         private ProjectController controller;
+
         #endregion
-
-
 
         #region constructor
         public ProjectControllerTest()
@@ -205,7 +205,6 @@ namespace TimeTracker.Tests
             Assert.IsType<JsonResult>(resultType);
             Assert.Equal(mockId, result.Id);
         }
-
 
         [Fact]
         public void Post_Cant_Find_Element()

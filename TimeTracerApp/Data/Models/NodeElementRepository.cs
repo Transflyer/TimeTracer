@@ -50,7 +50,7 @@ namespace TimeTracker.Data.Models
             // retrieve the nodeElement
             var detetedElement = context.NodeElements.Where(i => i.Id == id).FirstOrDefault();
 
-            if(detetedElement == null) return null;
+            if (detetedElement == null) return null;
 
             //remove the NodeElement from DbContext
             context.Remove(detetedElement);
@@ -72,6 +72,10 @@ namespace TimeTracker.Data.Models
             // we want to accept from the request
             nodeElementToUpdate.Title = nodeElement.Title;
             nodeElementToUpdate.Description = nodeElement.Description;
+            nodeElementToUpdate.ParentId = nodeElement.ParentId;
+            //nodeElementToUpdate.Text = nodeElement.Text;
+            //nodeElementToUpdate.UserId = nodeElement.UserId;
+            //nodeElementToUpdate.Notes = nodeElement.Notes;
 
             // properties set from server-side
             nodeElementToUpdate.LastModifiedDate = nodeElement.CreatedDate;
@@ -79,6 +83,42 @@ namespace TimeTracker.Data.Models
             // persist the changes into the Database.
             context.SaveChanges();
             return nodeElementToUpdate;
+        }
+
+        public IEnumerable<NodeElement> GetChildElements(int parentElementId)
+        {
+
+            throw new NotImplementedException();
+        }
+
+        public async Task<NodeElement> AddChildElement(NodeElement nodeElement, int? parentElementId)
+        {
+            if (nodeElement == null || parentElementId == null) return null;
+
+            //properties set from server-side
+            nodeElement.CreatedDate = DateTime.UtcNow;
+            nodeElement.LastModifiedDate = nodeElement.CreatedDate;
+
+            // Set a parent element
+            nodeElement.ParentId = parentElementId;
+
+            //add new nodeElement
+            context.NodeElements.Add(nodeElement);
+
+            //persist the newly-created NodeElement into the Database
+            await context.SaveChangesAsync();
+
+            return nodeElement;
+        }
+
+        public NodeElement RemoveChildElement(int childElementId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public NodeElement MoveChildElementToOtherParent(int childElementId, int OtherParentElementId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
