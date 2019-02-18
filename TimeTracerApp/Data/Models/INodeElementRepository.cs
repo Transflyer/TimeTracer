@@ -11,8 +11,8 @@ namespace TimeTracker.Data.Models
 
         IEnumerable<NodeElement> UserNodeElements(string userId);
         NodeElement AddUserNodeElement(NodeElement nodeElement, string userId);
-        NodeElement GetNodeElement(int id);
-        IEnumerable<NodeElement> GetChildElements(int parentElementId);
+        Task<NodeElement> GetNodeElement(int id);
+        Task<IEnumerable<NodeElement>> GetChildElements(int? parentElementId);
         Task<NodeElement> AddChildElement(NodeElement nodeElement, int? parentElementId);
         NodeElement RemoveChildElement(int childElementId);
         NodeElement MoveChildElementToOtherParent(int childElementId, int OtherParentElementId);

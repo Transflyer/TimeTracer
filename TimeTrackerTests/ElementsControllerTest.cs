@@ -66,7 +66,7 @@ namespace TimeTracker.Tests
                 .Returns(Task.FromResult(mockElementToPut));
 
             //Act
-            var resultType = await controller.Put(mockElementToPut, mockParentId);
+            var resultType = await controller.Put(mockElementToPut);
             var result = (resultType as JsonResult).Value as ProjectViewModel;
                         
             //Assert
@@ -81,7 +81,7 @@ namespace TimeTracker.Tests
             var mockParentId = 6;
 
             //Act
-            var resultType = await controller.Put(null, mockParentId);
+            var resultType = await controller.Put(null);
             
             //Assert
             Assert.IsType<StatusCodeResult>(resultType);
@@ -98,13 +98,49 @@ namespace TimeTracker.Tests
             mockElementToPut.ParentId = mockParentId;
 
             //Act
-            var resultType = await controller.Put(mockElementToPut, mockParentId);
+            var resultType = await controller.Put(mockElementToPut);
 
             //Assert
             Assert.IsType<StatusCodeResult>(resultType);
             Assert.Equal(500, (resultType as StatusCodeResult).StatusCode);
         }
 
+        [Fact]
+        public async Task Can_Get()
+        {
+            //Arrange
+            var mockId = 5;
+            var mockElementToPut = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
+
+            mockNodeElements.Setup(repo => repo.GetNodeElement(mockId))
+                .Returns(Task.FromResult(mockElementToPut));
+
+            //Act
+            var resultType = await controller.Get(mockId);
+            var result = (resultType as JsonResult).Value as ProjectViewModel;
+
+            //Assert
+            Assert.IsType<JsonResult>(resultType);
+            Assert.Equal(mockId, result.Id);
+        }
+
+        [Fact]
+        public async Task Cant_Get_With_Wrong_Id()
+        {
+            //Arrange
+            var mockId = 99;
+            var mockElementToPut = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
+
+            mockNodeElements.Setup(repo => repo.GetNodeElement(mockId))
+                .Returns(Task.FromResult(mockElementToPut));
+
+            //Act
+            var resultType = await controller.Get(mockId);
+                        
+            //Assert
+            Assert.IsType<NotFoundObjectResult>(resultType);
+            Assert.Equal("{ Error = NodeElement 99 has not been found }", (resultType as NotFoundObjectResult).Value.ToString());
+        }
 
     }
 }

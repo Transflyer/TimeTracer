@@ -15,15 +15,18 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { ProjectListComponent } from './project/project-list.component';
 import { ProjectEditComponent } from './project/project-edit.component';
-import { ProjectFormComponent } from './project/project-form.component';
-import { AboutComponent } from './about/about.component';
 import { ProjectsComponent } from './project/projects.component';
+import { ElementComponent } from './element/element.component';
+import { ElementEditComponent } from './element/element-edit.component';
+import { ElementListComponent } from './element/element-list.component';
 
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './user/register.component';
-
+import { AboutComponent } from './about/about.component';
 
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
+
+
 
 
 @NgModule({
@@ -39,7 +42,9 @@ import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
     PageNotFoundComponent,
     AfterIfDirective,
     ProjectEditComponent,
-    ProjectFormComponent
+    ElementComponent,
+    ElementEditComponent,
+    ElementListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -51,7 +56,8 @@ import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
       { path: 'home', component: HomeComponent },
       { path: 'about', component: AboutComponent },
       { path: 'projects', component: ProjectsComponent },
-      { path: 'project/form/:id', component: ProjectFormComponent },
+      { path: 'element/:id', component: ElementComponent },
+      { path: 'element/edit/:id/:parentid', component: ElementEditComponent },
       { path: 'project/create', component: ProjectEditComponent },
       { path: 'project/create/:id', component: ProjectEditComponent },
       { path: 'project/edit/:id', component: ProjectEditComponent },

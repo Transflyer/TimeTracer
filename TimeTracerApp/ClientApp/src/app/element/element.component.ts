@@ -5,14 +5,14 @@ import { AuthService } from '../service/auth.service';
 
 
 @Component({
-  selector: 'project-form',
-  templateUrl: './project-form.component.html',
-  styleUrls: ['./project-form.component.less']
+  selector: 'element',
+  templateUrl: './element.component.html',
+  styleUrls: ['./element.component.less']
 })
 
-export class ProjectFormComponent {
+export class ElementComponent {
   nodeElement: NodeElement;
-
+  parentId: number
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
@@ -22,10 +22,12 @@ export class ProjectFormComponent {
     // create an empty object from the NodeElement interface
     this.nodeElement = <NodeElement>{};
     var id = +this.activatedRoute.snapshot.params["id"];
-    console.log(id);
+    this.parentId = id;
+    console.log(this.parentId);
+
 
     if (id) {
-      var url = this.baseUrl + "api/project/" + id;
+      var url = this.baseUrl + "api/elements/" + id;
       this.http.get<NodeElement>(url).subscribe(result => {
         this.nodeElement = result;
       }, error => console.error(error));
@@ -37,12 +39,16 @@ export class ProjectFormComponent {
   }
 
   onEdit() {
-    this.router.navigate(["project/edit", this.nodeElement.Id]);
+    this.router.navigate(["element/edit", this.nodeElement.Id]);
+  }
+
+  onAdd() {
+    this.router.navigate(["element/edit", 0, this.nodeElement.Id]);
   }
 
   onDelete() {
     if (confirm("Do you really want to delete this element?")) {
-      var url = this.baseUrl + "api/project/" + this.nodeElement.Id;
+      var url = this.baseUrl + "api/elements/" + this.nodeElement.Id;
       this.http
         .delete(url)
         .subscribe(res => {

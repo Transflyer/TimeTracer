@@ -1,11 +1,11 @@
-<div class="project-form">
-  <div class="project-form-details">
-    <div class="project-form-image">
+<div class="element-form col-lg-4">
+  <div class="element-form-details">
+    <div class="element-form-image">
       <img src="https://lorempixel.com/150/150/?random={{nodeElement.Id}}"
            alt="{{nodeElement.Title}}" class="img-circle" />
     </div>
-    <div class="project-form-info-block">
-      <div class="project-form-heading">
+    <div class="element-form-info-block">
+      <div class="element-form-heading">
         <h2>{{nodeElement.Title}}</h2>
         <span class="help-block">{{nodeElement.Description}}</span>
       </div>
@@ -23,7 +23,7 @@
           </a>
         </li>
       </ul>
-      <div class="project-form-body">
+      <div class="element-form-body">
         <div class="tab-content">
           <div class="tab-pane active" id="description">
             TO-DO
@@ -40,6 +40,9 @@
           &nbsp; Back
         </a>
         <div *ngIf="auth.isLoggedIn()" class="edit">
+          <input type="button" value="Add child element"
+                 (click)="onAdd()"
+                 class="btn btn-sm btn-primary" />
           <input type="button" value="Edit"
                  (click)="onEdit()"
                  class="btn btn-sm btn-warning" />
@@ -52,3 +55,10 @@
     </div>
   </div>
 </div>
+
+  <div class="col-lg-4">
+    <element-list [parentId]="this.parentId" class="root"></element-list>
+
+</div>
+
+

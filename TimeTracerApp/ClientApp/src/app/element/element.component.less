@@ -1,15 +1,14 @@
-.project-form {
+.element-form {
   position: relative;
   padding: 0;
   text-align: center;
-  width: 80%;
-
+ 
   @media (max-width: 767px) {
     width: 100%;
   }
 
-  .project-form-details {
-    .project-form-image {
+  .element-form-details {
+    .element-form-image {
       position: relative;
       z-index: 1;
       width: 100%;
@@ -27,16 +26,16 @@
       }
     }
 
-    .project-form-info-block {
+    .element-form-info-block {
       width: 100%;
       border-radius: 20px;
-      position: absolute;
-      top: 80px;
+      position: relative;
       background: #f0f0f0;
       z-index: 0;
       padding: 60px 0 30px 0;
+      margin-top: -80px;
 
-      .project-form-heading {
+      .element-form-heading {
         width: 100%;
         text-align: center;
         margin: 10px 0 0;
@@ -67,7 +66,7 @@
         }
       }
 
-      .project-form-body {
+      .element-form-body {
         padding: 20px 20px 30px 20px;
 
         .tab-content {

@@ -1,11 +1,11 @@
-.project-edit {
+.element-edit {
   width: 80%;
 }
 @media (max-width: 767px) {
-  .project-edit {
+  .element-edit {
     width: 100%;
   }
 }
-.project-edit textarea {
+.element-edit textarea {
   min-height: 100px;
 }

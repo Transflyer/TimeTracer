@@ -38,9 +38,9 @@ namespace TimeTracker.Data.Models
             return nodeElement;
         }
 
-        public NodeElement GetNodeElement(int id)
+        public async Task<NodeElement> GetNodeElement(int id)
         {
-            return NodeElements.FirstOrDefault(i => i.Id == id);
+            return await NodeElements.FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public NodeElement DeleteNodeElement(int? id)
@@ -85,10 +85,13 @@ namespace TimeTracker.Data.Models
             return nodeElementToUpdate;
         }
 
-        public IEnumerable<NodeElement> GetChildElements(int parentElementId)
+        public async Task<IEnumerable<NodeElement>> GetChildElements(int? parentElementId)
         {
-
-            throw new NotImplementedException();
+            if (parentElementId == null) return null;
+            return await NodeElements
+                .Where(p => p.ParentId == parentElementId)
+                .OrderBy(t => t.Title)
+                .ToArrayAsync();
         }
 
         public async Task<NodeElement> AddChildElement(NodeElement nodeElement, int? parentElementId)

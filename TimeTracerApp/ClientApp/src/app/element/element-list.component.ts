@@ -3,15 +3,17 @@ import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: "project-list",
-  templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.less']
+  selector: "element-list",
+  templateUrl: './element-list.component.html',
+  styleUrls: ['./element-list.component.less']
 })
 
 
-export class ProjectListComponent implements OnInit {
+export class ElementListComponent implements OnInit {
+  @Input() parentId: string;
   @Input() class: string;
   title: string;
+  
   selectedNodeElement: NodeElement;
   nodeElements: NodeElement[];
 
@@ -20,12 +22,12 @@ export class ProjectListComponent implements OnInit {
   }
 
   ngOnInit() {
-    var url = this.baseUrl + "api/project/root/";
-
-    this.title = "Project list";
+    var url = this.baseUrl + "api/elements/root/"+this.parentId;
+   
+    this.title = "Element list";
     this.http.get<NodeElement[]>(url).subscribe(result => {
       this.nodeElements = result;
-      
+
     }), error => console.error(error);
   }
 

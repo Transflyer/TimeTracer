@@ -9,6 +9,10 @@ using TimeTracker.Data;
 using TimeTracker.Data.Models;
 using TimeTracker.Services;
 using TimeTracker.ViewModels;
+using System.Linq;
+using System.Threading;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TimeTracker.Controllers
 {
@@ -28,26 +32,55 @@ namespace TimeTracker.Controllers
             NodeElementRepo = elementRepo;
         }
 
-        // GET: api/NodeElements
-        [HttpGet]
-        public IEnumerable<NodeElement> GetChildElements(int parentId)
+        // GET: api/elements/root/
+        [HttpGet("root/{parentId?}")]
+        [Authorize(Policy = "JwtAuthorization")]
+        public async Task<IActionResult> GetChildElements(int? parentId)
         {
-            throw new NotImplementedException();
+            if (parentId == null) return new StatusCodeResult(500);
+
+            var nodeElements = await NodeElementRepo.GetChildElements(parentId);
+
+            if (nodeElements == null)
+            {
+                return NotFound(new
+                {
+                    Error = String.Format("There is no child elements with {0} parent element", parentId)
+                });
+            }
+
+            return new JsonResult(nodeElements.Adapt<ProjectViewModel []>(), JsonSettings);
         }
 
         // GET: api/NodeElements/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
-            throw new NotImplementedException();
+
+            var nodeElement = await NodeElementRepo.GetNodeElement(id);
+
+            //handle requests asking for non-existing NodeElement
+            if (nodeElement == null)
+            {
+                return NotFound(new
+                {
+                    Error = String.Format("NodeElement {0} has not been found", id)
+                });
+            }
+
+            // output the result in JSON format
+            return new JsonResult(nodeElement.Adapt<ProjectViewModel>(), JsonSettings);
+            
         }
 
-        // PUT: api/NodeElements/5
-        [HttpPut("{parentid}")]
-        public async Task<IActionResult> Put([FromBody] NodeElement model, [FromRoute] int? parentid)
+        // PUT: api/Elements
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] NodeElement model)
         {
-            if (model == null || parentid == null) return new StatusCodeResult(500);
-            var nodeElement = await NodeElementRepo.AddChildElement(model, parentid);
+            if (model == null) return new StatusCodeResult(500);
+            if (model.ParentId == null) return new StatusCodeResult(500);
+
+            var nodeElement = await NodeElementRepo.AddChildElement(model, model.ParentId);
 
             //return the newly-created NodeElement to the client.
             return new JsonResult(nodeElement.Adapt<ProjectViewModel>(),
@@ -55,14 +88,14 @@ namespace TimeTracker.Controllers
             
         }
 
-        // POST: api/NodeElements
+        // POST: api/Elements
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] NodeElement nodeElement)
         {
             throw new NotImplementedException();
         }
 
-        // DELETE: api/NodeElements/5
+        // DELETE: api/Elements/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {

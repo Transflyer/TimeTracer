@@ -1,21 +1,20 @@
-.project-form {
+.element-form {
   position: relative;
   padding: 0;
   text-align: center;
-  width: 80%;
 }
 @media (max-width: 767px) {
-  .project-form {
+  .element-form {
     width: 100%;
   }
 }
-.project-form .project-form-details .project-form-image {
+.element-form .element-form-details .element-form-image {
   position: relative;
   z-index: 1;
   width: 100%;
   text-align: center;
 }
-.project-form .project-form-details .project-form-image img {
+.element-form .element-form-details .element-form-image img {
   width: 150px;
   height: 150px;
   clear: both;
@@ -25,60 +24,60 @@
   border: 1px solid #707d8c;
   padding: 2px;
 }
-.project-form .project-form-details .project-form-info-block {
+.element-form .element-form-details .element-form-info-block {
   width: 100%;
   border-radius: 20px;
-  position: absolute;
-  top: 80px;
+  position: relative;
   background: #f0f0f0;
   z-index: 0;
   padding: 60px 0 30px 0;
+  margin-top: -80px;
 }
-.project-form .project-form-details .project-form-info-block .project-form-heading {
+.element-form .element-form-details .element-form-info-block .element-form-heading {
   width: 100%;
   text-align: center;
   margin: 10px 0 0;
 }
-.project-form .project-form-details .project-form-info-block .navigation {
+.element-form .element-form-details .element-form-info-block .navigation {
   margin: 20px 15px 0px 15px;
   padding: 0;
   list-style: none;
   border-bottom: 1px solid #a3aab1;
 }
-.project-form .project-form-details .project-form-info-block .navigation li {
+.element-form .element-form-details .element-form-info-block .navigation li {
   display: inline-block;
   margin: 0 0 -6px 0;
   padding: 0;
 }
-.project-form .project-form-details .project-form-info-block .navigation li a {
+.element-form .element-form-details .element-form-info-block .navigation li a {
   background: transparent;
   border-radius: 10px 10px 0 0;
   padding: 10px 30px;
   float: left;
 }
-.project-form .project-form-details .project-form-info-block .navigation li.active a {
+.element-form .element-form-details .element-form-info-block .navigation li.active a {
   background: #4189C7;
   color: #fff;
 }
-.project-form .project-form-details .project-form-info-block .project-form-body {
+.element-form .element-form-details .element-form-info-block .element-form-body {
   padding: 20px 20px 30px 20px;
 }
-.project-form .project-form-details .project-form-info-block .project-form-body .tab-content h4 {
+.element-form .element-form-details .element-form-info-block .element-form-body .tab-content h4 {
   width: 100%;
   margin: 10px 0;
   color: #333;
 }
-.project-form .project-form-details .project-form-info-block .commands {
+.element-form .element-form-details .element-form-info-block .commands {
   border-top: 1px solid #dddddd;
   width: 80%;
   padding: 15px 0 0 0;
   margin: 15px auto 0 auto;
 }
-.project-form .project-form-details .project-form-info-block .commands .btn {
+.element-form .element-form-details .element-form-info-block .commands .btn {
   min-width: 140px;
   margin: 0 10px;
 }
-.project-form .project-form-details .project-form-info-block .commands .edit {
+.element-form .element-form-details .element-form-info-block .commands .edit {
   border-top: 1px solid #dddddd;
   width: 80%;
   padding: 15px 0 0 0;
