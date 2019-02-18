@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
 
 
 export class ElementListComponent implements OnInit {
-  @Input() parentId: string;
+  @Input() parentId: number;
   @Input() class: string;
   title: string;
   
@@ -22,18 +22,21 @@ export class ElementListComponent implements OnInit {
   }
 
   ngOnInit() {
-    var url = this.baseUrl + "api/elements/root/"+this.parentId;
-   
-    this.title = "Element list";
+    this.updateList(this.parentId);
+  }
+
+  updateList(id: number) {
+    var url = this.baseUrl + "api/elements/root/" + id;
+    this.title = "Elements list";
     this.http.get<NodeElement[]>(url).subscribe(result => {
       this.nodeElements = result;
-
     }), error => console.error(error);
   }
 
   onSelect(nodeElement: NodeElement) {
     this.selectedNodeElement = nodeElement;
     console.log("Element with ID" + this.selectedNodeElement.Id + " has been selected");
+    this.updateList(this.selectedNodeElement.Id);
     this.router.navigate(["element", this.selectedNodeElement.Id]);
   }
 }

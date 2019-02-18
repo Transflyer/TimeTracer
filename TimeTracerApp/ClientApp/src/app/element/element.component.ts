@@ -1,4 +1,4 @@
-import { Component, Input, Inject } from "@angular/core";
+import { Component, Input, Inject, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { AuthService } from '../service/auth.service';
@@ -10,7 +10,7 @@ import { AuthService } from '../service/auth.service';
   styleUrls: ['./element.component.less']
 })
 
-export class ElementComponent {
+export class ElementComponent implements OnInit {
   nodeElement: NodeElement;
   parentId: number
   constructor(private activatedRoute: ActivatedRoute,
@@ -18,24 +18,32 @@ export class ElementComponent {
     private http: HttpClient,
     public auth: AuthService,
     @Inject('BASE_URL') private baseUrl: string) {
+  }
 
+  ngOnInit() {
     // create an empty object from the NodeElement interface
     this.nodeElement = <NodeElement>{};
     var id = +this.activatedRoute.snapshot.params["id"];
-    this.parentId = id;
-    console.log(this.parentId);
-
+    this.activatedRoute.params.subscribe(params => {
+      var id = params["id"];
+      if (id) this.updateElement(id);
+    })
 
     if (id) {
-      var url = this.baseUrl + "api/elements/" + id;
-      this.http.get<NodeElement>(url).subscribe(result => {
-        this.nodeElement = result;
-      }, error => console.error(error));
+      this.updateElement(id);
     }
     else {
       console.log("Invalid id: routing back to home...");
       this.router.navigate(["home"]);
     }
+  }
+
+  updateElement(id: number) {
+    this.parentId = id;
+    var url = this.baseUrl + "api/elements/" + id;
+    this.http.get<NodeElement>(url).subscribe(result => {
+      this.nodeElement = result;
+    }, error => console.error(error));
   }
 
   onEdit() {
@@ -46,6 +54,7 @@ export class ElementComponent {
     this.router.navigate(["element/edit", 0, this.nodeElement.Id]);
   }
 
+  
   onDelete() {
     if (confirm("Do you really want to delete this element?")) {
       var url = this.baseUrl + "api/elements/" + this.nodeElement.Id;

@@ -18,6 +18,7 @@ namespace TimeTracker.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "JwtAuthorization")]
     public class ElementsController : BaseApiController
     {
         private readonly INodeElementRepository NodeElementRepo;
@@ -34,7 +35,6 @@ namespace TimeTracker.Controllers
 
         // GET: api/elements/root/
         [HttpGet("root/{parentId?}")]
-        [Authorize(Policy = "JwtAuthorization")]
         public async Task<IActionResult> GetChildElements(int? parentId)
         {
             if (parentId == null) return new StatusCodeResult(500);
