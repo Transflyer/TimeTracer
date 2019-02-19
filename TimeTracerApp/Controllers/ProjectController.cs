@@ -56,45 +56,46 @@ namespace TimeTracker.Controllers
             }
 
             // output the result in JSON format
-            return new JsonResult(nodeElement.Adapt<ProjectViewModel>(), JsonSettings);
+            return new JsonResult(nodeElement.Adapt<ElementViewModel>(), JsonSettings);
 
         }
 
         /// <summary>
         /// Adds a new NodeElement to the Database
         /// </summary>
-        /// <param name="m">The ProjectViewModel containing the data to insert</param>
+        /// <param name="m">The ElementViewModel containing the data to insert</param>
         [HttpPut]
         [Authorize(Policy = "JwtAuthorization")]
-        public IActionResult Put([FromBody]NodeElement model)
+        public async Task<IActionResult> Put([FromBody]NodeElement model)
         {
             // return a generic HTTP Status 500 (Server Error)
             // if the client payload is invalid.
             if (model == null) return new StatusCodeResult(500);
+
             var userId = RequestUserProvider.GetUserId();
-            var nodeElement = NodeElementRepo.AddUserNodeElement(model, userId);
-
+    
+            var element = await NodeElementRepo.AddUserNodeElement(model, userId);
             //return the newly-created NodeElement to the client.
-            return new JsonResult(nodeElement.Adapt<ProjectViewModel>(),
+            return new JsonResult(element.Adapt<ElementViewModel>(),
                 JsonSettings);
-
         }
 
         /// <summary>
         /// Edit the NodeElement with the given {id}
         /// </summary>
-        /// <param name="m">The ProjectViewModel containing the data to  update</param>
+        /// <param name="m">The ElementViewModel containing the data to  update</param>
         [HttpPost]
         [Authorize(Policy = "JwtAuthorization")]
-        public IActionResult Post([FromBody]NodeElement model)
+        public async Task<IActionResult> Post([FromBody]NodeElement model)
         {
             // return a generic HTTP Status 500 (Server Error)
             // if the client payload is invalid.
             if (model == null) return new StatusCodeResult(500);
 
-            var nodeElement = NodeElementRepo.UpdateNodeElement(model);
+            model.UserId = RequestUserProvider.GetUserId();
 
-            // handle requests asking for non-existing nodeElement
+            var nodeElement = await NodeElementRepo.UpdateNodeElement(model);
+
             if (nodeElement == null)
             {
                 return NotFound(new
@@ -104,9 +105,11 @@ namespace TimeTracker.Controllers
             }
 
             //return the updated NodeElement to the client.
-            return new JsonResult(nodeElement.Adapt<ProjectViewModel>(),
+            return new JsonResult(nodeElement.Adapt<ElementViewModel>(),
                 JsonSettings);
         }
+
+
         /// <summary>
         /// Deletes the NodeElement with the given {id} from the Database
         /// </summary>
@@ -151,9 +154,8 @@ namespace TimeTracker.Controllers
                 .Take(num)
                 .ToArray();
 
-            return new JsonResult(rootElements.Adapt<ProjectViewModel[]>(), JsonSettings);
+            return new JsonResult(rootElements.Adapt<ElementViewModel[]>(), JsonSettings);
         }
-
-        #endregion
+#endregion
     }
 }

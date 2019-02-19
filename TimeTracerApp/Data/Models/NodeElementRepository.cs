@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TimeTracker.Data;
+using TimeTracker.ViewModels;
 
 namespace TimeTracker.Data.Models
 {
@@ -20,7 +21,7 @@ namespace TimeTracker.Data.Models
             .Where(u => u.UserId == userId)
             .ToArray();
 
-        public NodeElement AddUserNodeElement(NodeElement nodeElement, string userId)
+        public async Task<NodeElement> AddUserNodeElement(NodeElement nodeElement, string userId)
         {
             //properties set from server-side
             nodeElement.CreatedDate = DateTime.UtcNow;
@@ -33,7 +34,7 @@ namespace TimeTracker.Data.Models
             context.NodeElements.Add(nodeElement);
 
             //persist the newly-created NodeElement into the Database
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             return nodeElement;
         }
@@ -61,28 +62,33 @@ namespace TimeTracker.Data.Models
             return detetedElement;
         }
 
-        public NodeElement UpdateNodeElement(NodeElement nodeElement)
+        public async Task<NodeElement> UpdateNodeElement(NodeElement nodeElement)
         {
 
-            // retrieve the nodeElement to edit
-            var nodeElementToUpdate = context.NodeElements.Where(i => i.Id == nodeElement.Id).FirstOrDefault();
+            // handle requests asking for non-existing nodeElement
+            if (nodeElement == null)
+            {
+                return null;
+            }
 
-            // handle the update (without object-mapping)
-            // by manually assigning the properties
-            // we want to accept from the request
-            nodeElementToUpdate.Title = nodeElement.Title;
-            nodeElementToUpdate.Description = nodeElement.Description;
-            nodeElementToUpdate.ParentId = nodeElement.ParentId;
-            //nodeElementToUpdate.Text = nodeElement.Text;
-            //nodeElementToUpdate.UserId = nodeElement.UserId;
-            //nodeElementToUpdate.Notes = nodeElement.Notes;
+            var elementToUpdate = await GetNodeElement(nodeElement.Id);
+            if (elementToUpdate == null) return null;
+
+            elementToUpdate.Description = nodeElement.Description;
+            elementToUpdate.Text = nodeElement.Text;
+            elementToUpdate.Title = nodeElement.Title;
+            elementToUpdate.Notes = nodeElement.Notes;
+            elementToUpdate.UserId = nodeElement.UserId;
+            elementToUpdate.ParentId = nodeElement.ParentId;
 
             // properties set from server-side
-            nodeElementToUpdate.LastModifiedDate = nodeElement.CreatedDate;
+            elementToUpdate.LastModifiedDate = DateTime.UtcNow;
 
+          
             // persist the changes into the Database.
-            context.SaveChanges();
-            return nodeElementToUpdate;
+            await context.SaveChangesAsync();
+
+            return elementToUpdate;
         }
 
         public async Task<IEnumerable<NodeElement>> GetChildElements(int? parentElementId)
@@ -131,10 +137,16 @@ namespace TimeTracker.Data.Models
             NodeElement item = await NodeElements.FirstOrDefaultAsync(elem => elem.Id == childElementId);
             while(item != null)
             {
-                if (item.ParentId == null) return nodeElements;
+                if (item.ParentId == null)
+                {
+                    nodeElements.Reverse();
+                    return nodeElements;
+                }
                 item = await NodeElements.FirstOrDefaultAsync(elem => elem.Id == item.ParentId);
                 nodeElements.Add(item);
             }
+
+            nodeElements.Reverse();
             return nodeElements;
         }
     }

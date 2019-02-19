@@ -59,6 +59,7 @@ import { ParentsListComponent } from './parents/parents-list.component';
       { path: 'about', component: AboutComponent },
       { path: 'projects', component: ProjectsComponent },
       { path: 'element/:id', component: ElementComponent },
+      { path: 'element/edit/:id', component: ElementEditComponent },
       { path: 'element/edit/:id/:parentid', component: ElementEditComponent },
       { path: 'project/create', component: ProjectEditComponent },
       { path: 'project/create/:id', component: ProjectEditComponent },

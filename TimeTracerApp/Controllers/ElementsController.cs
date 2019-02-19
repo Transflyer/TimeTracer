@@ -49,7 +49,7 @@ namespace TimeTracker.Controllers
                 });
             }
 
-            return new JsonResult(nodeElements.Adapt<ProjectViewModel []>(), JsonSettings);
+            return new JsonResult(nodeElements.Adapt<ElementViewModel []>(), JsonSettings);
         }
 
         // GET: api/elements/parents/
@@ -68,10 +68,17 @@ namespace TimeTracker.Controllers
                 });
             }
 
-            return new JsonResult(nodeElements.Adapt<ProjectViewModel[]>(), JsonSettings);
+            return new JsonResult(nodeElements.Adapt<ElementViewModel[]>(), JsonSettings);
         }
 
-        // GET: api/NodeElements/5
+        #region RESTful conventions methods
+
+        /// <summary>
+        /// GET: api/elements/{}id
+        /// Retrieves the NodeElement with the given {id}
+        /// </summary>
+        /// <param name="id">The ID of an existing NodeElement</param>
+        /// <returns>the NodeElement with the given {id}</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
@@ -88,11 +95,14 @@ namespace TimeTracker.Controllers
             }
 
             // output the result in JSON format
-            return new JsonResult(nodeElement.Adapt<ProjectViewModel>(), JsonSettings);
+            return new JsonResult(nodeElement.Adapt<ElementViewModel>(), JsonSettings);
             
         }
 
-        // PUT: api/Elements
+        /// <summary>
+        /// Adds a new NodeElement to the Database
+        /// </summary>
+        /// <param name="m">The ElementViewModel containing the data to insert</param>
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] NodeElement model)
         {
@@ -102,16 +112,32 @@ namespace TimeTracker.Controllers
             var nodeElement = await NodeElementRepo.AddChildElement(model, model.ParentId);
 
             //return the newly-created NodeElement to the client.
-            return new JsonResult(nodeElement.Adapt<ProjectViewModel>(),
+            return new JsonResult(nodeElement.Adapt<ElementViewModel>(),
                 JsonSettings);
             
         }
 
         // POST: api/Elements
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] NodeElement nodeElement)
+        public async Task<IActionResult> Post([FromBody] NodeElement model)
         {
-            throw new NotImplementedException();
+            // return a generic HTTP Status 500 (Server Error)
+            // if the client payload is invalid.
+            if (model == null) return new StatusCodeResult(500);
+
+            var nodeElement = await NodeElementRepo.UpdateNodeElement(model);
+
+            if (nodeElement == null)
+            {
+                return NotFound(new
+                {
+                    Error = String.Format("NodeElement {0} has not been found", model.Id)
+                });
+            }
+
+            //return the updated NodeElement to the client.
+            return new JsonResult(nodeElement.Adapt<ElementViewModel>(),
+                JsonSettings);
         }
 
         // DELETE: api/Elements/5
@@ -121,6 +147,7 @@ namespace TimeTracker.Controllers
             throw new NotImplementedException();
         }
 
+        #endregion
         private bool NodeElementExists(int id)
         {
             throw new NotImplementedException();

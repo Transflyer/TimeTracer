@@ -10,13 +10,14 @@ import { error } from 'util';
   styleUrls: ['./element-edit.component.less']
 })
 export class ElementEditComponent {
-
   title: string;
   nodeElement: NodeElement;
   form: FormGroup;
 
   //if edit existing Node
   editMode: boolean;
+  //if root element
+  isRootElement: boolean;
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -42,7 +43,7 @@ export class ElementEditComponent {
       this.http.get<NodeElement>(url).subscribe(result => {
         this.nodeElement = result;
         this.title = "Edit - " + this.nodeElement.Title;
-
+        if (this.nodeElement.UserId) this.isRootElement = true;
         this.updateForm();
       }), error => console.error(error);
     }
@@ -71,28 +72,30 @@ export class ElementEditComponent {
     var tempNodeElement = <NodeElement>{};
     tempNodeElement.Title = this.form.value.Title;
     tempNodeElement.Description = this.form.value.Description;
-    tempNodeElement.ParentId = +this.activeRoute.snapshot.params["parentid"];
 
     var url = this.baseUrl + "api/elements";
+    if (this.isRootElement) url = this.baseUrl + "api/project";
 
     if (this.editMode) {
       tempNodeElement.Id = this.nodeElement.Id;
-
+      tempNodeElement.ParentId = this.nodeElement.ParentId;
       this.http
         .post<NodeElement>(url, tempNodeElement)
         .subscribe(result => {
           this.nodeElement = result;
           console.log("Node element" + this.nodeElement.Id + "has been updated.");
-          this.router.navigate(["projects"]);
+          this.router.navigate(["element", this.nodeElement.Id]);
         }, error => console.error(error));
     }
     else {
+      
+      tempNodeElement.ParentId = +this.activeRoute.snapshot.params["parentid"];
       this.http
         .put<NodeElement>(url, tempNodeElement)
         .subscribe(result => {
           var v = result;
           console.log("Node element" + v.Id + "has been created");
-          this.router.navigate(["projects"]);
+          this.router.navigate(["element", tempNodeElement.ParentId]);
         }), error => console.error(error);
     }
   }

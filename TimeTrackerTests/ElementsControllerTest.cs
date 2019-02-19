@@ -67,7 +67,7 @@ namespace TimeTracker.Tests
 
             //Act
             var resultType = await controller.Put(mockElementToPut);
-            var result = (resultType as JsonResult).Value as ProjectViewModel;
+            var result = (resultType as JsonResult).Value as ElementViewModel;
                         
             //Assert
             Assert.IsType<JsonResult>(resultType);
@@ -77,8 +77,6 @@ namespace TimeTracker.Tests
         [Fact]
         public async Task Cant_Put_Without_Element()
         {
-            //Arrange
-            var mockParentId = 6;
 
             //Act
             var resultType = await controller.Put(null);
@@ -117,7 +115,7 @@ namespace TimeTracker.Tests
 
             //Act
             var resultType = await controller.Get(mockId);
-            var result = (resultType as JsonResult).Value as ProjectViewModel;
+            var result = (resultType as JsonResult).Value as ElementViewModel;
 
             //Assert
             Assert.IsType<JsonResult>(resultType);
@@ -141,6 +139,120 @@ namespace TimeTracker.Tests
             Assert.IsType<NotFoundObjectResult>(resultType);
             Assert.Equal("{ Error = NodeElement 99 has not been found }", (resultType as NotFoundObjectResult).Value.ToString());
         }
+
+        [Fact]
+        public async Task Can_Get_Child_Elements()
+        {
+            //Arrange
+            int mockId = 5;
+            var mockElementChild1 = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId+1);
+            var mockElementChild2 = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId+2);
+
+            mockElementChild1.ParentId = 5;
+            mockElementChild2.ParentId = 5;
+
+            var mockArray = new NodeElement[2];
+            mockArray[0] = mockElementChild1;
+            mockArray[1] = mockElementChild2;
+
+            mockNodeElements.Setup(repo => repo.GetChildElements(mockId))
+                .Returns(Task.FromResult(mockArray as IEnumerable<NodeElement>));
+
+            //Act
+            var resultType = await controller.GetChildElements(mockId);
+            var result = (resultType as JsonResult).Value as ElementViewModel[];
+
+            //Assert
+            Assert.IsType<JsonResult>(resultType);
+            Assert.Equal(2, result.Count());
+            Assert.Equal(mockId + 1, result[0].Id);
+            Assert.Equal(mockId + 2, result[1].Id);
+            Assert.Equal(mockId, result[0].ParentId);
+            Assert.Equal(mockId, result[1].ParentId);
+        }
+
+        [Fact]
+        public async Task Cant_Get_Child_Elements_Without_Id()
+        {
+            //Act
+            var resultType = await controller.GetChildElements(null);
+            
+            //Assert
+            Assert.IsType<StatusCodeResult>(resultType);
+            Assert.Equal(500, (resultType as StatusCodeResult).StatusCode);
+        }
+
+        [Fact]
+        public async Task Cant_Get_Child_Elements_With_No_Child()
+        {
+            //Arrange
+            int mockId = 5;
+            NodeElement[] nodeElements = null;
+            mockNodeElements.Setup(repo => repo.GetChildElements(mockId))
+                .Returns(Task.FromResult(nodeElements as IEnumerable<NodeElement>));
+
+            //Act
+            var resultType = await controller.GetChildElements(mockId);
+
+            //Assert
+            Assert.IsType<NotFoundObjectResult>(resultType);
+            Assert.Equal("{ Error = There are no child elements with 5 parent element }", (resultType as NotFoundObjectResult).Value.ToString());
+        }
+
+        [Fact]
+        public async Task Can_Get_Parent_Elements()
+        {
+            //Arrange
+            int mockId = 5;
+            var mockElementParent1 = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId + 1);
+            var mockElementParent2 = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId + 2);
+
+            var mockArray = new NodeElement[2];
+            mockArray[0] = mockElementParent1;
+            mockArray[1] = mockElementParent2;
+
+            mockNodeElements.Setup(repo => repo.GetParentElements(mockId))
+                .Returns(Task.FromResult(mockArray as IEnumerable<NodeElement>));
+
+            //Act
+            var resultType = await controller.GetParentElements(mockId);
+            var result = (resultType as JsonResult).Value as ElementViewModel[];
+
+            //Assert
+            Assert.IsType<JsonResult>(resultType);
+            Assert.Equal(2, result.Count());
+            Assert.Equal(mockId + 1, result[0].Id);
+            Assert.Equal(mockId + 2, result[1].Id);
+           }
+
+        [Fact]
+        public async Task Cant_Get_Parent_Elements_Without_Id()
+        {
+            //Act
+            var resultType = await controller.GetParentElements(null);
+
+            //Assert
+            Assert.IsType<StatusCodeResult>(resultType);
+            Assert.Equal(500, (resultType as StatusCodeResult).StatusCode);
+        }
+
+        [Fact]
+        public async Task Cant_Get_Parent_Elements_With_No_Child()
+        {
+            //Arrange
+            int mockId = 5;
+            NodeElement[] nodeElements = null;
+            mockNodeElements.Setup(repo => repo.GetParentElements(mockId))
+                .Returns(Task.FromResult(nodeElements as IEnumerable<NodeElement>));
+
+            //Act
+            var resultType = await controller.GetParentElements(mockId);
+
+            //Assert
+            Assert.IsType<NotFoundObjectResult>(resultType);
+            Assert.Equal("{ Error = There are no parent elements chain with 5 child element }", (resultType as NotFoundObjectResult).Value.ToString());
+        }
+
 
     }
 }

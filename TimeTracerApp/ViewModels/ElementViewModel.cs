@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace TimeTracker.ViewModels
 {
-    public class ProjectViewModel
+    public class ElementViewModel
     {
         #region Constructor
-        public ProjectViewModel()
+        public ElementViewModel()
         {
         }
         #endregion

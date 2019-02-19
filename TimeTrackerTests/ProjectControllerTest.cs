@@ -1,15 +1,15 @@
-using System;
-using Xunit;
+using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using TimeTracker.Controllers;
 using TimeTracker.Data.Models;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Mvc;
-using TimeTracker.ViewModels;
 using TimeTracker.Services;
+using TimeTracker.ViewModels;
+using Xunit;
+
 
 
 namespace TimeTracker.Tests
@@ -58,12 +58,9 @@ namespace TimeTracker.Tests
         [Fact]
         public void Can_Get()
         {
-            //Arrange
-            ProjectController controller = new ProjectController(null, null, null, null, mockNodeElements.Object);
-
             //Act
             var resultType = controller.Get(3);
-            ProjectViewModel result = (resultType as JsonResult).Value as ProjectViewModel;
+            ElementViewModel result = (resultType as JsonResult).Value as ElementViewModel;
 
             //Assert
             Assert.IsType<JsonResult>(resultType);
@@ -94,7 +91,7 @@ namespace TimeTracker.Tests
 
             //Act
             var resultType = controller.Root(5);
-            ProjectViewModel [] result = (resultType as JsonResult).Value as ProjectViewModel[];
+            ElementViewModel [] result = (resultType as JsonResult).Value as ElementViewModel[];
 
             //Assert
             Assert.IsType<JsonResult> (resultType);
@@ -145,19 +142,20 @@ namespace TimeTracker.Tests
         }
 
         [Fact]
-        public void Can_Put()
+        public async Task Can_Put()
         {
             //Arrange
             var mockId = 5;
             var mockUserId = "id";
             mockRequestUserProvider.Setup(provider => provider.GetUserId()).Returns(mockUserId);
             var mockElementToPut = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
+            
             mockNodeElements.Setup(repo => repo.AddUserNodeElement(mockElementToPut, mockElementToPut.UserId))
-                .Returns(mockElementToPut);
+                .Returns(Task.FromResult<NodeElement>(mockElementToPut));
 
             //Act
-            var resultType = controller.Put(mockElementToPut);
-            var result = (resultType as JsonResult).Value as ProjectViewModel;
+            var resultType = await controller.Put(mockElementToPut);
+            var result = (resultType as JsonResult).Value as ElementViewModel;
 
             //Assert
             Assert.IsType<JsonResult>(resultType);
@@ -165,10 +163,10 @@ namespace TimeTracker.Tests
         }
 
         [Fact]
-        public void Put_Without_Model()
+        public async Task Put_Without_Model()
         {
             //Act
-            var resultType = controller.Put(null);
+            var resultType = await controller.Put(null);
             var result = resultType as StatusCodeResult;
 
             //Assert
@@ -177,10 +175,10 @@ namespace TimeTracker.Tests
         }
 
         [Fact]
-        public void Post_Without_Model()
+        public async Task Post_Without_Model()
         {
             //Act
-            var resultType = controller.Post(null);
+            var resultType = await controller.Post(null);
             var result = resultType as StatusCodeResult;
 
             //Assert
@@ -189,17 +187,18 @@ namespace TimeTracker.Tests
         }
 
         [Fact]
-        public void Can_Post()
+        public async Task Can_Post()
         {
             //Arrange
             var mockId = 5;
             var mockElementToPut = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
-            mockNodeElements.Setup(repo => repo.UpdateNodeElement(mockElementToPut))
-                .Returns(mockElementToPut);
+           
+            mockNodeElements.Setup(repo=>repo.UpdateNodeElement(mockElementToPut))
+                .Returns(Task.FromResult(mockElementToPut));
 
             //Act
-            var resultType = controller.Post(mockElementToPut);
-            var result = (resultType as JsonResult).Value as ProjectViewModel;
+            var resultType = await controller.Post(mockElementToPut);
+            var result = (resultType as JsonResult).Value as ElementViewModel;
 
             //Assert
             Assert.IsType<JsonResult>(resultType);
@@ -207,7 +206,7 @@ namespace TimeTracker.Tests
         }
 
         [Fact]
-        public void Post_Cant_Find_Element()
+        public async Task Post_Cant_Find_Element()
         {
             //Arrange
             var mockId = 5;
@@ -216,10 +215,10 @@ namespace TimeTracker.Tests
             mockElementToPost.Id = mockWrongID;
             var mockEnementNotFound = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockWrongID);
             mockNodeElements.Setup(repo => repo.UpdateNodeElement(mockElementToPost))
-                .Returns(mockEnementNotFound);
+                .Returns(Task.FromResult(mockEnementNotFound));
 
             //Act
-            var resultType = controller.Post(mockElementToPost);
+            var resultType = await controller.Post(mockElementToPost);
            
             //Assert
             Assert.IsType<NotFoundObjectResult>(resultType);
