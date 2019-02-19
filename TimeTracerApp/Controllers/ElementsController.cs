@@ -45,11 +45,30 @@ namespace TimeTracker.Controllers
             {
                 return NotFound(new
                 {
-                    Error = String.Format("There is no child elements with {0} parent element", parentId)
+                    Error = String.Format("There are no child elements with {0} parent element", parentId)
                 });
             }
 
             return new JsonResult(nodeElements.Adapt<ProjectViewModel []>(), JsonSettings);
+        }
+
+        // GET: api/elements/parents/
+        [HttpGet("parents/{childId}")]
+        public async Task<IActionResult> GetParentElements(int? childId)
+        {
+            if (childId == null) return new StatusCodeResult(500);
+
+            var nodeElements = await NodeElementRepo.GetParentElements(childId);
+
+            if (nodeElements == null)
+            {
+                return NotFound(new
+                {
+                    Error = String.Format("There are no parent elements chain with {0} child element", childId)
+                });
+            }
+
+            return new JsonResult(nodeElements.Adapt<ProjectViewModel[]>(), JsonSettings);
         }
 
         // GET: api/NodeElements/5

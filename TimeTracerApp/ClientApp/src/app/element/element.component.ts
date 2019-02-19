@@ -12,7 +12,9 @@ import { AuthService } from '../service/auth.service';
 
 export class ElementComponent implements OnInit {
   nodeElement: NodeElement;
-  parentId: number
+  parentId: number;
+  currentId: number;
+
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
@@ -26,10 +28,14 @@ export class ElementComponent implements OnInit {
     var id = +this.activatedRoute.snapshot.params["id"];
     this.activatedRoute.params.subscribe(params => {
       var id = params["id"];
-      if (id) this.updateElement(id);
+      if (id) {
+        this.currentId = id;
+        this.updateElement(id);
+      }
     })
 
     if (id) {
+      this.currentId = id;
       this.updateElement(id);
     }
     else {

@@ -2,28 +2,28 @@ import { Component, Inject, Input, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
 
+
 @Component({
-  selector: "element-list",
-  templateUrl: './element-list.component.html',
-  styleUrls: ['./element-list.component.less']
+  selector: 'parents-list',
+  templateUrl: './parents-list.component.html',
+  styleUrls: ['./parents-list.component.less']
 })
 
 
-export class ElementListComponent implements OnInit {
-  @Input() parentId: number;
+export class ParentsListComponent implements OnInit {
+  @Input() childId: number;
   @Input() class: string;
   title: string;
-  
+
   selectedNodeElement: NodeElement;
   nodeElements: NodeElement[];
-
+  
   constructor(private activetedRoute: ActivatedRoute,
     private http: HttpClient,
-    @Inject('BASE_URL') private baseUrl: string, private router: Router) {
-  }
+    @Inject('BASE_URL') private baseUrl: string, private router: Router) { }
 
   ngOnInit() {
-    this.updateList(this.parentId);
+    this.updateList(this.childId);
     this.activetedRoute.params.subscribe(params => {
       var id = params["id"];
       if (id) {
@@ -33,8 +33,8 @@ export class ElementListComponent implements OnInit {
   }
 
   updateList(id: number) {
-    var url = this.baseUrl + "api/elements/root/" + id;
-    this.title = "Elements list";
+    var url = this.baseUrl + "api/elements/parents/" + id;
+    this.title = "Parents list chain";
     this.http.get<NodeElement[]>(url).subscribe(result => {
       this.nodeElements = result;
     }), error => console.error(error);
@@ -46,4 +46,7 @@ export class ElementListComponent implements OnInit {
     this.updateList(this.selectedNodeElement.Id);
     this.router.navigate(["element", this.selectedNodeElement.Id]);
   }
+
 }
+
+

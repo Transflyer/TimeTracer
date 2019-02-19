@@ -123,5 +123,19 @@ namespace TimeTracker.Data.Models
         {
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<NodeElement>> GetParentElements(int? childElementId)
+        {
+            
+            List<NodeElement> nodeElements = new List<NodeElement>();
+            NodeElement item = await NodeElements.FirstOrDefaultAsync(elem => elem.Id == childElementId);
+            while(item != null)
+            {
+                if (item.ParentId == null) return nodeElements;
+                item = await NodeElements.FirstOrDefaultAsync(elem => elem.Id == item.ParentId);
+                nodeElements.Add(item);
+            }
+            return nodeElements;
+        }
     }
 }

@@ -25,6 +25,7 @@ import { RegisterComponent } from './user/register.component';
 import { AboutComponent } from './about/about.component';
 
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
+import { ParentsListComponent } from './parents/parents-list.component';
 
 
 
@@ -44,7 +45,8 @@ import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
     ProjectEditComponent,
     ElementComponent,
     ElementEditComponent,
-    ElementListComponent
+    ElementListComponent,
+    ParentsListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

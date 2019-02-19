@@ -18,5 +18,7 @@ namespace TimeTracker.Data.Models
         NodeElement MoveChildElementToOtherParent(int childElementId, int OtherParentElementId);
         NodeElement DeleteNodeElement(int? id);
         NodeElement UpdateNodeElement(NodeElement nodeElement);
+
+        Task<IEnumerable<NodeElement>> GetParentElements(int? childElementId);
     }
 }
