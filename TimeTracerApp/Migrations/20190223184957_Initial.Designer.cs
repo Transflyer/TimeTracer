@@ -9,14 +9,14 @@ using TimeTracker.Data;
 namespace TimeTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190126115722_MSIdentity_tokens")]
-    partial class MSIdentity_tokens
+    [Migration("20190223184957_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
+                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -28,7 +28,7 @@ namespace TimeTracker.Migrations
                         .IsConcurrencyToken();
 
                     b.Property<string>("Name")
-                        .HasMaxLength(256);
+                        .HasMaxLength(85);
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(85);
@@ -243,10 +243,16 @@ namespace TimeTracker.Migrations
 
             modelBuilder.Entity("TimeTracker.Data.Models.NodeElement", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedDate");
+
+                    b.Property<bool?>("Deleted");
+
+                    b.Property<long?>("DeletedParentId");
+
+                    b.Property<string>("DeletedUserId");
 
                     b.Property<string>("Description");
 
@@ -256,7 +262,7 @@ namespace TimeTracker.Migrations
 
                     b.Property<string>("Notes");
 
-                    b.Property<int?>("ParentId");
+                    b.Property<long?>("ParentId");
 
                     b.Property<string>("Text");
 

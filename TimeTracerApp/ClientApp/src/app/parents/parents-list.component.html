@@ -1,18 +1,14 @@
-<div class="panel panel-primary {{class}}">
-  <div class="panel-heading">
-    <span class="glyphicon"></span>
-    <h4>{{title}}</h4>
-  </div>
-  <div class="panel-body">
-    <ul class="list-group">
-      <li class="list-group-item"
-          *ngFor="let element of nodeElements"
+<div class="row">
+  <div class="col-lg-4">
+    <ul *ngIf="elementsCount != 0" class="list-group">
+      <li class="btn btn-block parents"
+          *ngFor="let element of nodeElements; let i = index"
+          [ngStyle] ="{'margin-left':(i *10) + 'px'}"
           [class.selected]="element === selectedNodeElement"
           (click)="onSelect(element)">
-        <img src="https://lorempixel.com/50/50/?random={{element.Id}}"
-             alt="{{element.Title}}" class="img-circle" />
-        <span>{{element.Title}}</span>
+        {{element.Title}} - {{i}}
       </li>
     </ul>
   </div>
 </div>
+

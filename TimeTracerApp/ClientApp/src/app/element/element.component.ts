@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { AuthService } from '../service/auth.service';
 
-
 @Component({
   selector: 'element',
   templateUrl: './element.component.html',
@@ -60,7 +59,6 @@ export class ElementComponent implements OnInit {
     this.router.navigate(["element/edit", 0, this.nodeElement.Id]);
   }
 
-  
   onDelete() {
     if (confirm("Do you really want to delete this element?")) {
       var url = this.baseUrl + "api/elements/" + this.nodeElement.Id;

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TimeTracker.ViewModels;
 
 namespace TimeTracker.Data.Models
 {
@@ -10,16 +8,24 @@ namespace TimeTracker.Data.Models
     {
         IQueryable<NodeElement> NodeElements { get; }
 
-        IEnumerable<NodeElement> UserNodeElements(string userId);
+        Task<NodeElement> AddChildElement(NodeElement nodeElement, long? parentElementId);
+
         Task<NodeElement> AddUserNodeElement(NodeElement nodeElement, string userId);
-        Task<NodeElement> GetNodeElement(int id);
-        Task<IEnumerable<NodeElement>> GetChildElements(int? parentElementId);
-        Task<NodeElement> AddChildElement(NodeElement nodeElement, int? parentElementId);
-        NodeElement RemoveChildElement(int childElementId);
-        NodeElement MoveChildElementToOtherParent(int childElementId, int OtherParentElementId);
-        NodeElement DeleteNodeElement(int? id);
+
+        Task<NodeElement> DeleteNodeElement(long? id);
+
+        Task<IEnumerable<NodeElement>> GetChildElements(long? parentElementId);
+
+        Task<NodeElement> GetNodeElement(long id);
+
+        Task<IEnumerable<NodeElement>> GetParentElements(long? childElementId);
+
+        NodeElement MoveChildElementToOtherParent(long childElementId, long OtherParentElementId);
+
+        NodeElement RemoveChildElement(long childElementId);
+
         Task<NodeElement> UpdateNodeElement(NodeElement model);
 
-        Task<IEnumerable<NodeElement>> GetParentElements(int? childElementId);
+        IEnumerable<NodeElement> UserNodeElements(string userId);
     }
 }

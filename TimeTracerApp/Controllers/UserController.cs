@@ -1,22 +1,21 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using TimeTracker.ViewModels;
+using System;
+using System.Threading.Tasks;
 using TimeTracker.Data;
 using TimeTracker.Data.Models;
-using Mapster;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
 using TimeTracker.Services;
+using TimeTracker.ViewModels;
 
 namespace TimeTracker.Controllers
 {
     public class UserController : BaseApiController
     {
         #region Constructor
+
         public UserController(
             ApplicationDbContext context,
             RoleManager<IdentityRole> roleManager,
@@ -24,16 +23,21 @@ namespace TimeTracker.Controllers
             IConfiguration configuration,
             UserManager<ApplicationUser> userManager
             )
-            : base(context, roleManager, requestUserProvider, configuration) {
+            : base(context, roleManager, requestUserProvider, configuration)
+        {
             UserManager = userManager;
         }
-        #endregion
+
+        #endregion Constructor
 
         #region Properties
+
         protected UserManager<ApplicationUser> UserManager;
-        #endregion
+
+        #endregion Properties
 
         #region RESTful Conventions
+
         /// <summary>
         /// PUT: api/user
         /// </summary>
@@ -112,17 +116,17 @@ namespace TimeTracker.Controllers
         /// <summary>
         /// GET: api/user
         /// </summary>
-  
+
         /// <returns>Return current user</returns>
         [HttpGet()]
         [Authorize(Policy = "JwtAuthorization")]
         public IActionResult Get()
         {
             var user = UserManager.GetUserAsync(HttpContext.User).Result;
-          
+
             return Json(user.Adapt<UserViewModel>(), JsonSettings);
         }
 
-        #endregion
+        #endregion RESTful Conventions
     }
 }

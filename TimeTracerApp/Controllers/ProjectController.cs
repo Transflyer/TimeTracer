@@ -1,23 +1,23 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using TimeTracker.Data;
 using TimeTracker.Data.Models;
-using TimeTracker.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using System.Threading.Tasks;
 using TimeTracker.Services;
+using TimeTracker.ViewModels;
 
 namespace TimeTracker.Controllers
 {
-
     [Route("api/[controller]")]
     public class ProjectController : BaseApiController
     {
         #region Constructor
+
         public ProjectController(ApplicationDbContext context,
             RoleManager<IdentityRole> roleManager,
             IRequestUserProvider requstUserProvider,
@@ -27,13 +27,17 @@ namespace TimeTracker.Controllers
         {
             NodeElementRepo = elementRepo;
         }
-        #endregion
+
+        #endregion Constructor
 
         #region Properties
+
         private readonly INodeElementRepository NodeElementRepo;
-        #endregion
+
+        #endregion Properties
 
         #region RESTful conventions methods
+
         /// <summary>
         /// GET: api/project/{}id
         /// Retrieves the NodeElement with the given {id}
@@ -41,8 +45,10 @@ namespace TimeTracker.Controllers
         /// <param name="id">The ID of an existing NodeElement</param>
         /// <returns>the NodeElement with the given {id}</returns>
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult Get(long? id)
         {
+            if (id == null) return new StatusCodeResult(500);
+
             var nodeElement = NodeElementRepo.NodeElements
                 .FirstOrDefault(i => i.Id == id);
 
@@ -57,7 +63,6 @@ namespace TimeTracker.Controllers
 
             // output the result in JSON format
             return new JsonResult(nodeElement.Adapt<ElementViewModel>(), JsonSettings);
-
         }
 
         /// <summary>
@@ -73,7 +78,7 @@ namespace TimeTracker.Controllers
             if (model == null) return new StatusCodeResult(500);
 
             var userId = RequestUserProvider.GetUserId();
-    
+
             var element = await NodeElementRepo.AddUserNodeElement(model, userId);
             //return the newly-created NodeElement to the client.
             return new JsonResult(element.Adapt<ElementViewModel>(),
@@ -109,16 +114,17 @@ namespace TimeTracker.Controllers
                 JsonSettings);
         }
 
-
         /// <summary>
         /// Deletes the NodeElement with the given {id} from the Database
         /// </summary>
         /// <param name="id">The ID of an existing NodeElement</param>
         [HttpDelete("{id}")]
         [Authorize(Policy = "JwtAuthorization")]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(long? id)
         {
-            var result = NodeElementRepo.DeleteNodeElement(id);
+            if (id == null) return new StatusCodeResult(500);
+
+            var result = await NodeElementRepo.DeleteNodeElement(id);
 
             // handle requests asking for non-existing nodeElement
             if (result == null)
@@ -128,11 +134,11 @@ namespace TimeTracker.Controllers
                     Error = String.Format("NodeElement {0} has not been found", id)
                 });
             }
-
             // return an HTTP Status 200 (OK).
             return new OkResult();
         }
-        #endregion
+
+        #endregion RESTful conventions methods
 
         #region Attribute-based routing methods
 
@@ -149,13 +155,14 @@ namespace TimeTracker.Controllers
         {
             var userId = RequestUserProvider.GetUserId();
             var rootElements = NodeElementRepo.NodeElements
-                .Where(e=>e.UserId == userId)
+                .Where(e => e.UserId == userId)
                 .OrderBy(q => q.Title)
                 .Take(num)
                 .ToArray();
 
             return new JsonResult(rootElements.Adapt<ElementViewModel[]>(), JsonSettings);
         }
-#endregion
+
+        #endregion Attribute-based routing methods
     }
 }

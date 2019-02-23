@@ -1,4 +1,3 @@
-using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
@@ -10,8 +9,6 @@ using TimeTracker.Services;
 using TimeTracker.ViewModels;
 using Xunit;
 
-
-
 namespace TimeTracker.Tests
 {
     public class ProjectControllerTest
@@ -22,9 +19,10 @@ namespace TimeTracker.Tests
         private Mock<IRequestUserProvider> mockRequestUserProvider;
         private ProjectController controller;
 
-        #endregion
+        #endregion Properties
 
         #region constructor
+
         public ProjectControllerTest()
         {
             //Common arrange
@@ -52,9 +50,9 @@ namespace TimeTracker.Tests
             });
             controller = new ProjectController(null, null, mockRequestUserProvider.Object, null, mockNodeElements.Object);
         }
-        #endregion
 
-       
+        #endregion constructor
+
         [Fact]
         public void Can_Get()
         {
@@ -91,51 +89,50 @@ namespace TimeTracker.Tests
 
             //Act
             var resultType = controller.Root(5);
-            ElementViewModel [] result = (resultType as JsonResult).Value as ElementViewModel[];
+            ElementViewModel[] result = (resultType as JsonResult).Value as ElementViewModel[];
 
             //Assert
-            Assert.IsType<JsonResult> (resultType);
+            Assert.IsType<JsonResult>(resultType);
             Assert.True(result.Count() == 5);
             Assert.Equal("T1", result[0].Title);
             Assert.Equal("T3", result[2].Title);
         }
 
         [Fact]
-        public void Delete_When_No_Id_Provided()
+        public async Task Delete_When_No_Id_Provided()
         {
             //Act
-            var result = controller.Delete(null);
+            var resultType = await controller.Delete(null);
 
             //Assert
-            Assert.IsType<NotFoundObjectResult>(result);
-            Assert.Equal("{ Error = NodeElement  has not been found }", (result as NotFoundObjectResult).Value.ToString());
+            Assert.IsType<StatusCodeResult>(resultType);
+            Assert.Equal(500, (resultType as StatusCodeResult).StatusCode);
         }
 
         [Fact]
-        public void Delete_When_Wrong_Id_Provided()
+        public async Task Delete_When_Wrong_Id_Provided()
         {
             //Arrange
             var mockId = 999;
 
             //Act
-            var result = controller.Delete(mockId);
+            var result = await controller.Delete(mockId);
 
             //Assert
             Assert.IsType<NotFoundObjectResult>(result);
             Assert.Equal("{ Error = NodeElement 999 has not been found }", (result as NotFoundObjectResult).Value.ToString());
-
         }
 
         [Fact]
-        public void Delete_When_Right_Id_Provided()
+        public async Task Delete_When_Right_Id_Provided()
         {
             //Arrange
             var mockId = 9;
-            var mockDeletedElement = mockNodeElements.Object.NodeElements.FirstOrDefault(e=>e.Id == mockId);
-            mockNodeElements.Setup(repo => repo.DeleteNodeElement(mockId)).Returns(mockDeletedElement);
+            var mockDeletedElement = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
+            mockNodeElements.Setup(repo => repo.DeleteNodeElement(mockId)).Returns(Task.FromResult<NodeElement>(mockDeletedElement));
 
             //Act
-            var result = controller.Delete(mockId);
+            var result = await controller.Delete(mockId);
 
             //Assert
             Assert.IsType<OkResult>(result);
@@ -149,7 +146,7 @@ namespace TimeTracker.Tests
             var mockUserId = "id";
             mockRequestUserProvider.Setup(provider => provider.GetUserId()).Returns(mockUserId);
             var mockElementToPut = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
-            
+
             mockNodeElements.Setup(repo => repo.AddUserNodeElement(mockElementToPut, mockElementToPut.UserId))
                 .Returns(Task.FromResult<NodeElement>(mockElementToPut));
 
@@ -192,8 +189,8 @@ namespace TimeTracker.Tests
             //Arrange
             var mockId = 5;
             var mockElementToPut = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
-           
-            mockNodeElements.Setup(repo=>repo.UpdateNodeElement(mockElementToPut))
+
+            mockNodeElements.Setup(repo => repo.UpdateNodeElement(mockElementToPut))
                 .Returns(Task.FromResult(mockElementToPut));
 
             //Act
@@ -219,18 +216,10 @@ namespace TimeTracker.Tests
 
             //Act
             var resultType = await controller.Post(mockElementToPost);
-           
+
             //Assert
             Assert.IsType<NotFoundObjectResult>(resultType);
             Assert.Equal("{ Error = NodeElement 99 has not been found }", (resultType as NotFoundObjectResult).Value.ToString());
         }
-
     }
 }
-
-
-
-
-
-
-

@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using TimeTracker.Data.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace TimeTracker.Data
 {
+
     public static class DdSeeder
     {
         #region Public Methods
+
         public static void Seed(ApplicationDbContext dbContext,
             RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager)
@@ -20,25 +21,35 @@ namespace TimeTracker.Data
                     .GetResult();
 
             // Create default NodeElements (if there are none)
-            if (!dbContext.NodeElements.ToList().Any()) CreateRootNodes(dbContext);
+            //var ee = dbContext.NodeElements.Count();
+            //var gg = dbContext.NodeElements.Any();
+            //if (!dbContext.NodeElements.ToList().Any())
+            {
+                CreateRootNodes(dbContext);
+            }
         }
 
-
-        #endregion
+        #endregion Public Methods
 
         #region Seed Methods
+
         private static async Task CreateUsers(
              ApplicationDbContext dbContext,
              RoleManager<IdentityRole> roleManager,
              UserManager<ApplicationUser> userManager)
         {
-
             // local variables
-            DateTime createdDate = new DateTime(2016, 03, 01, 12, 30, 00);
+            DateTime createdDate = new DateTime(2018, 03, 01, 12, 30, 00);
             DateTime lastModifiedDate = DateTime.Now;
 
             string role_Administrator = "Administrator";
             string role_RegisteredUser = "RegisteredUser";
+
+            //To avoid exception while adding role to user must match password policy
+            string passForAdmin = "Pass4Admin";
+            string passForRyan = "Pass4User";
+            string passForSolice = "Pass4User";
+            string passForVodan = "Pass4User";
 
             //Create Roles (if they doesn't exist yet)
             if (!await roleManager.RoleExistsAsync(role_Administrator))
@@ -51,6 +62,8 @@ namespace TimeTracker.Data
                 await roleManager.CreateAsync(new
                 IdentityRole(role_RegisteredUser));
             }
+
+            dbContext.SaveChanges();
 
             // Create the "Admin" ApplicationUser account (if it doesn't exist already)
             var user_Admin = new ApplicationUser()
@@ -65,7 +78,7 @@ namespace TimeTracker.Data
             // Insert "Admin" into the Database and assign the "Administrator"     and "RegisteredUser" roles to him.
             if (await userManager.FindByNameAsync(user_Admin.UserName) == null)
             {
-                await userManager.CreateAsync(user_Admin, "Pass4Admin");
+                await userManager.CreateAsync(user_Admin, passForAdmin);
                 await userManager.AddToRoleAsync(user_Admin, role_RegisteredUser);
                 await userManager.AddToRoleAsync(user_Admin, role_Administrator);
                 // Remove Lockout and E-Mail confirmation.
@@ -105,7 +118,7 @@ namespace TimeTracker.Data
             // Insert sample registered users into the Database and also assign the "Registered" role to him.
             if (await userManager.FindByNameAsync(user_Ryan.UserName) == null)
             {
-                await userManager.CreateAsync(user_Ryan, "Pass4Ryan");
+                await userManager.CreateAsync(user_Ryan, passForRyan);
                 await userManager.AddToRoleAsync(user_Ryan,
                 role_RegisteredUser);
                 // Remove Lockout and E-Mail confirmation.
@@ -114,7 +127,7 @@ namespace TimeTracker.Data
             }
             if (await userManager.FindByNameAsync(user_Solice.UserName) == null)
             {
-                await userManager.CreateAsync(user_Solice, "Pass4Solice");
+                await userManager.CreateAsync(user_Solice, passForSolice);
                 await userManager.AddToRoleAsync(user_Solice,
                 role_RegisteredUser);
                 // Remove Lockout and E-Mail confirmation.
@@ -123,7 +136,7 @@ namespace TimeTracker.Data
             }
             if (await userManager.FindByNameAsync(user_Vodan.UserName) == null)
             {
-                await userManager.CreateAsync(user_Vodan, "Pass4Vodan");
+                await userManager.CreateAsync(user_Vodan, passForVodan);
                 await userManager.AddToRoleAsync(user_Vodan,
                 role_RegisteredUser);
                 // Remove Lockout and E-Mail confirmation.
@@ -177,10 +190,8 @@ namespace TimeTracker.Data
 
             dbContext.SaveChanges();
 #endif
-
         }
 
-
-        #endregion
+        #endregion Seed Methods
     }
 }

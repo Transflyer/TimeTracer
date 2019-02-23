@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.AspNetCore.Identity;
 using TimeTracker.Data.Models;
 
 namespace TimeTracker.Data
@@ -9,10 +8,15 @@ namespace TimeTracker.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         #region Constuctor
-        public ApplicationDbContext(DbContextOptions options) : base(options) { }
-        #endregion
+
+        public ApplicationDbContext(DbContextOptions options) : base(options)
+        {
+        }
+
+        #endregion Constuctor
 
         #region Methods
+
         protected override void OnModelCreating(ModelBuilder
             modelBuilder)
         {
@@ -31,13 +35,14 @@ namespace TimeTracker.Data
             modelBuilder.Entity<Token>().Property(i => i.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Token>().HasOne(i => i.User).WithMany(u => u.Tokens);
 
-            #region MySQL restrictions
+            #region MySQL restrictions on MySQL
 
             modelBuilder.Entity<IdentityUser>(entity => entity.Property(m => m.Id).HasMaxLength(85));
             modelBuilder.Entity<IdentityUser>(entity => entity.Property(m => m.NormalizedEmail).HasMaxLength(85));
             modelBuilder.Entity<IdentityUser>(entity => entity.Property(m => m.NormalizedUserName).HasMaxLength(85));
 
             modelBuilder.Entity<IdentityRole>(entity => entity.Property(m => m.Id).HasMaxLength(85));
+            modelBuilder.Entity<IdentityRole>(entity => entity.Property(m => m.Name).HasMaxLength(85));
             modelBuilder.Entity<IdentityRole>(entity => entity.Property(m => m.NormalizedName).HasMaxLength(85));
 
             modelBuilder.Entity<IdentityUserLogin<string>>(entity => entity.Property(m => m.LoginProvider).HasMaxLength(85));
@@ -66,17 +71,19 @@ namespace TimeTracker.Data
                     }
                 }
             }
-            #endregion
 
+            #endregion MySQL restrictions
         }
-        #endregion
 
-
+        #endregion Methods
 
         #region Properties
+
         //public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<NodeElement> NodeElements { get; set; }
+
         public DbSet<Token> Tokens { get; set; }
-        #endregion
+
+        #endregion Properties
     }
 }

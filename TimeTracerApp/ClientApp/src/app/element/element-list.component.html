@@ -1,7 +1,7 @@
-<div class="panel panel-primary {{class}}">
+<div *ngIf="elementsCount != 0" class="panel panel-primary {{class}}">
   <div class="panel-heading">
     <span class="glyphicon"></span>
-    <h4>{{title}}</h4>
+    <h4>{{title}} - {{elementsCount}}</h4>
   </div>
   <div class="panel-body">
     <ul class="list-group">

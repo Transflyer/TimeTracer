@@ -16,6 +16,7 @@ export class ElementListComponent implements OnInit {
   
   selectedNodeElement: NodeElement;
   nodeElements: NodeElement[];
+  elementsCount: number;
 
   constructor(private activetedRoute: ActivatedRoute,
     private http: HttpClient,
@@ -23,6 +24,7 @@ export class ElementListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.elementsCount = 0;
     this.updateList(this.parentId);
     this.activetedRoute.params.subscribe(params => {
       var id = params["id"];
@@ -37,6 +39,7 @@ export class ElementListComponent implements OnInit {
     this.title = "Elements list";
     this.http.get<NodeElement[]>(url).subscribe(result => {
       this.nodeElements = result;
+      this.elementsCount = result.length;
     }), error => console.error(error);
   }
 

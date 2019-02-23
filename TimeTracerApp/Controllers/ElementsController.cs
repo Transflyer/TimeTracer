@@ -1,18 +1,14 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TimeTracker.Data;
 using TimeTracker.Data.Models;
 using TimeTracker.Services;
 using TimeTracker.ViewModels;
-using System.Linq;
-using System.Threading;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
 
 namespace TimeTracker.Controllers
 {
@@ -35,7 +31,7 @@ namespace TimeTracker.Controllers
 
         // GET: api/elements/root/
         [HttpGet("root/{parentId?}")]
-        public async Task<IActionResult> GetChildElements(int? parentId)
+        public async Task<IActionResult> GetChildElements(long? parentId)
         {
             if (parentId == null) return new StatusCodeResult(500);
 
@@ -49,12 +45,12 @@ namespace TimeTracker.Controllers
                 });
             }
 
-            return new JsonResult(nodeElements.Adapt<ElementViewModel []>(), JsonSettings);
+            return new JsonResult(nodeElements.Adapt<ElementViewModel[]>(), JsonSettings);
         }
 
         // GET: api/elements/parents/
         [HttpGet("parents/{childId}")]
-        public async Task<IActionResult> GetParentElements(int? childId)
+        public async Task<IActionResult> GetParentElements(long? childId)
         {
             if (childId == null) return new StatusCodeResult(500);
 
@@ -80,9 +76,8 @@ namespace TimeTracker.Controllers
         /// <param name="id">The ID of an existing NodeElement</param>
         /// <returns>the NodeElement with the given {id}</returns>
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get([FromRoute] int id)
+        public async Task<IActionResult> Get([FromRoute] long id)
         {
-
             var nodeElement = await NodeElementRepo.GetNodeElement(id);
 
             //handle requests asking for non-existing NodeElement
@@ -96,7 +91,6 @@ namespace TimeTracker.Controllers
 
             // output the result in JSON format
             return new JsonResult(nodeElement.Adapt<ElementViewModel>(), JsonSettings);
-            
         }
 
         /// <summary>
@@ -114,7 +108,6 @@ namespace TimeTracker.Controllers
             //return the newly-created NodeElement to the client.
             return new JsonResult(nodeElement.Adapt<ElementViewModel>(),
                 JsonSettings);
-            
         }
 
         // POST: api/Elements
@@ -140,15 +133,30 @@ namespace TimeTracker.Controllers
                 JsonSettings);
         }
 
-        // DELETE: api/Elements/5
+        // DELETE: api/elements/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] long? id)
         {
-            throw new NotImplementedException();
+            if (id == null) return new StatusCodeResult(500);
+
+            var result = await NodeElementRepo.DeleteNodeElement(id);
+
+            // handle requests asking for non-existing nodeElement
+            if (result == null)
+            {
+                return NotFound(new
+                {
+                    Error = String.Format("NodeElement {0} has not been found", id)
+                });
+            }
+
+            // return an HTTP Status 200 (OK).
+            return new OkResult();
         }
 
-        #endregion
-        private bool NodeElementExists(int id)
+        #endregion RESTful conventions methods
+
+        private bool NodeElementExists(long id)
         {
             throw new NotImplementedException();
         }

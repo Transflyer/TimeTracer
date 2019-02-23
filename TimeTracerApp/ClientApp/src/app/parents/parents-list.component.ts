@@ -2,13 +2,11 @@ import { Component, Inject, Input, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
 
-
 @Component({
   selector: 'parents-list',
   templateUrl: './parents-list.component.html',
   styleUrls: ['./parents-list.component.less']
 })
-
 
 export class ParentsListComponent implements OnInit {
   @Input() childId: number;
@@ -17,12 +15,14 @@ export class ParentsListComponent implements OnInit {
 
   selectedNodeElement: NodeElement;
   nodeElements: NodeElement[];
+  elementsCount: number;
   
   constructor(private activetedRoute: ActivatedRoute,
     private http: HttpClient,
     @Inject('BASE_URL') private baseUrl: string, private router: Router) { }
 
   ngOnInit() {
+    this.elementsCount = 0
     this.updateList(this.childId);
     this.activetedRoute.params.subscribe(params => {
       var id = params["id"];
@@ -37,6 +37,7 @@ export class ParentsListComponent implements OnInit {
     this.title = "Parents list chain";
     this.http.get<NodeElement[]>(url).subscribe(result => {
       this.nodeElements = result;
+      this.elementsCount = result.length;
     }), error => console.error(error);
   }
 
