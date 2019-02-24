@@ -246,7 +246,7 @@ namespace TimeTracker.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<bool?>("Deleted");
+                    b.Property<int?>("Deleted");
 
                     b.Property<long?>("DeletedParentId");
 
@@ -278,6 +278,28 @@ namespace TimeTracker.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("NodeElements");
+                });
+
+            modelBuilder.Entity("TimeTracker.Data.Models.TimeSpent", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<long>("ElementId");
+
+                    b.Property<DateTime>("End");
+
+                    b.Property<DateTime>("LastModifiedDate");
+
+                    b.Property<DateTime>("Start");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ElementId");
+
+                    b.ToTable("TimeSpent");
                 });
 
             modelBuilder.Entity("TimeTracker.Data.Models.Token", b =>
@@ -359,6 +381,14 @@ namespace TimeTracker.Migrations
                     b.HasOne("TimeTracker.Data.Models.ApplicationUser", "User")
                         .WithMany("RootElements")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("TimeTracker.Data.Models.TimeSpent", b =>
+                {
+                    b.HasOne("TimeTracker.Data.Models.NodeElement", "NodeElement")
+                        .WithMany("TimeSpents")
+                        .HasForeignKey("ElementId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("TimeTracker.Data.Models.Token", b =>

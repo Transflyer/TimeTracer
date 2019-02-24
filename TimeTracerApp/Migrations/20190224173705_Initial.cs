@@ -197,7 +197,7 @@ namespace TimeTracker.Migrations
                     Flags = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
                     ParentId = table.Column<long>(nullable: true),
-                    Deleted = table.Column<short>(nullable: true),
+                    Deleted = table.Column<int>(nullable: true),
                     DeletedUserId = table.Column<string>(nullable: true),
                     DeletedParentId = table.Column<long>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false),
@@ -243,6 +243,29 @@ namespace TimeTracker.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TimeSpent",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("MySQL:AutoIncrement", true),
+                    ElementId = table.Column<long>(nullable: false),
+                    Start = table.Column<DateTime>(nullable: false),
+                    End = table.Column<DateTime>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeSpent", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TimeSpent_NodeElements_ElementId",
+                        column: x => x.ElementId,
+                        principalTable: "NodeElements",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -278,6 +301,11 @@ namespace TimeTracker.Migrations
                 name: "IX_NodeElements_UserId",
                 table: "NodeElements",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeSpent_ElementId",
+                table: "TimeSpent",
+                column: "ElementId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tokens_UserId",
@@ -317,13 +345,16 @@ namespace TimeTracker.Migrations
                 name: "IdentityUser");
 
             migrationBuilder.DropTable(
-                name: "NodeElements");
+                name: "TimeSpent");
 
             migrationBuilder.DropTable(
                 name: "Tokens");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "NodeElements");
 
             migrationBuilder.DropTable(
                 name: "Users");

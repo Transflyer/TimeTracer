@@ -10,7 +10,10 @@ namespace TimeTracker.Data.Models
     {
         private ApplicationDbContext context;
 
+        #region Constructor
         public NodeElementRepository(ApplicationDbContext ctx) => context = ctx;
+        #endregion
+
 
         public IQueryable<NodeElement> NodeElements => context.NodeElements;
 
@@ -83,7 +86,7 @@ namespace TimeTracker.Data.Models
                 .ToArrayAsync();
         }
 
-        public async Task<NodeElement> GetNodeElement(long id)
+        public async Task<NodeElement> GetNodeElement(long? id)
         {
             return await NodeElements.FirstOrDefaultAsync(i => i.Id == id);
         }
@@ -107,12 +110,12 @@ namespace TimeTracker.Data.Models
             return nodeElements;
         }
 
-        public NodeElement MoveChildElementToOtherParent(long childElementId, long OtherParentElementId)
+        public Task<NodeElement> MoveChildElementToOtherParent(long childElementId, long OtherParentElementId)
         {
             throw new NotImplementedException();
         }
 
-        public NodeElement RemoveChildElement(long childElementId)
+        public Task<NodeElement> RemoveChildElement(long childElementId)
         {
             throw new NotImplementedException();
         }
@@ -144,9 +147,11 @@ namespace TimeTracker.Data.Models
             return elementToUpdate;
         }
 
-        public IEnumerable<NodeElement> UserNodeElements(string userId) => context
-                                                                                    .NodeElements
+        public async Task<IEnumerable<NodeElement>> UserNodeElements(string userId)
+        {
+            return await NodeElements
             .Where(u => u.UserId == userId)
-            .ToArray();
+            .ToArrayAsync();
+        }
     }
 }

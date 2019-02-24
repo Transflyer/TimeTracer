@@ -8,6 +8,7 @@ using TimeTracker.Data.Models;
 using TimeTracker.Services;
 using TimeTracker.ViewModels;
 using Xunit;
+using System.Collections.Generic;
 
 namespace TimeTracker.Tests
 {
@@ -54,25 +55,30 @@ namespace TimeTracker.Tests
         #endregion constructor
 
         [Fact]
-        public void Can_Get()
+        public async Task Can_Get()
         {
+            //Arrange
+            var mockId = 5;
+            var mockElementToGet = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
+            mockNodeElements.Setup(repo => repo.GetNodeElement(mockId)).Returns(Task.FromResult<NodeElement>(mockElementToGet));
+
             //Act
-            var resultType = controller.Get(3);
+            var resultType = await controller.Get(mockId);
             ElementViewModel result = (resultType as JsonResult).Value as ElementViewModel;
 
             //Assert
             Assert.IsType<JsonResult>(resultType);
-            Assert.Equal("T3", result.Title);
+            Assert.Equal("T5", result.Title);
         }
 
         [Fact]
-        public void Can_Not_Get_With_Wrong_Id()
+        public async Task Can_Not_Get_With_Wrong_Id()
         {
             //Arrange
             ProjectController controller = new ProjectController(null, null, null, null, mockNodeElements.Object);
 
             //Act
-            var resultType = controller.Get(10000);
+            var resultType = await controller.Get(10000);
             JsonResult result = resultType as JsonResult;
 
             //Assert
@@ -81,14 +87,18 @@ namespace TimeTracker.Tests
         }
 
         [Fact]
-        public void Can_Get_Root_List()
+        public async Task Can_Get_Root_List()
         {
             //Arrange
             var mockUserId = "id";
             mockRequestUserProvider.Setup(provider => provider.GetUserId()).Returns(mockUserId);
+            var mockElementsToGet = mockNodeElements.Object.NodeElements.Where(u => u.UserId == mockUserId);
+            mockNodeElements.Setup(repo => repo.UserNodeElements(mockUserId))
+                .Returns(Task.FromResult<IEnumerable<NodeElement>>(mockElementsToGet));
+
 
             //Act
-            var resultType = controller.Root(5);
+            var resultType = await controller.Root(5);
             ElementViewModel[] result = (resultType as JsonResult).Value as ElementViewModel[];
 
             //Assert

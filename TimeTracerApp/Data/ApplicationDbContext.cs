@@ -30,10 +30,16 @@ namespace TimeTracker.Data
             modelBuilder.Entity<NodeElement>().Property(i => i.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<NodeElement>().HasOne(i => i.User).WithMany(u => u.RootElements);
             modelBuilder.Entity<NodeElement>().HasOne(i => i.ParentNode).WithMany(u => u.NodeElements).OnDelete(DeleteBehavior.ClientSetNull);
+            modelBuilder.Entity<NodeElement>().Property(p => p.Deleted).HasConversion<int>();
 
             modelBuilder.Entity<Token>().ToTable("Tokens");
             modelBuilder.Entity<Token>().Property(i => i.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Token>().HasOne(i => i.User).WithMany(u => u.Tokens);
+
+            modelBuilder.Entity<TimeSpent>().ToTable("TimeSpent");
+            modelBuilder.Entity<TimeSpent>().Property(i => i.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<TimeSpent>().HasOne(i => i.NodeElement).WithMany(t => t.TimeSpents);
+
 
             #region MySQL restrictions on MySQL
 
@@ -83,6 +89,8 @@ namespace TimeTracker.Data
         public DbSet<NodeElement> NodeElements { get; set; }
 
         public DbSet<Token> Tokens { get; set; }
+
+        public DbSet<TimeSpent> TimeSpents { get; set; }
 
         #endregion Properties
     }

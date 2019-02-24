@@ -10,6 +10,8 @@ using TimeTracker.Data;
 using TimeTracker.Data.Models;
 using TimeTracker.Services;
 using TimeTracker.ViewModels;
+using System.Collections.Generic;
+
 
 namespace TimeTracker.Controllers
 {
@@ -45,12 +47,11 @@ namespace TimeTracker.Controllers
         /// <param name="id">The ID of an existing NodeElement</param>
         /// <returns>the NodeElement with the given {id}</returns>
         [HttpGet("{id}")]
-        public IActionResult Get(long? id)
+        public async Task<IActionResult> Get(long? id)
         {
             if (id == null) return new StatusCodeResult(500);
 
-            var nodeElement = NodeElementRepo.NodeElements
-                .FirstOrDefault(i => i.Id == id);
+            var nodeElement = await NodeElementRepo.GetNodeElement(id);
 
             //handle requests asking for non-existing NodeElement
             if (nodeElement == null)
@@ -151,14 +152,12 @@ namespace TimeTracker.Controllers
 
         [HttpGet("root/{num:int?}")]
         [Authorize(Policy = "JwtAuthorization")]
-        public IActionResult Root(int num = 10)
+        public async Task<IActionResult> Root(int num = 10)
         {
             var userId = RequestUserProvider.GetUserId();
-            var rootElements = NodeElementRepo.NodeElements
-                .Where(e => e.UserId == userId)
+            var rootElements = (await NodeElementRepo.UserNodeElements(userId))
                 .OrderBy(q => q.Title)
-                .Take(num)
-                .ToArray();
+                .Take(num);
 
             return new JsonResult(rootElements.Adapt<ElementViewModel[]>(), JsonSettings);
         }

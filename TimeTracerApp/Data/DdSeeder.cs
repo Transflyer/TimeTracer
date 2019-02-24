@@ -21,9 +21,7 @@ namespace TimeTracker.Data
                     .GetResult();
 
             // Create default NodeElements (if there are none)
-            //var ee = dbContext.NodeElements.Count();
-            //var gg = dbContext.NodeElements.Any();
-            //if (!dbContext.NodeElements.ToList().Any())
+            if (!dbContext.NodeElements.ToList().Any())
             {
                 CreateRootNodes(dbContext);
             }

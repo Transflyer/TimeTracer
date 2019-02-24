@@ -16,16 +16,16 @@ namespace TimeTracker.Data.Models
 
         Task<IEnumerable<NodeElement>> GetChildElements(long? parentElementId);
 
-        Task<NodeElement> GetNodeElement(long id);
+        Task<NodeElement> GetNodeElement(long? id);
 
         Task<IEnumerable<NodeElement>> GetParentElements(long? childElementId);
 
-        NodeElement MoveChildElementToOtherParent(long childElementId, long OtherParentElementId);
+        Task<NodeElement> MoveChildElementToOtherParent(long childElementId, long OtherParentElementId);
 
-        NodeElement RemoveChildElement(long childElementId);
+        Task<NodeElement> RemoveChildElement(long childElementId);
 
         Task<NodeElement> UpdateNodeElement(NodeElement model);
 
-        IEnumerable<NodeElement> UserNodeElements(string userId);
+        Task<IEnumerable<NodeElement>> UserNodeElements(string userId);
     }
 }
