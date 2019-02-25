@@ -17,7 +17,7 @@ namespace TimeTracker.Data.Models
 
         public IQueryable<NodeElement> NodeElements => context.NodeElements;
 
-        public async Task<NodeElement> AddChildElement(NodeElement nodeElement, long? parentElementId)
+        public async Task<NodeElement> AddChildElementAsync(NodeElement nodeElement, long? parentElementId)
         {
             if (nodeElement == null || parentElementId == null) return null;
 
@@ -37,7 +37,7 @@ namespace TimeTracker.Data.Models
             return nodeElement;
         }
 
-        public async Task<NodeElement> AddUserNodeElement(NodeElement nodeElement, string userId)
+        public async Task<NodeElement> AddUserNodeElementAsync(NodeElement nodeElement, string userId)
         {
             //properties set from server-side
             nodeElement.CreatedDate = DateTime.UtcNow;
@@ -55,7 +55,7 @@ namespace TimeTracker.Data.Models
             return nodeElement;
         }
 
-        public async Task<NodeElement> DeleteNodeElement(long? id)
+        public async Task<NodeElement> DeleteNodeElementAsync(long? id)
         {
             if (id == null) return null;
 
@@ -77,7 +77,7 @@ namespace TimeTracker.Data.Models
             return detetedElement;
         }
 
-        public async Task<IEnumerable<NodeElement>> GetChildElements(long? parentElementId)
+        public async Task<IEnumerable<NodeElement>> GetChildElementsAsync(long? parentElementId)
         {
             if (parentElementId == null) return null;
             return await NodeElements
@@ -86,12 +86,12 @@ namespace TimeTracker.Data.Models
                 .ToArrayAsync();
         }
 
-        public async Task<NodeElement> GetNodeElement(long? id)
+        public async Task<NodeElement> GetNodeElementAsync(long? id)
         {
             return await NodeElements.FirstOrDefaultAsync(i => i.Id == id);
         }
 
-        public async Task<IEnumerable<NodeElement>> GetParentElements(long? childElementId)
+        public async Task<IEnumerable<NodeElement>> GetParentElementsAsync(long? childElementId)
         {
             List<NodeElement> nodeElements = new List<NodeElement>();
             NodeElement item = await NodeElements.FirstOrDefaultAsync(elem => elem.Id == childElementId);
@@ -110,17 +110,17 @@ namespace TimeTracker.Data.Models
             return nodeElements;
         }
 
-        public Task<NodeElement> MoveChildElementToOtherParent(long childElementId, long OtherParentElementId)
+        public Task<NodeElement> MoveChildElementToOtherParentAsync(long childElementId, long OtherParentElementId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<NodeElement> RemoveChildElement(long childElementId)
+        public Task<NodeElement> RemoveChildElementAsync(long childElementId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<NodeElement> UpdateNodeElement(NodeElement nodeElement)
+        public async Task<NodeElement> UpdateNodeElementAsync(NodeElement nodeElement)
         {
             // handle requests asking for non-existing nodeElement
             if (nodeElement == null)
@@ -128,7 +128,7 @@ namespace TimeTracker.Data.Models
                 return null;
             }
 
-            var elementToUpdate = await GetNodeElement(nodeElement.Id);
+            var elementToUpdate = await GetNodeElementAsync(nodeElement.Id);
             if (elementToUpdate == null) return null;
 
             elementToUpdate.Description = nodeElement.Description;
@@ -147,7 +147,7 @@ namespace TimeTracker.Data.Models
             return elementToUpdate;
         }
 
-        public async Task<IEnumerable<NodeElement>> UserNodeElements(string userId)
+        public async Task<IEnumerable<NodeElement>> UserNodeElementsAsync(string userId)
         {
             return await NodeElements
             .Where(u => u.UserId == userId)

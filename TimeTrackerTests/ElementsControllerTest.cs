@@ -63,7 +63,7 @@ namespace TimeTracker.Tests
             var mockElementToPut = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
             mockElementToPut.ParentId = mockParentId;
 
-            mockNodeElements.Setup(repo => repo.AddChildElement(mockElementToPut, mockElementToPut.ParentId))
+            mockNodeElements.Setup(repo => repo.AddChildElementAsync(mockElementToPut, mockElementToPut.ParentId))
                 .Returns(Task.FromResult(mockElementToPut));
 
             //Act
@@ -110,7 +110,7 @@ namespace TimeTracker.Tests
             var mockId = 5;
             var mockElementToPut = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
 
-            mockNodeElements.Setup(repo => repo.GetNodeElement(mockId))
+            mockNodeElements.Setup(repo => repo.GetNodeElementAsync(mockId))
                 .Returns(Task.FromResult(mockElementToPut));
 
             //Act
@@ -129,7 +129,7 @@ namespace TimeTracker.Tests
             var mockId = 99;
             var mockElementToPut = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
 
-            mockNodeElements.Setup(repo => repo.GetNodeElement(mockId))
+            mockNodeElements.Setup(repo => repo.GetNodeElementAsync(mockId))
                 .Returns(Task.FromResult(mockElementToPut));
 
             //Act
@@ -155,7 +155,7 @@ namespace TimeTracker.Tests
             mockArray[0] = mockElementChild1;
             mockArray[1] = mockElementChild2;
 
-            mockNodeElements.Setup(repo => repo.GetChildElements(mockId))
+            mockNodeElements.Setup(repo => repo.GetChildElementsAsync(mockId))
                 .Returns(Task.FromResult(mockArray as IEnumerable<NodeElement>));
 
             //Act
@@ -188,7 +188,7 @@ namespace TimeTracker.Tests
             //Arrange
             int mockId = 5;
             NodeElement[] nodeElements = null;
-            mockNodeElements.Setup(repo => repo.GetChildElements(mockId))
+            mockNodeElements.Setup(repo => repo.GetChildElementsAsync(mockId))
                 .Returns(Task.FromResult(nodeElements as IEnumerable<NodeElement>));
 
             //Act
@@ -211,7 +211,7 @@ namespace TimeTracker.Tests
             mockArray[0] = mockElementParent1;
             mockArray[1] = mockElementParent2;
 
-            mockNodeElements.Setup(repo => repo.GetParentElements(mockId))
+            mockNodeElements.Setup(repo => repo.GetParentElementsAsync(mockId))
                 .Returns(Task.FromResult(mockArray as IEnumerable<NodeElement>));
 
             //Act
@@ -242,7 +242,7 @@ namespace TimeTracker.Tests
             //Arrange
             int mockId = 5;
             NodeElement[] nodeElements = null;
-            mockNodeElements.Setup(repo => repo.GetParentElements(mockId))
+            mockNodeElements.Setup(repo => repo.GetParentElementsAsync(mockId))
                 .Returns(Task.FromResult(nodeElements as IEnumerable<NodeElement>));
 
             //Act
@@ -273,7 +273,7 @@ namespace TimeTracker.Tests
             //Arrange
             var mockId = 9;
             var mockDeletedElement = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
-            mockNodeElements.Setup(repo => repo.DeleteNodeElement(mockId)).Returns(Task.FromResult<NodeElement>(mockDeletedElement));
+            mockNodeElements.Setup(repo => repo.DeleteNodeElementAsync(mockId)).Returns(Task.FromResult<NodeElement>(mockDeletedElement));
 
             //Act
             var result = await controller.Delete(mockId);

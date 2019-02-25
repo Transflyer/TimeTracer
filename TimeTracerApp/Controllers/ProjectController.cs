@@ -51,7 +51,7 @@ namespace TimeTracker.Controllers
         {
             if (id == null) return new StatusCodeResult(500);
 
-            var nodeElement = await NodeElementRepo.GetNodeElement(id);
+            var nodeElement = await NodeElementRepo.GetNodeElementAsync(id);
 
             //handle requests asking for non-existing NodeElement
             if (nodeElement == null)
@@ -80,7 +80,7 @@ namespace TimeTracker.Controllers
 
             var userId = RequestUserProvider.GetUserId();
 
-            var element = await NodeElementRepo.AddUserNodeElement(model, userId);
+            var element = await NodeElementRepo.AddUserNodeElementAsync(model, userId);
             //return the newly-created NodeElement to the client.
             return new JsonResult(element.Adapt<ElementViewModel>(),
                 JsonSettings);
@@ -100,7 +100,7 @@ namespace TimeTracker.Controllers
 
             model.UserId = RequestUserProvider.GetUserId();
 
-            var nodeElement = await NodeElementRepo.UpdateNodeElement(model);
+            var nodeElement = await NodeElementRepo.UpdateNodeElementAsync(model);
 
             if (nodeElement == null)
             {
@@ -125,7 +125,7 @@ namespace TimeTracker.Controllers
         {
             if (id == null) return new StatusCodeResult(500);
 
-            var result = await NodeElementRepo.DeleteNodeElement(id);
+            var result = await NodeElementRepo.DeleteNodeElementAsync(id);
 
             // handle requests asking for non-existing nodeElement
             if (result == null)
@@ -155,7 +155,7 @@ namespace TimeTracker.Controllers
         public async Task<IActionResult> Root(int num = 10)
         {
             var userId = RequestUserProvider.GetUserId();
-            var rootElements = (await NodeElementRepo.UserNodeElements(userId))
+            var rootElements = (await NodeElementRepo.UserNodeElementsAsync(userId))
                 .OrderBy(q => q.Title)
                 .Take(num);
 

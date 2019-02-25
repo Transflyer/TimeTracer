@@ -35,7 +35,7 @@ namespace TimeTracker.Controllers
         {
             if (parentId == null) return new StatusCodeResult(500);
 
-            var nodeElements = await NodeElementRepo.GetChildElements(parentId);
+            var nodeElements = await NodeElementRepo.GetChildElementsAsync(parentId);
 
             if (nodeElements == null)
             {
@@ -54,7 +54,7 @@ namespace TimeTracker.Controllers
         {
             if (childId == null) return new StatusCodeResult(500);
 
-            var nodeElements = await NodeElementRepo.GetParentElements(childId);
+            var nodeElements = await NodeElementRepo.GetParentElementsAsync(childId);
 
             if (nodeElements == null)
             {
@@ -78,7 +78,7 @@ namespace TimeTracker.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] long id)
         {
-            var nodeElement = await NodeElementRepo.GetNodeElement(id);
+            var nodeElement = await NodeElementRepo.GetNodeElementAsync(id);
 
             //handle requests asking for non-existing NodeElement
             if (nodeElement == null)
@@ -103,7 +103,7 @@ namespace TimeTracker.Controllers
             if (model == null) return new StatusCodeResult(500);
             if (model.ParentId == null) return new StatusCodeResult(500);
 
-            var nodeElement = await NodeElementRepo.AddChildElement(model, model.ParentId);
+            var nodeElement = await NodeElementRepo.AddChildElementAsync(model, model.ParentId);
 
             //return the newly-created NodeElement to the client.
             return new JsonResult(nodeElement.Adapt<ElementViewModel>(),
@@ -118,7 +118,7 @@ namespace TimeTracker.Controllers
             // if the client payload is invalid.
             if (model == null) return new StatusCodeResult(500);
 
-            var nodeElement = await NodeElementRepo.UpdateNodeElement(model);
+            var nodeElement = await NodeElementRepo.UpdateNodeElementAsync(model);
 
             if (nodeElement == null)
             {
@@ -139,7 +139,7 @@ namespace TimeTracker.Controllers
         {
             if (id == null) return new StatusCodeResult(500);
 
-            var result = await NodeElementRepo.DeleteNodeElement(id);
+            var result = await NodeElementRepo.DeleteNodeElementAsync(id);
 
             // handle requests asking for non-existing nodeElement
             if (result == null)

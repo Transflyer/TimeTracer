@@ -8,24 +8,24 @@ namespace TimeTracker.Data.Models
     {
         IQueryable<NodeElement> NodeElements { get; }
 
-        Task<NodeElement> AddChildElement(NodeElement nodeElement, long? parentElementId);
+        Task<NodeElement> AddChildElementAsync(NodeElement nodeElement, long? parentElementId);
 
-        Task<NodeElement> AddUserNodeElement(NodeElement nodeElement, string userId);
+        Task<NodeElement> AddUserNodeElementAsync(NodeElement nodeElement, string userId);
 
-        Task<NodeElement> DeleteNodeElement(long? id);
+        Task<NodeElement> DeleteNodeElementAsync(long? id);
 
-        Task<IEnumerable<NodeElement>> GetChildElements(long? parentElementId);
+        Task<IEnumerable<NodeElement>> GetChildElementsAsync(long? parentElementId);
 
-        Task<NodeElement> GetNodeElement(long? id);
+        Task<NodeElement> GetNodeElementAsync(long? id);
 
-        Task<IEnumerable<NodeElement>> GetParentElements(long? childElementId);
+        Task<IEnumerable<NodeElement>> GetParentElementsAsync(long? childElementId);
 
-        Task<NodeElement> MoveChildElementToOtherParent(long childElementId, long OtherParentElementId);
+        Task<NodeElement> MoveChildElementToOtherParentAsync(long childElementId, long OtherParentElementId);
 
-        Task<NodeElement> RemoveChildElement(long childElementId);
+        Task<NodeElement> RemoveChildElementAsync(long childElementId);
 
-        Task<NodeElement> UpdateNodeElement(NodeElement model);
+        Task<NodeElement> UpdateNodeElementAsync(NodeElement model);
 
-        Task<IEnumerable<NodeElement>> UserNodeElements(string userId);
+        Task<IEnumerable<NodeElement>> UserNodeElementsAsync(string userId);
     }
 }

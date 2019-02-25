@@ -60,7 +60,7 @@ namespace TimeTracker.Tests
             //Arrange
             var mockId = 5;
             var mockElementToGet = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
-            mockNodeElements.Setup(repo => repo.GetNodeElement(mockId)).Returns(Task.FromResult<NodeElement>(mockElementToGet));
+            mockNodeElements.Setup(repo => repo.GetNodeElementAsync(mockId)).Returns(Task.FromResult<NodeElement>(mockElementToGet));
 
             //Act
             var resultType = await controller.Get(mockId);
@@ -93,7 +93,7 @@ namespace TimeTracker.Tests
             var mockUserId = "id";
             mockRequestUserProvider.Setup(provider => provider.GetUserId()).Returns(mockUserId);
             var mockElementsToGet = mockNodeElements.Object.NodeElements.Where(u => u.UserId == mockUserId);
-            mockNodeElements.Setup(repo => repo.UserNodeElements(mockUserId))
+            mockNodeElements.Setup(repo => repo.UserNodeElementsAsync(mockUserId))
                 .Returns(Task.FromResult<IEnumerable<NodeElement>>(mockElementsToGet));
 
 
@@ -139,7 +139,7 @@ namespace TimeTracker.Tests
             //Arrange
             var mockId = 9;
             var mockDeletedElement = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
-            mockNodeElements.Setup(repo => repo.DeleteNodeElement(mockId)).Returns(Task.FromResult<NodeElement>(mockDeletedElement));
+            mockNodeElements.Setup(repo => repo.DeleteNodeElementAsync(mockId)).Returns(Task.FromResult<NodeElement>(mockDeletedElement));
 
             //Act
             var result = await controller.Delete(mockId);
@@ -157,7 +157,7 @@ namespace TimeTracker.Tests
             mockRequestUserProvider.Setup(provider => provider.GetUserId()).Returns(mockUserId);
             var mockElementToPut = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
 
-            mockNodeElements.Setup(repo => repo.AddUserNodeElement(mockElementToPut, mockElementToPut.UserId))
+            mockNodeElements.Setup(repo => repo.AddUserNodeElementAsync(mockElementToPut, mockElementToPut.UserId))
                 .Returns(Task.FromResult<NodeElement>(mockElementToPut));
 
             //Act
@@ -200,7 +200,7 @@ namespace TimeTracker.Tests
             var mockId = 5;
             var mockElementToPut = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
 
-            mockNodeElements.Setup(repo => repo.UpdateNodeElement(mockElementToPut))
+            mockNodeElements.Setup(repo => repo.UpdateNodeElementAsync(mockElementToPut))
                 .Returns(Task.FromResult(mockElementToPut));
 
             //Act
@@ -221,7 +221,7 @@ namespace TimeTracker.Tests
             var mockElementToPost = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
             mockElementToPost.Id = mockWrongID;
             var mockEnementNotFound = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockWrongID);
-            mockNodeElements.Setup(repo => repo.UpdateNodeElement(mockElementToPost))
+            mockNodeElements.Setup(repo => repo.UpdateNodeElementAsync(mockElementToPost))
                 .Returns(Task.FromResult(mockEnementNotFound));
 
             //Act
