@@ -14,7 +14,7 @@ namespace TimeTracker.ViewModels
         #endregion
 
         #region Properties
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Text { get; set; }
@@ -22,7 +22,7 @@ namespace TimeTracker.ViewModels
         public int Type { get; set; }
         public int Flags { get; set; }
         public string UserId { get; set; }
-        public int ParentId { get; set; }
+        public long ParentId { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
         #endregion

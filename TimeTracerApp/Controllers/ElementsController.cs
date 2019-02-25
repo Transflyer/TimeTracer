@@ -17,18 +17,23 @@ namespace TimeTracker.Controllers
     [Authorize(Policy = "JwtAuthorization")]
     public class ElementsController : BaseApiController
     {
+        #region Properties
         private readonly INodeElementRepository NodeElementRepo;
+        #endregion
 
+        #region Constructor
         public ElementsController(ApplicationDbContext context,
-            RoleManager<IdentityRole> roleManager,
-            IRequestUserProvider requstUserProvider,
-            IConfiguration configuration,
-            INodeElementRepository elementRepo)
-            : base(context, roleManager, requstUserProvider, configuration)
+           RoleManager<IdentityRole> roleManager,
+           IRequestUserProvider requstUserProvider,
+           IConfiguration configuration,
+           INodeElementRepository elementRepo)
+           : base(context, roleManager, requstUserProvider, configuration)
         {
             NodeElementRepo = elementRepo;
         }
+        #endregion
 
+        #region  Attribute-based routing methods
         // GET: api/elements/root/
         [HttpGet("root/{parentId?}")]
         public async Task<IActionResult> GetChildElements(long? parentId)
@@ -66,11 +71,12 @@ namespace TimeTracker.Controllers
 
             return new JsonResult(nodeElements.Adapt<ElementViewModel[]>(), JsonSettings);
         }
+        #endregion
 
         #region RESTful conventions methods
 
         /// <summary>
-        /// GET: api/elements/{}id
+        /// GET: api/elements/{id}
         /// Retrieves the NodeElement with the given {id}
         /// </summary>
         /// <param name="id">The ID of an existing NodeElement</param>

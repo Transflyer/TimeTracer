@@ -35,6 +35,10 @@ namespace TimeTracker.Data.Models
 
         [Required]
         public DateTime LastModifiedDate { get; set; }
+
+        [Required]
+        public bool IsOpen { get; set; }
+        
         #endregion
 
         #region Lazy-Load Properties
