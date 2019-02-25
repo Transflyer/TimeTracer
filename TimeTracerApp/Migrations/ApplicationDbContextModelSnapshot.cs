@@ -291,7 +291,11 @@ namespace TimeTracker.Migrations
 
                     b.Property<DateTime>("End");
 
+                    b.Property<int>("IsOpen");
+
                     b.Property<DateTime>("LastModifiedDate");
+
+                    b.Property<TimeSpan?>("Span");
 
                     b.Property<DateTime>("Start");
 

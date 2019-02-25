@@ -38,6 +38,8 @@ namespace TimeTracker.Data.Models
 
         [Required]
         public bool IsOpen { get; set; }
+
+        public TimeSpan? Span { get; set; }
         
         #endregion
 

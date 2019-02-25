@@ -9,7 +9,7 @@ using TimeTracker.Data;
 namespace TimeTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190224173705_Initial")]
+    [Migration("20190225182726_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -293,7 +293,11 @@ namespace TimeTracker.Migrations
 
                     b.Property<DateTime>("End");
 
+                    b.Property<int>("IsOpen");
+
                     b.Property<DateTime>("LastModifiedDate");
+
+                    b.Property<TimeSpan?>("Span");
 
                     b.Property<DateTime>("Start");
 

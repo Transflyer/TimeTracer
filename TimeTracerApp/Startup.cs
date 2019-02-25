@@ -91,6 +91,7 @@ namespace TimeTracker
             });
 
             services.AddTransient<INodeElementRepository, NodeElementRepository>();
+            services.AddTransient<ITimeSpentRepository, TimeSpentRepository>();
             services.AddTransient<IRequestUserProvider, RequestUserProvider>();
 
         }

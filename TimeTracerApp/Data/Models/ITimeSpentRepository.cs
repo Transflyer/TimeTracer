@@ -14,6 +14,7 @@ namespace TimeTracker.Data.Models
         Task<TimeSpent> SetStartAsync(long? id, DateTime start);
         Task<TimeSpent> SetEndAsync(long id);
         Task<IEnumerable<TimeSpent>> GetElementTimeSpentsAsync(long? elementId, DateTime? from = null, DateTime? to = null);
+        Task<TimeSpent> GetElementOpenTimeSpentAsync(long? elementId);
        
     }
 }

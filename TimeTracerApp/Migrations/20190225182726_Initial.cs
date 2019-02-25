@@ -253,7 +253,9 @@ namespace TimeTracker.Migrations
                     Start = table.Column<DateTime>(nullable: false),
                     End = table.Column<DateTime>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(nullable: false)
+                    LastModifiedDate = table.Column<DateTime>(nullable: false),
+                    IsOpen = table.Column<int>(nullable: false),
+                    Span = table.Column<TimeSpan>(nullable: true)
                 },
                 constraints: table =>
                 {

@@ -7,6 +7,12 @@
     <div class="element-form-image">
       <img src="https://lorempixel.com/150/150/?random={{nodeElement.Id}}"
            alt="{{nodeElement.Title}}" class="img-circle" />
+      <input type="button" value="Start"
+             (click)="onStart()"
+             class="btn btn-sm btn-danger" />
+      <input type="button" value="Stop"
+             (click)="onStop()"
+             class="btn btn-sm btn-danger" />
     </div>
     <div class="element-form-info-block">
       <div class="element-form-heading">

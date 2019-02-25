@@ -2,6 +2,7 @@ import { Component, Input, Inject, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { AuthService } from '../service/auth.service';
+import { error } from "protractor";
 
 @Component({
   selector: 'element',
@@ -69,5 +70,24 @@ export class ElementComponent implements OnInit {
           this.router.navigate(["projects"]);
         }, error => console.log(error));
     }
+  }
+
+  onStart() {
+    var url = this.baseUrl + "api/timespent/" + this.nodeElement.Id;
+    this.http.
+      put(url, null).subscribe(result => {
+        console.log("TimeSpents for " + this.nodeElement.Id + " has been created.");
+        var tt = result;
+      }, error => console.error(error));
+  }
+
+  onStop()
+  {
+    var url = this.baseUrl + "api/timespent/end/element/" + this.nodeElement.Id;
+    this.http.
+      post(url, null).subscribe(result => {
+        console.log("End timing element" + this.nodeElement.Id + " has been set.");
+        var tt = result;
+      }, error => console.error(error));
   }
 }

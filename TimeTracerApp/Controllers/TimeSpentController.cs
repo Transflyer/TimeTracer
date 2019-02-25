@@ -32,7 +32,7 @@ namespace TimeTracker.Controllers
             IConfiguration configuration,
             ITimeSpentRepository timerepo,
             INodeElementRepository noderepo)
-            :base(context, roleManager, requstUserProvider, configuration)
+            : base(context, roleManager, requstUserProvider, configuration)
         {
             TimeSpentRepo = timerepo;
             NodeElementRepo = noderepo;
@@ -45,7 +45,7 @@ namespace TimeTracker.Controllers
         /// </summary>
         /// <param name="id">The Id of NodeElement which own TimeSpents </param>
         /// <returns>Array of timespents</returns>
-        [HttpGet("element/{id}")]
+        [HttpGet("element/{id?}")]
         public async Task<IActionResult> GetElementTimeSpents(long? id)
         {
             var result = await TimeSpentRepo.GetElementTimeSpentsAsync(id);
@@ -77,10 +77,10 @@ namespace TimeTracker.Controllers
                 });
             }
 
-            var result = await TimeSpentRepo.SetEndAsync(nodeElement.Id);
+            var timeSpentItem = await TimeSpentRepo.GetElementOpenTimeSpentAsync(nodeElement.Id);
 
             //handle requests asking for non-existing NodeElement
-            if (result == null)
+            if (timeSpentItem == null)
             {
                 return NotFound(new
                 {
@@ -88,12 +88,14 @@ namespace TimeTracker.Controllers
                 });
             }
 
+            var result = await TimeSpentRepo.SetEndAsync(timeSpentItem.Id);
+
             return new JsonResult(result.Adapt<TimeSpentViewModel>(), JsonSettings);
 
         }
 
-        [HttpPost("start/element/{elementId}{start}")]
-        public async Task<IActionResult> SetStart (long? elementId, DateTime start)
+        [HttpPost("start/element/{elementId}/{start}")]
+        public async Task<IActionResult> SetStart(long? elementId, DateTime start)
         {
             if (elementId == null) return new StatusCodeResult(500);
             var nodeElement = await NodeElementRepo.GetNodeElementAsync(elementId);
@@ -154,7 +156,7 @@ namespace TimeTracker.Controllers
         /// <param name="id">The ID of an existing TimeSpent</param>
         /// <returns>he NodeElement with the given {id}</returns>
         [HttpGet("{id}")]
-        public async Task <IActionResult> Get(long? id)
+        public async Task<IActionResult> Get(long? id)
         {
             if (id == null) return new StatusCodeResult(500);
 
@@ -183,12 +185,12 @@ namespace TimeTracker.Controllers
             return new JsonResult(result.Adapt<TimeSpentViewModel>());
         }
 
-        // PUT: api/TimeSpent/5
-        [HttpPut]
-        public async Task<IActionResult> Put([FromBody] long? elementId)
+        // PUT: api/timespent/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(long? id)
         {
-            if (elementId == null) return new StatusCodeResult(500);
-            var result = await TimeSpentRepo.CreateTimeSpentAsync((long)elementId);
+            if (id == null) return new StatusCodeResult(500);
+            var result = await TimeSpentRepo.CreateTimeSpentAsync((long)id);
             return new JsonResult(result.Adapt<TimeSpentViewModel>(), JsonSettings);
         }
         #endregion
