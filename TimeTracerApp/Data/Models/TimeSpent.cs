@@ -39,7 +39,9 @@ namespace TimeTracker.Data.Models
         [Required]
         public bool IsOpen { get; set; }
 
-        public TimeSpan? Span { get; set; }
+        public long? TotalSecond { get; set; }
+
+        public string UserId { get; set; }
         
         #endregion
 

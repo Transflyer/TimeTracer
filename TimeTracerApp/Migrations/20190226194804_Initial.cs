@@ -255,7 +255,8 @@ namespace TimeTracker.Migrations
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     LastModifiedDate = table.Column<DateTime>(nullable: false),
                     IsOpen = table.Column<int>(nullable: false),
-                    Span = table.Column<TimeSpan>(nullable: true)
+                    TotalSecond = table.Column<long>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -308,6 +309,31 @@ namespace TimeTracker.Migrations
                 name: "IX_TimeSpent_ElementId",
                 table: "TimeSpent",
                 column: "ElementId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeSpent_End",
+                table: "TimeSpent",
+                column: "End");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeSpent_IsOpen",
+                table: "TimeSpent",
+                column: "IsOpen");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeSpent_Start",
+                table: "TimeSpent",
+                column: "Start");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeSpent_UserId",
+                table: "TimeSpent",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tokens_ClientId",
+                table: "Tokens",
+                column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tokens_UserId",

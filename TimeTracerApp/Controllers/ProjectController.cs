@@ -19,7 +19,6 @@ namespace TimeTracker.Controllers
     public class ProjectController : BaseApiController
     {
         #region Constructor
-
         public ProjectController(ApplicationDbContext context,
             RoleManager<IdentityRole> roleManager,
             IRequestUserProvider requstUserProvider,
@@ -80,7 +79,7 @@ namespace TimeTracker.Controllers
 
             var userId = RequestUserProvider.GetUserId();
 
-            var element = await NodeElementRepo.AddUserNodeElementAsync(model, userId);
+            var element = await NodeElementRepo.CreateUserNodeElementAsync(model, userId);
             //return the newly-created NodeElement to the client.
             return new JsonResult(element.Adapt<ElementViewModel>(),
                 JsonSettings);
@@ -156,6 +155,7 @@ namespace TimeTracker.Controllers
         {
             var userId = RequestUserProvider.GetUserId();
             var rootElements = (await NodeElementRepo.UserNodeElementsAsync(userId))
+                .Where(p=>p.ParentId == null)
                 .OrderBy(q => q.Title)
                 .Take(num);
 

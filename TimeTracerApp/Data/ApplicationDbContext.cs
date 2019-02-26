@@ -31,14 +31,23 @@ namespace TimeTracker.Data
             modelBuilder.Entity<NodeElement>().HasOne(i => i.User).WithMany(u => u.RootElements);
             modelBuilder.Entity<NodeElement>().HasOne(i => i.ParentNode).WithMany(u => u.NodeElements).OnDelete(DeleteBehavior.ClientSetNull);
             modelBuilder.Entity<NodeElement>().Property(p => p.Deleted).HasConversion<int>();
+            modelBuilder.Entity<NodeElement>().HasIndex(p => p.UserId);
+            modelBuilder.Entity<NodeElement>().HasIndex(p => p.ParentId);
 
             modelBuilder.Entity<Token>().ToTable("Tokens");
             modelBuilder.Entity<Token>().Property(i => i.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Token>().HasOne(i => i.User).WithMany(u => u.Tokens);
+            modelBuilder.Entity<Token>().HasIndex(p => p.ClientId);
+            modelBuilder.Entity<Token>().HasIndex(p => p.UserId);
 
             modelBuilder.Entity<TimeSpent>().ToTable("TimeSpent");
             modelBuilder.Entity<TimeSpent>().Property(i => i.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<TimeSpent>().HasOne(i => i.NodeElement).WithMany(t => t.TimeSpents);
+            modelBuilder.Entity<TimeSpent>().HasIndex(p => p.UserId);
+            modelBuilder.Entity<TimeSpent>().HasIndex(p => p.ElementId);
+            modelBuilder.Entity<TimeSpent>().HasIndex(p => p.IsOpen);
+            modelBuilder.Entity<TimeSpent>().HasIndex(p => p.Start);
+            modelBuilder.Entity<TimeSpent>().HasIndex(p => p.End);
 
 
             #region MySQL restrictions on MySQL

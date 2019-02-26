@@ -24,17 +24,20 @@ namespace TimeTracker.Data.Models
             if (element == null) return null;
 
             //Only one TimeSpent must be with property IsOpen == true, 
-            //thus we need set every existing TimeSpents property IsOpen to false
+            //thus we need set every existing TimeSpents property IsOpen to false regarding Current User
             var IsElementHasOpenedTimeSpents = TimeSpents
-                .Where(o => o.IsOpen == true && o.ElementId == element.Id).ToArray();
+                .Where(o => o.IsOpen == true && o.UserId == element.UserId).ToArray();
 
             if (IsElementHasOpenedTimeSpents.Count() != 0)
             {
                 foreach(var item in IsElementHasOpenedTimeSpents)
                 {
                     item.IsOpen = false;
+                    item.End = DateTime.UtcNow;
+                    item.TotalSecond = Convert.ToInt64((item.End - item.Start).TotalSeconds);
                 }
                 context.TimeSpents.UpdateRange(IsElementHasOpenedTimeSpents);
+                await context.SaveChangesAsync();
             }
 
             var CreatedDate = DateTime.UtcNow;
@@ -45,8 +48,9 @@ namespace TimeTracker.Data.Models
                 LastModifiedDate = CreatedDate,
                 Start = CreatedDate,
                 End = CreatedDate,
-                Span = CreatedDate - CreatedDate,
-                IsOpen = true
+                TotalSecond = 0,
+                IsOpen = true,
+                UserId = element.UserId
             };
             timeSpent.ElementId = elementId;
 
@@ -61,6 +65,7 @@ namespace TimeTracker.Data.Models
             var item = await TimeSpents.FirstOrDefaultAsync(i => i.Id == id);
             if (item == null) return null;
             item.ElementId = 0;
+            item.UserId = "";
             
             await context.SaveChangesAsync();
             return item;
@@ -92,12 +97,24 @@ namespace TimeTracker.Data.Models
             return null;
         }
 
+        public async Task<long?> GetTimeSpanOnElement(long? elementId)
+        {
+            if (elementId == null) return 0;
+            long? timeSpan = 0;
+            var result = await GetElementTimeSpentsAsync(elementId);
+            foreach(var item in result)
+            {
+                timeSpan += item.TotalSecond;
+            }
+            return timeSpan;
+        }
+
         public async Task<TimeSpent> SetEndAsync(long id)
         {
             var result = await TimeSpents.FirstOrDefaultAsync(e => e.Id == id);
             if (result == null) return null;
             result.End = DateTime.UtcNow;
-            result.Span = result.End - result.Start;
+            result.TotalSecond = Convert.ToInt64((result.End - result.Start).TotalSeconds);
             result.IsOpen = false;
             result.LastModifiedDate = DateTime.UtcNow;
             await context.SaveChangesAsync();
@@ -125,6 +142,7 @@ namespace TimeTracker.Data.Models
             updatedItem.LastModifiedDate = DateTime.UtcNow;
             updatedItem.Start = timeSpent.Start;
             updatedItem.IsOpen = timeSpent.IsOpen;
+            updatedItem.UserId = timeSpent.UserId;
 
             await context.SaveChangesAsync();
             return updatedItem;

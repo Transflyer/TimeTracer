@@ -12,6 +12,7 @@ import { error } from "protractor";
 
 export class ElementComponent implements OnInit {
   nodeElement: NodeElement;
+  elementTimeSpan: TimeSpanElement;
   parentId: number;
   currentId: number;
 
@@ -49,6 +50,11 @@ export class ElementComponent implements OnInit {
     var url = this.baseUrl + "api/elements/" + id;
     this.http.get<NodeElement>(url).subscribe(result => {
       this.nodeElement = result;
+    }, error => console.error(error));
+
+    url = this.baseUrl + "api/timespent/element/" + id;
+    this.http.get<TimeSpanElement>(url).subscribe(result => {
+      this.elementTimeSpan = result;
     }, error => console.error(error));
   }
 

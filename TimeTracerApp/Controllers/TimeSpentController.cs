@@ -46,9 +46,9 @@ namespace TimeTracker.Controllers
         /// <param name="id">The Id of NodeElement which own TimeSpents </param>
         /// <returns>Array of timespents</returns>
         [HttpGet("element/{id?}")]
-        public async Task<IActionResult> GetElementTimeSpents(long? id)
+        public async Task<IActionResult> GetElementTimeSpan(long? id)
         {
-            var result = await TimeSpentRepo.GetElementTimeSpentsAsync(id);
+            var result = await TimeSpentRepo.GetTimeSpanOnElement(id);
 
             //handle requests asking for non-existing TimeSpents on NodeElement
             if (result == null)
@@ -59,7 +59,12 @@ namespace TimeTracker.Controllers
                 });
             }
 
-            return new JsonResult(result.Adapt<IEnumerable<TimeSpent>>(), JsonSettings);
+            TimeSpanViewModel viewModel = new TimeSpanViewModel()
+            {
+                ElementId = (long)id,
+                ElementTimeSpan = result == null ? TimeSpan.Zero : TimeSpan.FromSeconds((long)result)
+            };
+            return new JsonResult(viewModel, JsonSettings);
         }
 
         [HttpPost("end/element/{elementId}")]

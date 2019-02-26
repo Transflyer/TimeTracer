@@ -20,6 +20,7 @@ namespace TimeTracker.Data.Models
         public async Task<NodeElement> AddChildElementAsync(NodeElement nodeElement, long? parentElementId)
         {
             if (nodeElement == null || parentElementId == null) return null;
+            var parent = await NodeElements.FirstOrDefaultAsync(r => r.Id == (long)parentElementId);
 
             //properties set from server-side
             nodeElement.CreatedDate = DateTime.UtcNow;
@@ -27,6 +28,7 @@ namespace TimeTracker.Data.Models
 
             // Set a parent element
             nodeElement.ParentId = parentElementId;
+            nodeElement.UserId = parent.UserId;
 
             //add new nodeElement
             context.NodeElements.Add(nodeElement);
@@ -37,7 +39,7 @@ namespace TimeTracker.Data.Models
             return nodeElement;
         }
 
-        public async Task<NodeElement> AddUserNodeElementAsync(NodeElement nodeElement, string userId)
+        public async Task<NodeElement> CreateUserNodeElementAsync(NodeElement nodeElement, string userId)
         {
             //properties set from server-side
             nodeElement.CreatedDate = DateTime.UtcNow;

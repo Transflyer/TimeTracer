@@ -10,7 +10,7 @@ namespace TimeTracker.Data.Models
 
         Task<NodeElement> AddChildElementAsync(NodeElement nodeElement, long? parentElementId);
 
-        Task<NodeElement> AddUserNodeElementAsync(NodeElement nodeElement, string userId);
+        Task<NodeElement> CreateUserNodeElementAsync(NodeElement nodeElement, string userId);
 
         Task<NodeElement> DeleteNodeElementAsync(long? id);
 

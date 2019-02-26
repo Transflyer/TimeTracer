@@ -295,13 +295,23 @@ namespace TimeTracker.Migrations
 
                     b.Property<DateTime>("LastModifiedDate");
 
-                    b.Property<TimeSpan?>("Span");
-
                     b.Property<DateTime>("Start");
+
+                    b.Property<long?>("TotalSecond");
+
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ElementId");
+
+                    b.HasIndex("End");
+
+                    b.HasIndex("IsOpen");
+
+                    b.HasIndex("Start");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("TimeSpent");
                 });
@@ -325,6 +335,8 @@ namespace TimeTracker.Migrations
                         .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
 
                     b.HasIndex("UserId");
 

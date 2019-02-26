@@ -157,7 +157,7 @@ namespace TimeTracker.Tests
             mockRequestUserProvider.Setup(provider => provider.GetUserId()).Returns(mockUserId);
             var mockElementToPut = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
 
-            mockNodeElements.Setup(repo => repo.AddUserNodeElementAsync(mockElementToPut, mockElementToPut.UserId))
+            mockNodeElements.Setup(repo => repo.CreateUserNodeElementAsync(mockElementToPut, mockElementToPut.UserId))
                 .Returns(Task.FromResult<NodeElement>(mockElementToPut));
 
             //Act
