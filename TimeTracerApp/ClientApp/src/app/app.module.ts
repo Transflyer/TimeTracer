@@ -26,6 +26,7 @@ import { AboutComponent } from './about/about.component';
 
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 import { ParentsListComponent } from './parents/parents-list.component';
+import { StopwatchComponent } from './stopwatch/stopwatch.component';
 
 
 
@@ -46,7 +47,8 @@ import { ParentsListComponent } from './parents/parents-list.component';
     ElementComponent,
     ElementEditComponent,
     ElementListComponent,
-    ParentsListComponent
+    ParentsListComponent,
+    StopwatchComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

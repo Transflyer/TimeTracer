@@ -8,11 +8,17 @@ namespace TimeTracker.Data.Models
 {
     public class TimeSpentRepository : ITimeSpentRepository
     {
-        private ApplicationDbContext context;
+        private readonly ApplicationDbContext context;
+        private readonly INodeElementRepository nodeElementRepo;
 
         #region Constructor
 
-        public TimeSpentRepository(ApplicationDbContext ctx) => context = ctx;
+        public TimeSpentRepository(ApplicationDbContext ctx,
+            INodeElementRepository repo)
+        {
+            context = ctx;
+            nodeElementRepo = repo;
+        }
 
         #endregion Constructor
 
@@ -20,7 +26,7 @@ namespace TimeTracker.Data.Models
 
         public async Task<TimeSpent> CreateTimeSpentAsync(long elementId)
         {
-            var element = await context.NodeElements.FirstOrDefaultAsync(i => i.Id == elementId);
+            var element = await nodeElementRepo.GetNodeElementAsync(elementId);
             if (element == null) return null;
 
             //Only one TimeSpent must be with property IsOpen == true, 
@@ -71,7 +77,7 @@ namespace TimeTracker.Data.Models
             return item;
         }
 
-        public async Task<TimeSpent> GetElementOpenTimeSpentAsync(long? elementId) => 
+        public async Task<TimeSpent> GetOpenTimeSpentAsync(long? elementId) => 
             await TimeSpents.FirstOrDefaultAsync(e => e.ElementId == elementId && e.IsOpen == true);
 
         public async Task<IEnumerable<TimeSpent>> GetElementTimeSpentsAsync(long? elementId, DateTime? from = null, DateTime? to = null)
@@ -97,21 +103,29 @@ namespace TimeTracker.Data.Models
             return null;
         }
 
-        public async Task<long?> GetTimeSpanOnElement(long? elementId)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="elementId"></param>
+        /// <returns>Tuple Item1 is total time span on element; Item2 id of open timespent if exist</returns>
+        public async Task<(long?, long?)> GetTimeSpanOnElement(long? elementId)
         {
-            if (elementId == null) return 0;
-            long? timeSpan = 0;
+            if (elementId == null) return (null, null);
+
+            long? timeSpan = null;
+            long? openTimeSpentId = null;
             var result = await GetElementTimeSpentsAsync(elementId);
             foreach(var item in result)
             {
                 timeSpan += item.TotalSecond;
+                if (item.IsOpen == true) openTimeSpentId = item.Id;
             }
-            return timeSpan;
+            return (timeSpan, openTimeSpentId);
         }
 
         public async Task<TimeSpent> SetEndAsync(long id)
         {
-            var result = await TimeSpents.FirstOrDefaultAsync(e => e.Id == id);
+            var result = await context.TimeSpents.FindAsync(id);
             if (result == null) return null;
             result.End = DateTime.UtcNow;
             result.TotalSecond = Convert.ToInt64((result.End - result.Start).TotalSeconds);
@@ -146,6 +160,17 @@ namespace TimeTracker.Data.Models
 
             await context.SaveChangesAsync();
             return updatedItem;
+        }
+
+        public async Task<TimeSpent> UpdateEndAsync(long id)
+        {
+            var result = await context.TimeSpents.FindAsync(id);
+            if (result == null) return null;
+            result.End = DateTime.UtcNow;
+            result.TotalSecond = Convert.ToInt64((result.End - result.Start).TotalSeconds);
+            result.LastModifiedDate = DateTime.UtcNow;
+            await context.SaveChangesAsync();
+            return result;
         }
     }
 }

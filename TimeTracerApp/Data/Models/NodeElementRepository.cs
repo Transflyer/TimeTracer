@@ -62,7 +62,7 @@ namespace TimeTracker.Data.Models
             if (id == null) return null;
 
             // retrieve the nodeElement
-            var detetedElement = context.NodeElements.Where(i => i.Id == id).FirstOrDefault();
+            var detetedElement = NodeElements.Where(i => i.Id == id).FirstOrDefault();
 
             if (detetedElement == null) return null;
 

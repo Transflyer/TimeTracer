@@ -1,4 +1,8 @@
 interface TimeSpanElement {
   ElementId: number;
-  ElementTimeSpan: string;
+  Days: number;
+  Hours: number;
+  Minutes: number;
+  Seconds: number;
+  IsOpenTimeSpentId: number;
 }

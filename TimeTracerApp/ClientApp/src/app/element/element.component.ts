@@ -83,7 +83,6 @@ export class ElementComponent implements OnInit {
     this.http.
       put(url, null).subscribe(result => {
         console.log("TimeSpents for " + this.nodeElement.Id + " has been created.");
-        var tt = result;
       }, error => console.error(error));
   }
 

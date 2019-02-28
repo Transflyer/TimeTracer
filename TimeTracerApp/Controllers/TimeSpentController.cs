@@ -51,7 +51,7 @@ namespace TimeTracker.Controllers
             var result = await TimeSpentRepo.GetTimeSpanOnElement(id);
 
             //handle requests asking for non-existing TimeSpents on NodeElement
-            if (result == null)
+            if (result.Item1 == null)
             {
                 return NotFound(new
                 {
@@ -59,10 +59,15 @@ namespace TimeTracker.Controllers
                 });
             }
 
-            TimeSpanViewModel viewModel = new TimeSpanViewModel()
+            var timeSpan = result.Item1 == null ? TimeSpan.Zero : TimeSpan.FromSeconds((long)result.Item1);
+            ElementSpanViewModel viewModel = new ElementSpanViewModel()
             {
                 ElementId = (long)id,
-                ElementTimeSpan = result == null ? TimeSpan.Zero : TimeSpan.FromSeconds((long)result)
+                Days = timeSpan.Days,
+                Hours = timeSpan.Hours,
+                Minutes = timeSpan.Minutes,
+                Seconds = timeSpan.Seconds,
+                IsOpen = result.Item2 == null? 0 : (long)result.Item2
             };
             return new JsonResult(viewModel, JsonSettings);
         }
@@ -82,7 +87,7 @@ namespace TimeTracker.Controllers
                 });
             }
 
-            var timeSpentItem = await TimeSpentRepo.GetElementOpenTimeSpentAsync(nodeElement.Id);
+            var timeSpentItem = await TimeSpentRepo.GetOpenTimeSpentAsync(nodeElement.Id);
 
             //handle requests asking for non-existing NodeElement
             if (timeSpentItem == null)
@@ -97,6 +102,37 @@ namespace TimeTracker.Controllers
 
             return new JsonResult(result.Adapt<TimeSpentViewModel>(), JsonSettings);
 
+        }
+
+        [HttpPost("updateend/element/{elementId}")]
+        public async Task<IActionResult> UpdateEnd(long? elementId)
+        {
+            if (elementId == null) return new StatusCodeResult(500);
+            var nodeElement = await NodeElementRepo.GetNodeElementAsync(elementId);
+
+            //handle requests asking for non-existing NodeElement
+            if (nodeElement == null)
+            {
+                return NotFound(new
+                {
+                    Error = String.Format("NodeElement {0} has not been found", elementId)
+                });
+            }
+
+            var timeSpentItem = await TimeSpentRepo.GetOpenTimeSpentAsync(nodeElement.Id);
+
+            //handle requests asking for non-existing NodeElement
+            if (timeSpentItem == null)
+            {
+                return NotFound(new
+                {
+                    Error = String.Format("There is no TimeSpent with property IsOpen == true on NodeElement {0}", elementId)
+                });
+            }
+
+            var result = await TimeSpentRepo.UpdateEndAsync(timeSpentItem.Id);
+
+            return new JsonResult(result.Adapt<TimeSpentViewModel>(), JsonSettings);
         }
 
         [HttpPost("start/element/{elementId}/{start}")]
