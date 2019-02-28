@@ -1,9 +1,10 @@
-import { Component, Input, Inject, OnInit } from "@angular/core";
+import { Component, Input, Inject, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { AuthService } from '../service/auth.service';
-import { Observable } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { HOST_ATTR } from "@angular/platform-browser/src/dom/dom_renderer";
+import { TimerObservable } from "rxjs/observable/TimerObservable";
 
 
 @Component({
@@ -19,7 +20,8 @@ export class StopwatchComponent implements OnInit {
   hours: string;
   minutes: string;
   seconds: string;
-
+  timer: Observable<number>;
+  timerSubscription: Subscription;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -31,7 +33,9 @@ export class StopwatchComponent implements OnInit {
 
   ngOnInit() {
 
-    var id = +this.activatedRoute.snapshot.params["id"];
+    this.timer = Observable.timer(1000, 1000);
+    //var id = +this.activatedRoute.snapshot.params["id"];
+
     this.activatedRoute.params.subscribe(params => {
       var id = params["id"];
       if (id) {
@@ -40,14 +44,14 @@ export class StopwatchComponent implements OnInit {
       }
     })
 
-    if (id) {
-      this.elementId = id;
-      this.getElementTimeSpan();
-    }
+    //if (id) {
+    //  this.elementId = id;
+    //  this.getElementTimeSpan();
+    //}
 
-    else {
-      console.log("Cant get Element Time Span");
-    }
+    //else {
+    //  console.log("Cant get Element Time Span");
+    //}
   }
 
   getElementTimeSpan() {
@@ -69,9 +73,7 @@ export class StopwatchComponent implements OnInit {
   }
 
   StartTimer() {
-    let timer = Observable.timer(2000, 1000);
-    timer.subscribe(() => {
-
+    this.timerSubscription = this.timer.subscribe(() => {
       //Update timer every second
       var sec = this.elementTimeSpan.Seconds;
       var min = this.elementTimeSpan.Minutes;
@@ -101,7 +103,6 @@ export class StopwatchComponent implements OnInit {
       this.hours = "" + hour;
       this.days = "" + days;
 
-
       //Update end value of TimeSpent entity every 10 sec
       if (sec % 10 == 0 || sec == 0) {
         var url = this.baseUrl + "api/timespent/updateend/element/" + this.elementId;
@@ -111,6 +112,10 @@ export class StopwatchComponent implements OnInit {
           }, error => console.error(error));
       }
     });
+  }
+
+  StopTimer() {
+    this.timerSubscription.unsubscribe();
   }
 
 }

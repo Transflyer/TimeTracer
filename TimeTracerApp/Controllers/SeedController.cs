@@ -79,8 +79,6 @@ namespace TimeTracker.Controllers
                         user = await UserManager.FindByNameAsync(user.UserName);
                     }
 
-                   
-
                     //Create User Elements(Tasks)
                     var NodeElementsCount = new Random().Next(1, 20);
                     DateTime createdDate = new DateTime(2018, 08, 08, 12, 30, 00);
@@ -89,7 +87,6 @@ namespace TimeTracker.Controllers
                     List<TimeSpent> timeSpentList = new List<TimeSpent>();
                     do
                     {
-                        
                         var element = new NodeElement()
                         {
                             CreatedDate = createdDate,
@@ -128,7 +125,7 @@ namespace TimeTracker.Controllers
                                 Start = start,
                                 End = end,
                                 TotalSecond = span,
-                                IsOpen = timeSpentsCount == 1 ? true : false,
+                                IsOpen = false,
                                 UserId = user.Id
                             };
 

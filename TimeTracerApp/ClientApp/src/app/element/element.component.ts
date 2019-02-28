@@ -1,8 +1,9 @@
-import { Component, Input, Inject, OnInit } from "@angular/core";
+import { Component, Input, Inject, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { AuthService } from '../service/auth.service';
 import { error } from "protractor";
+import { StopwatchComponent } from '../stopwatch/stopwatch.component';
 
 @Component({
   selector: 'element',
@@ -12,9 +13,9 @@ import { error } from "protractor";
 
 export class ElementComponent implements OnInit {
   nodeElement: NodeElement;
-  elementTimeSpan: TimeSpanElement;
   parentId: number;
   currentId: number;
+  @ViewChild(StopwatchComponent) stopWatchChild: StopwatchComponent;
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -51,11 +52,11 @@ export class ElementComponent implements OnInit {
     this.http.get<NodeElement>(url).subscribe(result => {
       this.nodeElement = result;
     }, error => console.error(error));
-
-    url = this.baseUrl + "api/timespent/element/" + id;
-    this.http.get<TimeSpanElement>(url).subscribe(result => {
-      this.elementTimeSpan = result;
-    }, error => console.error(error));
+   
+    //url = this.baseUrl + "api/timespent/element/" + id;
+    //this.http.get<TimeSpanElement>(url).subscribe(result => {
+    //  this.elementTimeSpan = result;
+    //}, error => console.error(error));
   }
 
   onEdit() {
@@ -83,6 +84,7 @@ export class ElementComponent implements OnInit {
     this.http.
       put(url, null).subscribe(result => {
         console.log("TimeSpents for " + this.nodeElement.Id + " has been created.");
+        this.stopWatchChild.StartTimer();
       }, error => console.error(error));
   }
 
@@ -92,7 +94,7 @@ export class ElementComponent implements OnInit {
     this.http.
       post(url, null).subscribe(result => {
         console.log("End timing element" + this.nodeElement.Id + " has been set.");
-        var tt = result;
+        this.stopWatchChild.StopTimer();
       }, error => console.error(error));
   }
 }

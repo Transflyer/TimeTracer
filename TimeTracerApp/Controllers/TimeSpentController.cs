@@ -48,10 +48,10 @@ namespace TimeTracker.Controllers
         [HttpGet("element/{id?}")]
         public async Task<IActionResult> GetElementTimeSpan(long? id)
         {
-            var result = await TimeSpentRepo.GetTimeSpanOnElement(id);
+            var result = await TimeSpentRepo.GetElementTimeSpentsAsync(id);
 
             //handle requests asking for non-existing TimeSpents on NodeElement
-            if (result.Item1 == null)
+            if (result == null)
             {
                 return NotFound(new
                 {
@@ -59,15 +59,17 @@ namespace TimeTracker.Controllers
                 });
             }
 
-            var timeSpan = result.Item1 == null ? TimeSpan.Zero : TimeSpan.FromSeconds((long)result.Item1);
+            var openTimeSpent = result.FirstOrDefault(r => r.IsOpen == true);
+            var timeSpan = TimeSpan.FromSeconds(Convert.ToDouble(result.Sum(s => s.TotalSecond)));
+
             ElementSpanViewModel viewModel = new ElementSpanViewModel()
             {
-                ElementId = (long)id,
+                NodeElementId = (long)id,
                 Days = timeSpan.Days,
                 Hours = timeSpan.Hours,
                 Minutes = timeSpan.Minutes,
                 Seconds = timeSpan.Seconds,
-                IsOpen = result.Item2 == null? 0 : (long)result.Item2
+                IsOpenTimeSpentId = openTimeSpent == null? 0:openTimeSpent.Id
             };
             return new JsonResult(viewModel, JsonSettings);
         }

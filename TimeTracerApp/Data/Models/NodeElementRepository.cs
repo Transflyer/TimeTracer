@@ -11,7 +11,10 @@ namespace TimeTracker.Data.Models
         private ApplicationDbContext context;
 
         #region Constructor
-        public NodeElementRepository(ApplicationDbContext ctx) => context = ctx;
+        public NodeElementRepository(ApplicationDbContext ctx)
+        {
+            context = ctx;
+        }
         #endregion
 
 
@@ -51,9 +54,22 @@ namespace TimeTracker.Data.Models
             //add new nodeElement
             context.NodeElements.Add(nodeElement);
 
+            //Create initial child TimeSpent entity
+            var cd = DateTime.UtcNow;
+            context.TimeSpents.Add(new TimeSpent()
+            {
+                CreatedDate = cd,
+                TotalSecond = 0,
+                ElementId = nodeElement.Id,
+                IsOpen = false,
+                UserId = nodeElement.UserId,
+                Start = cd,
+                End = cd,
+                LastModifiedDate = cd
+            });
+
             //persist the newly-created NodeElement into the Database
             await context.SaveChangesAsync();
-
             return nodeElement;
         }
 

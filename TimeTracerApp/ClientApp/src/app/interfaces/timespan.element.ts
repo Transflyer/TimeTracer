@@ -1,5 +1,5 @@
 interface TimeSpanElement {
-  ElementId: number;
+  NodeElementId: number;
   Days: number;
   Hours: number;
   Minutes: number;

@@ -103,26 +103,6 @@ namespace TimeTracker.Data.Models
             return null;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="elementId"></param>
-        /// <returns>Tuple Item1 is total time span on element; Item2 id of open timespent if exist</returns>
-        public async Task<(long?, long?)> GetTimeSpanOnElement(long? elementId)
-        {
-            if (elementId == null) return (null, null);
-
-            long? timeSpan = null;
-            long? openTimeSpentId = null;
-            var result = await GetElementTimeSpentsAsync(elementId);
-            foreach(var item in result)
-            {
-                timeSpan += item.TotalSecond;
-                if (item.IsOpen == true) openTimeSpentId = item.Id;
-            }
-            return (timeSpan, openTimeSpentId);
-        }
-
         public async Task<TimeSpent> SetEndAsync(long id)
         {
             var result = await context.TimeSpents.FindAsync(id);
