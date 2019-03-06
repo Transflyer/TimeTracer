@@ -33,18 +33,11 @@ export class ElementComponent implements OnInit {
       if (id) {
         this.currentId = id;
         this.updateElement(id);
+        console.log("Element with id" + this.currentId + " has been updated");
       }
     })
 
-    if (id) {
-      this.currentId = id;
-      this.updateElement(id);
-    }
-    else {
-      console.log("Invalid id: routing back to home...");
-      this.router.navigate(["home"]);
-    }
-  }
+ }
 
   updateElement(id: number) {
     this.parentId = id;
@@ -93,8 +86,12 @@ export class ElementComponent implements OnInit {
     var url = this.baseUrl + "api/timespent/end/element/" + this.nodeElement.Id;
     this.http.
       post(url, null).subscribe(result => {
-        console.log("End timing element" + this.nodeElement.Id + " has been set.");
+        console.log("End timing for NodeElement " + this.nodeElement.Id + " has been set.");
         this.stopWatchChild.StopTimer();
-      }, error => console.error(error));
+      }, error => {
+        console.error(error);
+        this.stopWatchChild.StopTimer();
+      });
+    
   }
 }

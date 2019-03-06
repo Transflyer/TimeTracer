@@ -5,13 +5,14 @@ import { AuthService } from '../service/auth.service';
 import { Observable, Subscription } from "rxjs";
 import { HOST_ATTR } from "@angular/platform-browser/src/dom/dom_renderer";
 import { TimerObservable } from "rxjs/observable/TimerObservable";
-
+import { isUndefined } from "util";
 
 @Component({
   selector: 'stopwatch',
   templateUrl: './stopwatch.component.html',
   styleUrls: ['./stopwatch.component.less']
 })
+
 export class StopwatchComponent implements OnInit {
   elementTimeSpan: TimeSpanElement;
   elementId: number;
@@ -34,31 +35,33 @@ export class StopwatchComponent implements OnInit {
   ngOnInit() {
 
     this.timer = Observable.timer(1000, 1000);
-    //var id = +this.activatedRoute.snapshot.params["id"];
 
     this.activatedRoute.params.subscribe(params => {
       var id = params["id"];
       if (id) {
         this.elementId = id;
         this.getElementTimeSpan();
+        console.log("Element with id" + this.elementId + " has been got time spent data");
       }
     })
-
-    //if (id) {
-    //  this.elementId = id;
-    //  this.getElementTimeSpan();
-    //}
-
-    //else {
-    //  console.log("Cant get Element Time Span");
-    //}
   }
+
+  ngOnDestroy() {
+    this.StopTimer()
+  }
+ 
 
   getElementTimeSpan() {
     var url = this.baseUrl + "api/timespent/element/" + this.elementId;
     this.http.get<TimeSpanElement>(url).subscribe(result => {
       this.elementTimeSpan = result;
-      if (this.elementTimeSpan.IsOpenTimeSpentId != 0) this.StartTimer();
+
+      //if swithed to other NodeElement
+      this.StopTimer();
+
+      if (this.elementTimeSpan.IsOpenTimeSpentId != 0) {
+        this.StartTimer();
+      }
       else {
         this.days = "" + this.elementTimeSpan.Days;
         this.hours = "" + this.elementTimeSpan.Hours;
@@ -73,13 +76,29 @@ export class StopwatchComponent implements OnInit {
   }
 
   StartTimer() {
-    this.timerSubscription = this.timer.subscribe(() => {
-      //Update timer every second
-      var sec = this.elementTimeSpan.Seconds;
-      var min = this.elementTimeSpan.Minutes;
-      var hour = this.elementTimeSpan.Hours;
-      var days = this.elementTimeSpan.Days;
 
+    //Delete previose subscription if exist
+    this.StopTimer();
+
+    var sec = this.elementTimeSpan.Seconds;
+    var min = this.elementTimeSpan.Minutes;
+    var hour = this.elementTimeSpan.Hours;
+    var days = this.elementTimeSpan.Days;
+
+    //Properties that used in stopwatch.component.html
+    this.seconds = sec < 10 ? "0" + sec : "" + sec;
+    this.minutes = min < 10 ? "0" + min : "" + min;
+    this.hours = "" + hour;
+    this.days = "" + days;
+
+    //if timer still work on this element
+    if (this.timerSubscription) {
+      if (this.timerSubscription.closed == false) return;
+    }
+
+    this.timerSubscription = this.timer.subscribe(() => {
+
+      //Update timer every second
       sec++;
       if (sec == 60) {
         min++;
@@ -112,10 +131,14 @@ export class StopwatchComponent implements OnInit {
           }, error => console.error(error));
       }
     });
+    console.log("timerSubscription for NodeElement " + this.elementId + " has been set");
   }
 
   StopTimer() {
-    this.timerSubscription.unsubscribe();
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+      console.log("Unsubscribe from timing with element " + this.elementId + " has been done.");
+    }
   }
 
 }

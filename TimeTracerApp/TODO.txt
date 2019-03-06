@@ -1,0 +1,16 @@
+﻿1. Add session SQL Server cache.
+
+2. Add to repo skip take methods.
+
+3. Change FirstOrDefault to Find where it possible.
+
+4. Set Id = 0 to be ensure that EF create new index when creating new object/
+
+5. Change Update methods to use change detection feature.
+
+6. Remake deleted methods.
+
+7. Figure out with case when token expired - frontend can't refresh token.
+
+8. Add home page with full report on user.
+

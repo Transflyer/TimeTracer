@@ -1,1 +1,13 @@
-<h1>Welcome to time managment for your good!</h1>
+<div *ngIf="!auth.isLoggedIn()">
+  <h1>Welcome to time managment for your good!</h1>
+  <h3>Push Start button to start your time tracking!</h3>
+  <input type="button" value="Start"
+         (click)="onStart()"
+         class="btn btn-sm btn-danger" />
+</div>
+<div *ngIf="auth.isLoggedIn()">
+  <h2>Week report</h2>
+
+</div>
+
+

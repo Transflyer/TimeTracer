@@ -25,18 +25,35 @@ namespace TimeTracker.Data.Models
             if (nodeElement == null || parentElementId == null) return null;
             var parent = await NodeElements.FirstOrDefaultAsync(r => r.Id == (long)parentElementId);
 
-            //properties set from server-side
+            //Properties set from server-side
             nodeElement.CreatedDate = DateTime.UtcNow;
             nodeElement.LastModifiedDate = nodeElement.CreatedDate;
 
-            // Set a parent element
+            //Set a parent element
             nodeElement.ParentId = parentElementId;
             nodeElement.UserId = parent.UserId;
 
-            //add new nodeElement
+            //Add new nodeElement
             context.NodeElements.Add(nodeElement);
 
-            //persist the newly-created NodeElement into the Database
+            //Persist the newly-created NodeElement into the Database
+            await context.SaveChangesAsync();
+
+            //Create empty TimeSpent element
+            TimeSpent timeSpent = new TimeSpent()
+            {
+                Id = 0,
+                CreatedDate = nodeElement.CreatedDate,
+                LastModifiedDate = nodeElement.CreatedDate,
+                ElementId = nodeElement.Id,
+                Start = nodeElement.CreatedDate,
+                End = nodeElement.CreatedDate,
+                IsOpen = false,
+                TotalSecond = 0,
+                UserId = nodeElement.UserId
+            };
+
+            context.TimeSpents.Add(timeSpent);
             await context.SaveChangesAsync();
 
             return nodeElement;
