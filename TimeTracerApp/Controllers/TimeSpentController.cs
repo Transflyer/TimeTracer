@@ -59,7 +59,14 @@ namespace TimeTracker.Controllers
                 });
             }
 
+
+            //If exist open TimeSpent Element - update current total seconds 
             var openTimeSpent = result.FirstOrDefault(r => r.IsOpen == true);
+            if (openTimeSpent != null)
+            {
+                openTimeSpent = await TimeSpentRepo.UpdateEndAsync(openTimeSpent.Id);
+            }
+            
             var timeSpan = TimeSpan.FromSeconds(Convert.ToDouble(result.Sum(s => s.TotalSecond)));
 
             ElementSpanViewModel viewModel = new ElementSpanViewModel()

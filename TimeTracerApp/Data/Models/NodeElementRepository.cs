@@ -11,12 +11,13 @@ namespace TimeTracker.Data.Models
         private ApplicationDbContext context;
 
         #region Constructor
+
         public NodeElementRepository(ApplicationDbContext ctx)
         {
             context = ctx;
         }
-        #endregion
 
+        #endregion Constructor
 
         public IQueryable<NodeElement> NodeElements => context.NodeElements;
 
@@ -187,6 +188,23 @@ namespace TimeTracker.Data.Models
             return await NodeElements
             .Where(u => u.UserId == userId)
             .ToArrayAsync();
+        }
+
+        public async Task<IEnumerable<NodeElement>> UserNodeElementsWithTimeSpentsAsync(string userId)
+        {
+            var userElements = await NodeElements
+                .Where(u => u.UserId == userId)
+                .Include(t=>t.TimeSpents)
+                .ToArrayAsync();
+
+            //Constraction NodeElement tree
+            foreach (var elem in userElements)
+            {
+                var childs = userElements.Where(t => t.ParentId == elem.Id);
+            }
+
+            //Filter - only root elements
+            return userElements.Where(r => r.ParentId == null);
         }
     }
 }

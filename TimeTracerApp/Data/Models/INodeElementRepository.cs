@@ -27,5 +27,7 @@ namespace TimeTracker.Data.Models
         Task<NodeElement> UpdateNodeElementAsync(NodeElement model);
 
         Task<IEnumerable<NodeElement>> UserNodeElementsAsync(string userId);
+
+        Task<IEnumerable<NodeElement>> UserNodeElementsWithTimeSpentsAsync(string userId);
     }
 }
