@@ -1,3 +1,15 @@
-<p>
-  report works!
-</p>
+<!--<div class="container-fluid" *ngIf="ReportModel" [ngStyle] ="{'margin-left':(shift *10) + 'px'}">-->
+  <div class="row" *ngIf="ShowTitle" >
+    <div class="col-lg-4"><h3>Name</h3></div>
+    <div class="col-lg-4"><h3>Time spent</h3></div>
+  </div>
+  <div *ngFor="let element of ReportModel">
+    <div class="row">
+      <div class="col-lg-4" [ngStyle]="{'margin-left':(Shift *10) + 'px'}"><h4>{{element.NodeElementTitle}}</h4></div>
+      <div class="col-lg-4" [ngStyle]="{'margin-left':(-Shift *10) + 'px'}"><h4>{{element.Days}}.{{element.Hours}}:{{element.Minutes}}:{{element.Seconds}}</h4></div>
+    </div>
+    <report [ReportModel]="element.Children" [ShowTitle]="false" [Shift]="Shift"></report>
+  </div>
+<!--</div>-->
+
+

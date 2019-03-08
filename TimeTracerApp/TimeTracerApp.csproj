@@ -39,6 +39,7 @@
   <ItemGroup>
     <None Remove="ClientApp\src\app\about\about.component.ts" />
     <None Remove="ClientApp\src\app\interfaces\node.element.ts" />
+    <None Remove="ClientApp\src\app\interfaces\report.element.ts" />
     <None Remove="ClientApp\src\app\interfaces\timespan.element.ts" />
     <None Remove="ClientApp\src\app\interfaces\token.response.ts" />
     <None Remove="ClientApp\src\app\interfaces\user.ts" />
@@ -56,6 +57,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\about\about.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\node.element.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\interfaces\report.element.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\timespan.element.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\token.response.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\interfaces\user.ts" />

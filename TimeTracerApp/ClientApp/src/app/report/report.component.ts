@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { AuthService } from '../service/auth.service';
@@ -10,18 +10,19 @@ import { error } from 'protractor';
   styleUrls: ['./report.component.less']
 })
 export class ReportComponent implements OnInit {
+  @Input() ReportModel: Report[];
+  @Input() ShowTitle: boolean;
+  @Input() Shift: number;
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
     public auth: AuthService,
-    @Inject('BASE_URL') private baseUrl: string) { }
+    @Inject('BASE_URL') private baseUrl: string) {
+  }
 
   ngOnInit() {
-    var url = this.baseUrl + "api/report/user";
-    this.http.get(url).subscribe(result => {
-      console.log("We get report");
-    }, error => console.log(error));
+    this.Shift += 1;
   }
 
 }

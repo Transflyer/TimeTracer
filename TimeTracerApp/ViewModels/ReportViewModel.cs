@@ -14,8 +14,13 @@ namespace TimeTracker.ViewModels
     public class ReportElement
     {
         public string NodeElementTitle { get; set; }
-        public List<ReportElement> Childs { get; set; }
+        public List<ReportElement> Children { get; set; }
         public long TotalSeconds { get; set; }
         public bool IsOpen { get; set; }
+        public int Days { get; set; }
+        public int Hours { get; set; }
+        public int Minutes { get; set; }
+        public int Seconds { get; set; }
+
     }
 }

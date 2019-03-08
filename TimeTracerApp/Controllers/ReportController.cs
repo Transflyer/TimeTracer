@@ -44,42 +44,59 @@ namespace TimeTracker.Controllers
             //Constraction NodeElement tree
             foreach (var elem in userElements)
             {
+                //Recursively call func ReportTree for each elem
                 var childList = ReportTree(elem);
+
+                //Set TimeSpan from all TimeSpent records in DB
+                var ts = TimeSpan.FromSeconds(Convert.ToInt64(elem.TimeSpents.Sum(t => t.TotalSecond))
+                    + (childList == null ? 0 : childList.Sum(t => t.TotalSeconds)));
+
+                //Create report element for model to client
                 ReportView.Add(new ReportElement()
                 {
                     NodeElementTitle = elem.Title,
-                    Childs = childList,
-                    TotalSeconds = Convert.ToInt64(elem.TimeSpents.Sum(ts => ts.TotalSecond)) 
-                    + (childList == null? 0 : childList.Sum(t => t.TotalSeconds))
+                    Children = childList,
+                    TotalSeconds = Convert.ToInt64(ts.TotalSeconds),
+                    Days = ts.Days,
+                    Hours = ts.Hours,
+                    Minutes = ts.Minutes,
+                    Seconds = ts.Seconds,
                 });
             }
-            return View();
+
+            return new JsonResult(ReportView, JsonSettings);
         }
 
         private List<ReportElement> ReportTree(NodeElement node)
         {
+            //Create report element for model to client
             ReportElement reportElement = new ReportElement()
             {
                 NodeElementTitle = node.Title
             };
 
+            //Verify that Node Element has some children
             if (node.NodeElements != null)
             {
                 List<ReportElement> elements = new List<ReportElement>();
                 foreach (var elem in node.NodeElements)
                 {
+                    //Create report element for model to client
                     var e = new ReportElement();
                     e.NodeElementTitle = elem.Title;
 
+                    //Recursively call func ReportTree for each elem
                     var d = ReportTree(elem);
-                    long childsTotalSeconds = 0;
+                    long childrenTotalSeconds = 0;
+
+                    //Verify that element has children
                     if (d != null)
                     {
-                        e.Childs = d;
-                        childsTotalSeconds = d.Sum(ts => ts.TotalSeconds);
+                        e.Children = d;
+                        childrenTotalSeconds = d.Sum(t => t.TotalSeconds);
                     }
 
-                    //If it have open Node Element, then we count total seconds to current time
+                    //If it have open Node Element, then counting total seconds to current time
                     var openTimeSpents = elem.TimeSpents.FirstOrDefault(i => i.IsOpen == true);
                     e.IsOpen = openTimeSpents == null ? false : true;
                     if (openTimeSpents != null)
@@ -87,7 +104,14 @@ namespace TimeTracker.Controllers
                         openTimeSpents.End = DateTime.UtcNow;
                         openTimeSpents.TotalSecond = Convert.ToInt64((openTimeSpents.End - openTimeSpents.Start).TotalSeconds);
                     }
-                    e.TotalSeconds = Convert.ToInt64(elem.TimeSpents.Sum(t => t.TotalSecond)) + childsTotalSeconds;
+
+                    //Fill client model properties
+                    e.TotalSeconds = Convert.ToInt64(elem.TimeSpents.Sum(t => t.TotalSecond)) + childrenTotalSeconds;
+                    var ts = TimeSpan.FromSeconds(e.TotalSeconds);
+                    e.Days = ts.Days;
+                    e.Hours = ts.Hours;
+                    e.Minutes = ts.Minutes;
+                    e.Seconds = ts.Seconds;
 
                     elements.Add(e);
                 }

@@ -7,7 +7,7 @@
 </div>
 <div *ngIf="auth.isLoggedIn()">
   <h2>Report</h2>
-  <report></report>
+  <report [ReportModel]="ReportModel" [ShowTitle] ="true" [Shift] ="0"></report>
 </div>
 
 
