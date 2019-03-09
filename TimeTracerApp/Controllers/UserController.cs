@@ -24,7 +24,7 @@ namespace TimeTracker.Controllers
             RoleManager<IdentityRole> roleManager,
             IRequestUserProvider requestUserProvider,
             IConfiguration configuration,
-            UserManager<ApplicationUser> userManager, 
+            UserManager<ApplicationUser> userManager
             )
             : base(context, roleManager, requestUserProvider, configuration)
         {
