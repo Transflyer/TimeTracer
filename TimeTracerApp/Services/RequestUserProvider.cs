@@ -24,5 +24,12 @@ namespace TimeTracker.Services
         {
             return userManager.GetUserId(contextAccessor.HttpContext.User);
         }
+
+        public async Task<ApplicationUser> GetUserAsync()
+        {
+            return await userManager.GetUserAsync(contextAccessor.HttpContext.User);
+        }
+
+      
     }
 }

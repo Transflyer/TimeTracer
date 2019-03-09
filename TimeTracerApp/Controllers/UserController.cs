@@ -14,27 +14,23 @@ namespace TimeTracker.Controllers
 {
     public class UserController : BaseApiController
     {
-        #region Constructor
+        #region Properties
+        protected UserManager<ApplicationUser> UserManager;
+        #endregion Properties
 
+        #region Constructor
         public UserController(
             ApplicationDbContext context,
             RoleManager<IdentityRole> roleManager,
             IRequestUserProvider requestUserProvider,
             IConfiguration configuration,
-            UserManager<ApplicationUser> userManager
+            UserManager<ApplicationUser> userManager, 
             )
             : base(context, roleManager, requestUserProvider, configuration)
         {
             UserManager = userManager;
         }
-
         #endregion Constructor
-
-        #region Properties
-
-        protected UserManager<ApplicationUser> UserManager;
-
-        #endregion Properties
 
         #region RESTful Conventions
 
@@ -120,10 +116,9 @@ namespace TimeTracker.Controllers
         /// <returns>Return current user</returns>
         [HttpGet()]
         [Authorize(Policy = "JwtAuthorization")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var user = UserManager.GetUserAsync(HttpContext.User).Result;
-
+            var user = await RequestUserProvider.GetUserAsync();
             return Json(user.Adapt<UserViewModel>(), JsonSettings);
         }
 

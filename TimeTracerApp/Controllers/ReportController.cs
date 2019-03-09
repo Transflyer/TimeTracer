@@ -82,8 +82,10 @@ namespace TimeTracker.Controllers
                 foreach (var elem in node.NodeElements)
                 {
                     //Create report element for model to client
-                    var e = new ReportElement();
-                    e.NodeElementTitle = elem.Title;
+                    var e = new ReportElement()
+                    {
+                        NodeElementTitle = elem.Title
+                    };
 
                     //Recursively call func ReportTree for each elem
                     var d = ReportTree(elem);
