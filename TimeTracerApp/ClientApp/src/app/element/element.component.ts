@@ -78,6 +78,7 @@ export class ElementComponent implements OnInit {
       put(url, null).subscribe(result => {
         console.log("TimeSpents for " + this.nodeElement.Id + " has been created.");
         this.stopWatchChild.StartTimer();
+        this.nodeElement.IsStarted = true;
       }, error => console.error(error));
   }
 
@@ -91,6 +92,7 @@ export class ElementComponent implements OnInit {
       }, error => {
         console.error(error);
         this.stopWatchChild.StopTimer();
+        this.nodeElement.IsStarted = false;
       });
     
   }
