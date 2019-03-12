@@ -2,29 +2,105 @@
   position: relative;
   padding: 0;
   text-align: center;
- 
+
   @media (max-width: 767px) {
     width: 100%;
   }
 
   .element-form-details {
-    .element-form-image {
+
+    .element-form-bg {
       position: relative;
       z-index: 1;
-      width: 100%;
       text-align: center;
+      width: 150px;
+      margin: auto;
+      padding-top: 2px;
+      height: 40px;
 
-      img {
-        width: 150px;
-        height: 150px;
-        clear: both;
-        margin: auto;
-        position: relative;
-        background-color: #ffffff;
-        border: 1px solid #707d8c;
-        padding: 2px;
+      .element-form-bg-start {
+        background-image: linear-gradient(#88c149, #73a839 60%, #699934);
+        border-radius: 20px;
+        height: inherit;
+        padding-top: inherit;
+      }
+
+      .element-form-bg-stop {
+        background-image: linear-gradient(#e12b31, #c71c22 60%, #b5191f);
+        border-radius: 20px;
+        height: inherit;
+        padding-top: inherit;
+      }
+
+      .element-form-button {
+        width: 146px;
+        height: 36px;
+        border-radius: 18px;
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+        letter-spacing: 5px;
+        border: 2px solid #ffffff;
+        padding: 0px;
+        outline: none;
+        transition: all 500ms ease;
+
+        &:active {
+          background-image: none;
+          transition: all 1ms ease;
+        }
+
+        &:before {
+          font-family: 'Glyphicons Halflings';
+          position: absolute;
+          left: -15px;
+          opacity: 0;
+          transition: all 200ms ease;
+        }
+
+        &:hover {
+          letter-spacing: 3px;
+
+          &:before {
+            left: 15px;
+            opacity: 1;
+          }
+        }
+      }
+
+      .element-form-button-start {
+        background-image: linear-gradient(#88c149, #73a839 60%, #699934);
+
+        &:active {
+          background-color: #59822c;
+        }
+
+        &:before {
+          content: '\e023';
+        }
+
+        &:hover {
+          border: 2px solid #59822c;
+        }
+      }
+
+      .element-form-button-stop {
+        background-image: linear-gradient(#e12b31, #c71c22 60%, #b5191f);
+
+        &:active {
+          background-color: #9a161a;
+        }
+
+        &:before {
+          content: '\e017';
+        }
+
+        &:hover {
+          border: 2px solid #9a161a;
+        }
       }
     }
+
 
     .element-form-info-block {
       width: 100%;
@@ -33,7 +109,7 @@
       background: #f0f0f0;
       z-index: 0;
       padding: 60px 0 30px 0;
-      margin-top: -80px;
+      margin-top: -20px;
 
       .element-form-heading {
         width: 100%;

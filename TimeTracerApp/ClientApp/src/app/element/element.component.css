@@ -8,21 +8,81 @@
     width: 100%;
   }
 }
-.element-form .element-form-details .element-form-image {
+.element-form .element-form-details .element-form-bg {
   position: relative;
   z-index: 1;
-  width: 100%;
   text-align: center;
-}
-.element-form .element-form-details .element-form-image img {
   width: 150px;
-  height: 150px;
-  clear: both;
   margin: auto;
-  position: relative;
-  background-color: #ffffff;
-  border: 1px solid #707d8c;
-  padding: 2px;
+  padding-top: 2px;
+  height: 40px;
+}
+.element-form .element-form-details .element-form-bg .element-form-bg-start {
+  background-image: linear-gradient(#88c149, #73a839 60%, #699934);
+  border-radius: 20px;
+  height: inherit;
+  padding-top: inherit;
+}
+.element-form .element-form-details .element-form-bg .element-form-bg-stop {
+  background-image: linear-gradient(#e12b31, #c71c22 60%, #b5191f);
+  border-radius: 20px;
+  height: inherit;
+  padding-top: inherit;
+}
+.element-form .element-form-details .element-form-bg .element-form-button {
+  width: 146px;
+  height: 36px;
+  border-radius: 18px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 5px;
+  border: 2px solid #ffffff;
+  padding: 0px;
+  outline: none;
+  transition: all 500ms ease;
+}
+.element-form .element-form-details .element-form-bg .element-form-button:active {
+  background-image: none;
+  transition: all 1ms ease;
+}
+.element-form .element-form-details .element-form-bg .element-form-button:before {
+  font-family: 'Glyphicons Halflings';
+  position: absolute;
+  left: -15px;
+  opacity: 0;
+  transition: all 200ms ease;
+}
+.element-form .element-form-details .element-form-bg .element-form-button:hover {
+  letter-spacing: 3px;
+}
+.element-form .element-form-details .element-form-bg .element-form-button:hover:before {
+  left: 15px;
+  opacity: 1;
+}
+.element-form .element-form-details .element-form-bg .element-form-button-start {
+  background-image: linear-gradient(#88c149, #73a839 60%, #699934);
+}
+.element-form .element-form-details .element-form-bg .element-form-button-start:active {
+  background-color: #59822c;
+}
+.element-form .element-form-details .element-form-bg .element-form-button-start:before {
+  content: '\e023';
+}
+.element-form .element-form-details .element-form-bg .element-form-button-start:hover {
+  border: 2px solid #59822c;
+}
+.element-form .element-form-details .element-form-bg .element-form-button-stop {
+  background-image: linear-gradient(#e12b31, #c71c22 60%, #b5191f);
+}
+.element-form .element-form-details .element-form-bg .element-form-button-stop:active {
+  background-color: #9a161a;
+}
+.element-form .element-form-details .element-form-bg .element-form-button-stop:before {
+  content: '\e017';
+}
+.element-form .element-form-details .element-form-bg .element-form-button-stop:hover {
+  border: 2px solid #9a161a;
 }
 .element-form .element-form-details .element-form-info-block {
   width: 100%;
@@ -31,7 +91,7 @@
   background: #f0f0f0;
   z-index: 0;
   padding: 60px 0 30px 0;
-  margin-top: -80px;
+  margin-top: -20px;
 }
 .element-form .element-form-details .element-form-info-block .element-form-heading {
   width: 100%;

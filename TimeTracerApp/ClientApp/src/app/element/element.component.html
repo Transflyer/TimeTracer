@@ -4,16 +4,19 @@
 
 <div class="element-form col-lg-4">
   <div class="element-form-details">
-    <div class="element-form-image">
-      <img src="https://lorempixel.com/150/150/?random={{nodeElement.Id}}"
-           alt="{{nodeElement.Title}}" class="img-circle" />
-      <input type="button" value="Start"
-             (click)="onStart()"
-             class="btn btn-sm btn-danger" />
-      <input type="button" value="Stop"
-             (click)="onStop()"
-             class="btn btn-sm btn-danger" />
+    <div class="element-form-bg">
+      <div *ngIf ="nodeElement.IsStarted==false" class="element-form-bg-start">
+        <button value="Start"
+           (click)="onStart()"
+           class="element-form-button element-form-button-start">Start</button>
+      </div>
+      <div *ngIf ="nodeElement.IsStarted==true" class="element-form-bg-stop">
+        <button value="Stop"
+                (click)="onStop()"
+                class="element-form-button element-form-button-stop">Stop </button>
+      </div>
     </div>
+
     <div class="element-form-info-block">
       <div class="element-form-heading">
         <stopwatch></stopwatch>

@@ -19,6 +19,7 @@ namespace TimeTracker.Controllers
     {
         #region Properties
         private readonly INodeElementRepository NodeElementRepo;
+        private readonly ITimeSpentRepository TimeSpentRepo;
         #endregion
 
         #region Constructor
@@ -26,10 +27,12 @@ namespace TimeTracker.Controllers
            RoleManager<IdentityRole> roleManager,
            IRequestUserProvider requstUserProvider,
            IConfiguration configuration,
-           INodeElementRepository elementRepo)
+           INodeElementRepository elementRepo,
+           ITimeSpentRepository timeRepo)
            : base(context, roleManager, requstUserProvider, configuration)
         {
             NodeElementRepo = elementRepo;
+            TimeSpentRepo = timeRepo;
         }
         #endregion
 
@@ -85,7 +88,7 @@ namespace TimeTracker.Controllers
         public async Task<IActionResult> Get([FromRoute] long id)
         {
             var nodeElement = await NodeElementRepo.GetNodeElementAsync(id);
-
+            
             //handle requests asking for non-existing NodeElement
             if (nodeElement == null)
             {
@@ -94,9 +97,13 @@ namespace TimeTracker.Controllers
                     Error = String.Format("NodeElement {0} has not been found", id)
                 });
             }
+            
+            bool isStarted = (await TimeSpentRepo.GetOpenTimeSpentAsync(nodeElement.Id))==null ? false:true;
+            var model = nodeElement.Adapt<ElementViewModel>();
+            model.IsStarted = isStarted;
 
             // output the result in JSON format
-            return new JsonResult(nodeElement.Adapt<ElementViewModel>(), JsonSettings);
+            return new JsonResult(model, JsonSettings);
         }
 
         /// <summary>

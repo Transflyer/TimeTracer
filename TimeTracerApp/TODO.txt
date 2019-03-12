@@ -15,3 +15,21 @@
 8. Add home page with full report on user.
 
 9. Add other authorization (facebook, twitter, google, vk).
+
+10. Cover All by tests.
+
+11. Add alarm function to end some interval.
+
+12. Add on element (Today timing)
+
+13. Add User log to show when some buttons was pressed.
+
+14. Add feature to add and edit time interval.
+
+15. Set One button to START and END.
+
+16. Add to report page button filter: Today, this week, this month, arbitraly period.
+
+
+DONE:
+

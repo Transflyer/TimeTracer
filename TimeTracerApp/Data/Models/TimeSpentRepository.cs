@@ -77,8 +77,8 @@ namespace TimeTracker.Data.Models
             return item;
         }
 
-        public async Task<TimeSpent> GetOpenTimeSpentAsync(long? elementId) => 
-            await TimeSpents.FirstOrDefaultAsync(e => e.ElementId == elementId && e.IsOpen == true);
+        public async Task<TimeSpent> GetOpenTimeSpentAsync(long? nodeElementId) => 
+            await TimeSpents.FirstOrDefaultAsync(e => e.ElementId == nodeElementId && e.IsOpen == true);
 
         public async Task<IEnumerable<TimeSpent>> GetElementTimeSpentsAsync(long? elementId, DateTime? from = null, DateTime? to = null)
         {
@@ -141,7 +141,6 @@ namespace TimeTracker.Data.Models
             await context.SaveChangesAsync();
             return updatedItem;
         }
-
         public async Task<TimeSpent> UpdateEndAsync(long id)
         {
             var result = await context.TimeSpents.FindAsync(id);

@@ -23,6 +23,7 @@ namespace TimeTracker.ViewModels
         public int Flags { get; set; }
         public string UserId { get; set; }
         public long ParentId { get; set; }
+        public bool IsStarted { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
         #endregion

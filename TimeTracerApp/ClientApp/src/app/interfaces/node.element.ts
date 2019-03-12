@@ -4,4 +4,5 @@ interface NodeElement {
   Description: string;
   UserId: number;
   ParentId: number;
+  IsStarted: boolean;
 }

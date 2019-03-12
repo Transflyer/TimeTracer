@@ -45,26 +45,24 @@ namespace TimeTracker.Controllers
             // if the client payload is invalid.
             if (model == null) return new StatusCodeResult(500);
 
-            //Prepare ViewModel
-            UserViewModel viewModel = new UserViewModel();
-
             // check if the Username/Email already exists
-            ApplicationUser user = await UserManager.FindByNameAsync(model.UserName);
+            ApplicationUser user = await RequestUserProvider.FindByNameAsync(model.UserName);
             if (user != null)
             {
-                viewModel.HasErrors = true;
-                viewModel.Errors.Add("Username already exists");
-                return Json(viewModel, JsonSettings);
-            }
-            user = await UserManager.FindByEmailAsync(model.Email);
-            if (user != null)
-            {
-                viewModel.HasErrors = true;
-                viewModel.Errors.Add("Email already exists.");
-                return Json(viewModel, JsonSettings);
+                model.HasErrors = true;
+                model.Errors.Add("Username already exists");
+                return Json(model, JsonSettings);
             }
 
-            var now = DateTime.Now;
+            user = await RequestUserProvider.FindByEmailAsync(model.Email);
+            if (user != null)
+            {
+                model.HasErrors = true;
+                model.Errors.Add("Email already exists");
+                return Json(model, JsonSettings);
+            }
+
+            var now = DateTime.UtcNow;
 
             // create a new Item with the client-sent json data
             user = new ApplicationUser()
@@ -76,37 +74,44 @@ namespace TimeTracker.Controllers
                 CreatedDate = now,
                 LastModifiedDate = now
             };
-
+                      
             // Add the user to the Db with the choosen password
-            var result = await UserManager.CreateAsync(user, model.Password);
+            var result = await RequestUserProvider.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
                 // Assign the user to the 'RegisteredUser' role.
-                await UserManager.AddToRoleAsync(user, "RegisteredUser");
-
-                // Remove Lockout and E-Mail confirmation
-                user.EmailConfirmed = true;
-                user.LockoutEnabled = false;
-
-                // persist the changes into the Database
-                DbContext.SaveChanges();
-                viewModel = user.Adapt<UserViewModel>();
+                var roleResult = await RequestUserProvider.AddToRoleAsync(user, "RegisteredUser");
+                if (roleResult.Succeeded)
+                {
+                    // Remove Lockout and E-Mail confirmation
+                    await RequestUserProvider.UpdateLockOut(user);
+                    model = user.Adapt<UserViewModel>();
+                }
+                else
+                {
+                    //Populating error properties
+                    model.HasErrors = true;
+                    foreach (var er in roleResult.Errors)
+                    {
+                        model.Errors.Add(er.Description);
+                    }
+                }
             }
 
             //When it has errors during creation new user
             else
             {
                 //Populating error properties
-                viewModel.HasErrors = true;
+                model.HasErrors = true;
                 foreach (var er in result.Errors)
                 {
-                    viewModel.Errors.Add(er.Description);
+                    model.Errors.Add(er.Description);
                 }
             }
 
             // return the newly-created User to the client.
-            return Json(viewModel, JsonSettings);
+            return Json(model, JsonSettings);
         }
 
         /// <summary>

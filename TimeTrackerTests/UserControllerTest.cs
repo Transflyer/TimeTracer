@@ -73,9 +73,145 @@ namespace TimeTracker.Tests
             var resultType = await controller.Put(null);
 
             //Assert
-            //Assert
             Assert.IsType<StatusCodeResult>(resultType);
             Assert.Equal(500, (resultType as StatusCodeResult).StatusCode);
+        }
+
+        [Fact]
+        public async Task Put_Try_Add_User_With_Existing_UserName()
+        {
+            //Arrange
+            mockRequestUserProvider.Setup(provider
+                => provider.FindByNameAsync(UserViewModel.UserName))
+                .Returns(Task.FromResult(applicationUser));
+
+            //Act
+            var resultType = await controller.Put(UserViewModel);
+            var result = (resultType as JsonResult).Value as UserViewModel;
+
+            //Assert
+            Assert.True(result.HasErrors);
+            Assert.Equal("Username already exists", result.Errors[0]);
+        }
+
+        [Fact]
+        public async Task Put_Try_Add_User_With_Existing_Email()
+        {
+            //Arrange
+            mockRequestUserProvider.Setup(provider
+                => provider.FindByEmailAsync(UserViewModel.Email))
+                .Returns(Task.FromResult(applicationUser));
+
+            //Act
+            var resultType = await controller.Put(UserViewModel);
+            var result = (resultType as JsonResult).Value as UserViewModel;
+
+            //Assert
+            Assert.True(result.HasErrors);
+            Assert.Equal("Email already exists", result.Errors[0]);
+        }
+
+        [Fact]
+        public async Task Put_Identity_CreateUser_Succeeded()
+        {
+            //Arrange
+            var identityResult = IdentityResult.Success;
+            ApplicationUser nullUser = null;
+
+            mockRequestUserProvider.Setup(provider
+                => provider.FindByEmailAsync(UserViewModel.Email))
+                .Returns(Task.FromResult(nullUser));
+            mockRequestUserProvider.Setup(provider
+               => provider.FindByNameAsync(UserViewModel.UserName))
+               .Returns(Task.FromResult(nullUser));
+            mockRequestUserProvider.Setup(provider
+                => provider.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(identityResult));
+            mockRequestUserProvider.Setup(provider
+               => provider.AddToRoleAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+               .Returns(Task.FromResult(identityResult));
+
+            //Act
+            var resultType = await controller.Put(UserViewModel);
+            var result = (resultType as JsonResult).Value as UserViewModel;
+
+            //Assert
+            Assert.IsType<JsonResult>(resultType);
+            Assert.Equal(result.DisplayName, UserViewModel.DisplayName);
+            Assert.Equal(result.Email, UserViewModel.Email);
+            Assert.False(UserViewModel.HasErrors);
+        }
+
+        [Fact]
+        public async Task Put_Identity_CreateUser_Failed()
+        {
+            //Arrange
+            var identityResultFailed = IdentityResult.Failed(new IdentityError() {
+                Code = "100",
+                Description = "Cant create user"
+            });
+
+            ApplicationUser nullUser = null;
+
+            mockRequestUserProvider.Setup(provider
+                => provider.FindByEmailAsync(UserViewModel.Email))
+                .Returns(Task.FromResult(nullUser));
+            mockRequestUserProvider.Setup(provider
+               => provider.FindByNameAsync(UserViewModel.UserName))
+               .Returns(Task.FromResult(nullUser));
+            mockRequestUserProvider.Setup(provider
+                => provider.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(identityResultFailed));
+           
+
+            //Act
+            var resultType = await controller.Put(UserViewModel);
+            var result = (resultType as JsonResult).Value as UserViewModel;
+
+            //Assert
+            Assert.IsType<JsonResult>(resultType);
+            Assert.Equal(result.DisplayName, UserViewModel.DisplayName);
+            Assert.Equal(result.Email, UserViewModel.Email);
+            Assert.True(UserViewModel.HasErrors);
+            Assert.Equal("Cant create user", result.Errors[0]);
+        }
+
+        [Fact]
+        public async Task Put_Identity_AddRole_Failed()
+        {
+            //Arrange
+            var identityResult = IdentityResult.Success;
+            var identityResultFailed = IdentityResult.Failed(new IdentityError()
+            {
+                Code = "100",
+                Description = "Cant add role"
+            });
+
+            ApplicationUser nullUser = null;
+
+            mockRequestUserProvider.Setup(provider
+                => provider.FindByEmailAsync(UserViewModel.Email))
+                .Returns(Task.FromResult(nullUser));
+            mockRequestUserProvider.Setup(provider
+               => provider.FindByNameAsync(UserViewModel.UserName))
+               .Returns(Task.FromResult(nullUser));
+            mockRequestUserProvider.Setup(provider
+                => provider.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(identityResult));
+            mockRequestUserProvider.Setup(provider
+               => provider.AddToRoleAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+               .Returns(Task.FromResult(identityResultFailed));
+
+            //Act
+            var resultType = await controller.Put(UserViewModel);
+            var result = (resultType as JsonResult).Value as UserViewModel;
+
+            //Assert
+            Assert.IsType<JsonResult>(resultType);
+            Assert.Equal(result.DisplayName, UserViewModel.DisplayName);
+            Assert.Equal(result.Email, UserViewModel.Email);
+            Assert.True(UserViewModel.HasErrors);
+            Assert.Equal("Cant add role", result.Errors[0]);
         }
     }
 }
