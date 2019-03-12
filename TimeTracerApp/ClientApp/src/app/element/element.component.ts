@@ -89,6 +89,7 @@ export class ElementComponent implements OnInit {
       post(url, null).subscribe(result => {
         console.log("End timing for NodeElement " + this.nodeElement.Id + " has been set.");
         this.stopWatchChild.StopTimer();
+        this.nodeElement.IsStarted = false;
       }, error => {
         console.error(error);
         this.stopWatchChild.StopTimer();
