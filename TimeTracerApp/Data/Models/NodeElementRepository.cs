@@ -171,8 +171,8 @@ namespace TimeTracker.Data.Models
             elementToUpdate.Text = nodeElement.Text;
             elementToUpdate.Title = nodeElement.Title;
             elementToUpdate.Notes = nodeElement.Notes;
-            elementToUpdate.UserId = nodeElement.UserId;
-            elementToUpdate.ParentId = nodeElement.ParentId;
+            //elementToUpdate.UserId = nodeElement.UserId;
+            //elementToUpdate.ParentId = nodeElement.ParentId;
 
             // properties set from server-side
             elementToUpdate.LastModifiedDate = DateTime.UtcNow;
