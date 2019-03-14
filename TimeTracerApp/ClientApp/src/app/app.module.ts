@@ -28,6 +28,8 @@ import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 import { ParentsListComponent } from './parents/parents-list.component';
 import { StopwatchComponent } from './stopwatch/stopwatch.component';
 import { ReportComponent } from './report/report.component';
+import { IntervalListComponent } from './interval/interval-list.component';
+import { IntervalEditComponent } from './interval/interval-edit.component';
 
 
 
@@ -50,7 +52,9 @@ import { ReportComponent } from './report/report.component';
     ElementListComponent,
     ParentsListComponent,
     StopwatchComponent,
-    ReportComponent
+    ReportComponent,
+    IntervalListComponent,
+    IntervalEditComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -68,6 +72,7 @@ import { ReportComponent } from './report/report.component';
       { path: 'project/create', component: ProjectEditComponent },
       { path: 'project/create/:id', component: ProjectEditComponent },
       { path: 'project/edit/:id', component: ProjectEditComponent },
+      { path: 'interval/edit/:id', component: IntervalEditComponent},
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
       { path: '**', component: PageNotFoundComponent }

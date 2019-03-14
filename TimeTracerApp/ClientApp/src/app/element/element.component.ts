@@ -84,7 +84,7 @@ export class ElementComponent implements OnInit {
 
   onStop()
   {
-    var url = this.baseUrl + "api/timespent/end/element/" + this.nodeElement.Id;
+    var url = this.baseUrl + "api/timespent/end/element/" + this.nodeElement.Id + "/" + true;
     this.http.
       post(url, null).subscribe(result => {
         console.log("End timing for NodeElement " + this.nodeElement.Id + " has been set.");

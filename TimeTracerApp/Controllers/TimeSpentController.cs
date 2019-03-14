@@ -12,6 +12,7 @@ using TimeTracker.Services;
 using Microsoft.Extensions.Configuration;
 using Mapster;
 using TimeTracker.ViewModels;
+using TimeTracker.ViewModels.Service;
 
 namespace TimeTracker.Controllers
 {
@@ -64,7 +65,7 @@ namespace TimeTracker.Controllers
             var openTimeSpent = result.FirstOrDefault(r => r.IsOpen == true);
             if (openTimeSpent != null)
             {
-                openTimeSpent = await TimeSpentRepo.UpdateEndAsync(openTimeSpent.Id);
+                openTimeSpent = await TimeSpentRepo.SetEndAsync(openTimeSpent.Id);
             }
             
             var timeSpan = TimeSpan.FromSeconds(Convert.ToDouble(result.Sum(s => s.TotalSecond)));
@@ -81,8 +82,8 @@ namespace TimeTracker.Controllers
             return new JsonResult(viewModel, JsonSettings);
         }
 
-        [HttpPost("end/element/{elementId}")]
-        public async Task<IActionResult> SetEnd(long? elementId)
+        [HttpPost("end/element/{elementId}/{finish?}")]
+        public async Task<IActionResult> SetEnd(long? elementId, bool? finish)
         {
             if (elementId == null) return new StatusCodeResult(500);
             var nodeElement = await NodeElementRepo.GetNodeElementAsync(elementId);
@@ -107,41 +108,24 @@ namespace TimeTracker.Controllers
                 });
             }
 
-            var result = await TimeSpentRepo.SetEndAsync(timeSpentItem.Id);
+            var result = await TimeSpentRepo.SetEndAsync(timeSpentItem.Id, 
+                finish == null ? false : (bool)finish);
 
-            return new JsonResult(result.Adapt<TimeSpentViewModel>(), JsonSettings);
+            return new JsonResult(result.Adapt<IntervalViewModel>(), JsonSettings);
 
         }
 
-        [HttpPost("updateend/element/{elementId}")]
-        public async Task<IActionResult> UpdateEnd(long? elementId)
+        [HttpPost("updateend/element/")]
+        public async Task<IActionResult> UpdateEnd([FromBody] IntervalViewModel model)
         {
-            if (elementId == null) return new StatusCodeResult(500);
-            var nodeElement = await NodeElementRepo.GetNodeElementAsync(elementId);
+            if (model == null) return new StatusCodeResult(500);
 
-            //handle requests asking for non-existing NodeElement
-            if (nodeElement == null)
-            {
-                return NotFound(new
-                {
-                    Error = String.Format("NodeElement {0} has not been found", elementId)
-                });
-            }
+            var interval = await TimeSpentRepo.GetTimeSpent(model.Id);
+            DateTime end = interval.End.AddSeconds(
+                Convert.ToDouble((model.Seconds + model.Minutes * 60 + model.Hours * 60 * 60)-interval.TotalSecond));
+            var result = await TimeSpentRepo.UpdateEndAsync(model.Id, end);
 
-            var timeSpentItem = await TimeSpentRepo.GetOpenTimeSpentAsync(nodeElement.Id);
-
-            //handle requests asking for non-existing NodeElement
-            if (timeSpentItem == null)
-            {
-                return NotFound(new
-                {
-                    Error = String.Format("There is no TimeSpent with property IsOpen == true on NodeElement {0}", elementId)
-                });
-            }
-
-            var result = await TimeSpentRepo.UpdateEndAsync(timeSpentItem.Id);
-
-            return new JsonResult(result.Adapt<TimeSpentViewModel>(), JsonSettings);
+            return new JsonResult(result.Adapt<IntervalViewModel>(), JsonSettings);
         }
 
         [HttpPost("start/element/{elementId}/{start}")]
@@ -170,8 +154,7 @@ namespace TimeTracker.Controllers
                 });
             }
 
-            return new JsonResult(result.Adapt<TimeSpentViewModel>(), JsonSettings);
-
+            return new JsonResult(result.Adapt<IntervalViewModel>(), JsonSettings);
         }
 
         #endregion
@@ -204,16 +187,16 @@ namespace TimeTracker.Controllers
         ///  Retrieves the TimeSpentViewModel object with the given {id}
         /// </summary>
         /// <param name="id">The ID of an existing TimeSpent</param>
-        /// <returns>he NodeElement with the given {id}</returns>
+        /// <returns>NodeElement intervals with the given {id}</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(long? id)
         {
             if (id == null) return new StatusCodeResult(500);
 
-            var timespent = await TimeSpentRepo.GetElementTimeSpentsAsync((long)id);
+            var intervals = await TimeSpentRepo.GetElementTimeSpentsAsync((long)id);
 
             //handle requests asking for non-existing NodeElement
-            if (timespent == null)
+            if (intervals == null)
             {
                 return NotFound(new
                 {
@@ -221,18 +204,23 @@ namespace TimeTracker.Controllers
                 });
             }
 
+            var viewModel  =  IntervalConverter
+                .FillDHMSProp(intervals
+                .OrderByDescending(d=>d.Start)
+                .Adapt<IEnumerable<IntervalViewModel>>());
+
             // output the result in JSON format
-            return new JsonResult(timespent.Adapt<TimeSpentViewModel>(), JsonSettings);
+            return new JsonResult(viewModel, JsonSettings);
         }
 
         // POST: api/TimeSpent
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] TimeSpentViewModel model)
+        public async Task<IActionResult> Post([FromBody] IntervalViewModel model)
         {
             if (model == null) return new StatusCodeResult(500);
             var itemToUpdate = model.Adapt<TimeSpent>();
             var result = await TimeSpentRepo.UpdateTimeSpentAsync(itemToUpdate);
-            return new JsonResult(result.Adapt<TimeSpentViewModel>());
+            return new JsonResult(result.Adapt<IntervalViewModel>());
         }
 
         // PUT: api/timespent/{id}
@@ -241,7 +229,7 @@ namespace TimeTracker.Controllers
         {
             if (id == null) return new StatusCodeResult(500);
             var result = await TimeSpentRepo.CreateTimeSpentAsync((long)id);
-            return new JsonResult(result.Adapt<TimeSpentViewModel>(), JsonSettings);
+            return new JsonResult(result.Adapt<IntervalViewModel>(), JsonSettings);
         }
         #endregion
     }

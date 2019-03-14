@@ -13,6 +13,7 @@ export class ElementEditComponent {
   title: string;
   nodeElement: NodeElement;
   form: FormGroup;
+  currentId: number;
 
   //if edit existing Node
   editMode: boolean;
@@ -35,7 +36,7 @@ export class ElementEditComponent {
     var id = +this.activeRoute.snapshot.params["id"];
     
     if (id) {
-
+      this.currentId = id;
       this.editMode = true;
 
       //fetch the NodeElement from the server

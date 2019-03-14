@@ -1,0 +1,37 @@
+<div class="interval-edit">
+  <h2>{{title}}</h2>
+  <h3>{{interval.Hours}}:{{interval.Minutes}}:{{interval.Seconds}}</h3>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="Hours">Hours</label>
+      <br />
+      <input type="number" id="hours"
+             formControlName="Hours" required
+             placeholder="Set hours amount..."
+             class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="Minutes">Minutes</label>
+      <br />
+      <input type="number" id="minutes"
+             formControlName="Minutes" required
+             placeholder="Set minutes amount..."
+             class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="Seconds">Seconds</label>
+      <br />
+      <input type="number" id="seconds"
+             formControlName="Seconds" required
+             placeholder="Set seconds amount..."
+             class="form-control" />
+    </div>
+    <div class="form-group commands">
+      <button type="submit"
+              [disabled]="form.invalid"
+              class="btn btn-success">
+        Save
+      </button>
+      </div>
+  </form>
+</div>

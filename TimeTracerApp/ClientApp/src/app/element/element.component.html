@@ -54,6 +54,7 @@
           &nbsp; Back
         </a>
         <div *ngIf="auth.isLoggedIn()" class="edit">
+          
           <input type="button" value="Add child element"
                  (click)="onAdd()"
                  class="btn btn-sm btn-primary" />
@@ -68,11 +69,11 @@
 
     </div>
   </div>
+  
 </div>
 
-  <div class="col-lg-4">
+<div class="col-lg-4">
     <element-list [parentId]="this.parentId" class="root"></element-list>
-
 </div>
 
 

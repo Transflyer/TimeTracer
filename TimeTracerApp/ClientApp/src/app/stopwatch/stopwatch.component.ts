@@ -124,7 +124,7 @@ export class StopwatchComponent implements OnInit {
 
       //Update end value of TimeSpent entity every 10 sec
       if (sec % 10 == 0 || sec == 0) {
-        var url = this.baseUrl + "api/timespent/updateend/element/" + this.elementId;
+        var url = this.baseUrl + "api/timespent/end/element/" + this.elementId;
         this.http.
           post(url, null).subscribe(result => {
             console.log("End timing element" + this.elementId + " has been set.");

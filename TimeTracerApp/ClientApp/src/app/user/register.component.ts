@@ -28,14 +28,14 @@ export class RegisterComponent {
 
   createForm() {
     this.form = this.fb.group({
-      Username: ['test', Validators.required] ,
-      Email: ['test@test.ru',
+      Username: ['', Validators.required] ,
+      Email: ['',
         [Validators.required,
         Validators.email]
       ],
-      Password: ['123', Validators.required],
-      PasswordConfirm: ['123', Validators.required],
-      DisplayName: ['WER', Validators.required]
+      Password: ['', Validators.required],
+      PasswordConfirm: ['', Validators.required],
+      DisplayName: ['', Validators.required]
     }, {
         validator: this.passwordConfirmValidator
       });

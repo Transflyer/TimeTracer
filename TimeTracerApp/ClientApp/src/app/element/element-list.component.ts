@@ -8,12 +8,11 @@ import { ActivatedRoute, Router } from "@angular/router";
   styleUrls: ['./element-list.component.less']
 })
 
-
 export class ElementListComponent implements OnInit {
   @Input() parentId: number;
   @Input() class: string;
   title: string;
-  
+
   selectedNodeElement: NodeElement;
   nodeElements: NodeElement[];
   elementsCount: number;

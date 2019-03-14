@@ -15,3 +15,4 @@ namespace TimeTracker.ViewModels
         public long IsOpenTimeSpentId { get; set; }
     }
 }
+

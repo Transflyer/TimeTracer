@@ -49,7 +49,7 @@ namespace TimeTracker.Tests
                 }
                 return elements.AsQueryable<NodeElement>();
             });
-            controller = new ElementsController(null, null, mockRequestUserProvider.Object, null, mockNodeElements.Object);
+            controller = new ElementsController(null, null, mockRequestUserProvider.Object, null, mockNodeElements.Object, null);
         }
 
         #endregion constructor

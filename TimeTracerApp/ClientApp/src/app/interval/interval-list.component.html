@@ -1,0 +1,28 @@
+<h3>Intervals</h3>
+<div *ngIf="editInterval">
+  <interval-edit [interval] ="editIntervalObject"></interval-edit>
+</div>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Interval</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let elem of elementIntervals">
+      <td class="text-left">{{elem.Id}}</td>
+      <td class="text-left">{{elem.Start}}</td>
+      <td class="text-left">{{elem.End}}</td>
+      <td class="text-right">
+      {{elem.Days}}.{{elem.Hours}}:{{elem.Minutes}}:{{elem.Seconds}}
+      <button class="btn btn-sm btn-success glyphicon glyphicon-edit"
+              (click)="onEdit(elem)">
+        </button></td>
+    </tr>
+  </tbody>
+</table>
+
+

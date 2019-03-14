@@ -29,14 +29,14 @@ namespace TimeTracker.Data.Models
             var element = await nodeElementRepo.GetNodeElementAsync(elementId);
             if (element == null) return null;
 
-            //Only one TimeSpent must be with property IsOpen == true, 
+            //Only one TimeSpent must be with property IsOpen == true,
             //thus we need set every existing TimeSpents property IsOpen to false regarding Current User
             var IsElementHasOpenedTimeSpents = TimeSpents
                 .Where(o => o.IsOpen == true && o.UserId == element.UserId).ToArray();
 
             if (IsElementHasOpenedTimeSpents.Count() != 0)
             {
-                foreach(var item in IsElementHasOpenedTimeSpents)
+                foreach (var item in IsElementHasOpenedTimeSpents)
                 {
                     item.IsOpen = false;
                     item.End = DateTime.UtcNow;
@@ -72,45 +72,46 @@ namespace TimeTracker.Data.Models
             if (item == null) return null;
             item.ElementId = 0;
             item.UserId = "";
-            
+
             await context.SaveChangesAsync();
             return item;
         }
 
-        public async Task<TimeSpent> GetOpenTimeSpentAsync(long? nodeElementId) => 
+        public async Task<TimeSpent> GetOpenTimeSpentAsync(long? nodeElementId) =>
             await TimeSpents.FirstOrDefaultAsync(e => e.ElementId == nodeElementId && e.IsOpen == true);
 
-        public async Task<IEnumerable<TimeSpent>> GetElementTimeSpentsAsync(long? elementId, DateTime? from = null, DateTime? to = null)
+        public async Task<IEnumerable<TimeSpent>> GetElementTimeSpentsAsync(
+            long? nodeElementId, DateTime? from = null, DateTime? to = null)
         {
-            if (elementId == null) return null;
+            if (nodeElementId == null) return null;
 
             if (from == null && to == null) return await TimeSpents
-                    .Where(n => n.ElementId == elementId)
+                    .Where(n => n.ElementId == nodeElementId)
                     .ToArrayAsync();
 
             if (from != null && to == null) return await TimeSpents
-                    .Where(n => n.ElementId == elementId && n.Start > from)
+                    .Where(n => n.ElementId == nodeElementId && n.Start > from)
                     .ToArrayAsync();
 
             if (from == null && to != null) return await TimeSpents
-                    .Where(n => n.ElementId == elementId && n.End < to)
+                    .Where(n => n.ElementId == nodeElementId && n.End < to)
                     .ToArrayAsync();
 
             if (from != null && to != null) return await TimeSpents
-                    .Where(n => n.ElementId == elementId && n.Start > from && n.End < to)
+                    .Where(n => n.ElementId == nodeElementId && n.Start > from && n.End < to)
                     .ToArrayAsync();
 
             return null;
         }
 
-        public async Task<TimeSpent> SetEndAsync(long id)
+        public async Task<TimeSpent> SetEndAsync(long id, bool finish = false)
         {
             var result = await context.TimeSpents.FindAsync(id);
             if (result == null) return null;
             result.End = DateTime.UtcNow;
             result.TotalSecond = Convert.ToInt64((result.End - result.Start).TotalSeconds);
-            result.IsOpen = false;
             result.LastModifiedDate = DateTime.UtcNow;
+            if (finish == true) result.IsOpen = false;
             await context.SaveChangesAsync();
             return result;
         }
@@ -141,15 +142,20 @@ namespace TimeTracker.Data.Models
             await context.SaveChangesAsync();
             return updatedItem;
         }
-        public async Task<TimeSpent> UpdateEndAsync(long id)
+
+        public async Task<TimeSpent> UpdateEndAsync(long id, DateTime end)
         {
             var result = await context.TimeSpents.FindAsync(id);
             if (result == null) return null;
-            result.End = DateTime.UtcNow;
+            result.End = end;
             result.TotalSecond = Convert.ToInt64((result.End - result.Start).TotalSeconds);
             result.LastModifiedDate = DateTime.UtcNow;
             await context.SaveChangesAsync();
             return result;
         }
+
+        public Task<TimeSpent> GetTimeSpent(long id) =>
+            TimeSpents.FirstOrDefaultAsync(e => e.Id == id);
+        
     }
 }
