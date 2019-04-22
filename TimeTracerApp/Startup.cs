@@ -7,12 +7,15 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 using TimeTracker.Data;
 using TimeTracker.Data.Models;
 using TimeTracker.Services;
+using System.IO;
+using Serilog;
 
 namespace TimeTracker
 {
@@ -97,8 +100,19 @@ namespace TimeTracker
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+
+            //Create logger
+            Log.Logger = new LoggerConfiguration()
+             .MinimumLevel.Verbose()
+             .WriteTo.RollingFile(Path.Combine(env.WebRootPath + @"\Logs", "Time_Tracker_Errors-{Date}.txt"),
+             restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error)
+             .WriteTo.RollingFile(Path.Combine(env.WebRootPath + @"\Logs", "Time_Tracker_Information-{Date}.txt"),
+             restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information)
+             .WriteTo.Seq("http://localhost:5341", restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error)
+             .CreateLogger();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

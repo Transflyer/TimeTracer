@@ -15,6 +15,7 @@ using TimeTracker.Data;
 using TimeTracker.Data.Models;
 using TimeTracker.ViewModels;
 using TimeTracker.Services;
+using Serilog;
 
 namespace TimeTracker.Controllers
 {
@@ -114,6 +115,7 @@ namespace TimeTracker.Controllers
 
             catch (Exception ex)
             {
+                Log.Error($"TokenController: {ex.Message}");
                 return new UnauthorizedResult();
             }
         }
@@ -149,6 +151,7 @@ namespace TimeTracker.Controllers
 
             catch (Exception ex)
             {
+                Log.Error($"TokenController: {ex.Message}");
                 return new UnauthorizedResult();
             }
         }

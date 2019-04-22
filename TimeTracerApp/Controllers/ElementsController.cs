@@ -9,6 +9,7 @@ using TimeTracker.Data;
 using TimeTracker.Data.Models;
 using TimeTracker.Services;
 using TimeTracker.ViewModels;
+using Serilog;
 
 namespace TimeTracker.Controllers
 {
@@ -47,9 +48,11 @@ namespace TimeTracker.Controllers
 
             if (nodeElements == null)
             {
+                var error = String.Format("There are no child elements with {0} parent element", parentId);
+                Log.Error($"ElementsController: {error}");
                 return NotFound(new
                 {
-                    Error = String.Format("There are no child elements with {0} parent element", parentId)
+                    Error = error
                 });
             }
 
@@ -66,9 +69,11 @@ namespace TimeTracker.Controllers
 
             if (nodeElements == null)
             {
+                var error = String.Format("There are no parent elements chain with {0} child element", childId);
+                Log.Error($"ElementsController: {error}");
                 return NotFound(new
                 {
-                    Error = String.Format("There are no parent elements chain with {0} child element", childId)
+                    Error = error
                 });
             }
 
@@ -92,9 +97,11 @@ namespace TimeTracker.Controllers
             //handle requests asking for non-existing NodeElement
             if (nodeElement == null)
             {
+                var error = String.Format("NodeElement {0} has not been found", id);
+                Log.Error($"ElementsController: {error}");
                 return NotFound(new
                 {
-                    Error = String.Format("NodeElement {0} has not been found", id)
+                    Error = error
                 });
             }
             
@@ -135,9 +142,11 @@ namespace TimeTracker.Controllers
 
             if (nodeElement == null)
             {
+                var error = String.Format("NodeElement {0} has not been found", model.Id);
+                Log.Error($"ElementsController: {error}");
                 return NotFound(new
                 {
-                    Error = String.Format("NodeElement {0} has not been found", model.Id)
+                    Error = error
                 });
             }
 
@@ -157,9 +166,11 @@ namespace TimeTracker.Controllers
             // handle requests asking for non-existing nodeElement
             if (result == null)
             {
+                var error = String.Format("NodeElement {0} has not been found", id);
+                Log.Error($"ElementsController: {error}");
                 return NotFound(new
                 {
-                    Error = String.Format("NodeElement {0} has not been found", id)
+                    Error = error
                 });
             }
 
@@ -169,9 +180,5 @@ namespace TimeTracker.Controllers
 
         #endregion RESTful conventions methods
 
-        private bool NodeElementExists(long id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

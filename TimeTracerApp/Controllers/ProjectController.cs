@@ -11,6 +11,7 @@ using TimeTracker.Data.Models;
 using TimeTracker.Services;
 using TimeTracker.ViewModels;
 using System.Collections.Generic;
+using Serilog;
 
 
 namespace TimeTracker.Controllers
@@ -55,9 +56,11 @@ namespace TimeTracker.Controllers
             //handle requests asking for non-existing NodeElement
             if (nodeElement == null)
             {
+                var error = String.Format("NodeElement {0} has not been found", id);
+                Log.Error($"ProjectController: {error}");
                 return NotFound(new
                 {
-                    Error = String.Format("NodeElement ID {0} has not been found", id)
+                    Error = error
                 });
             }
 
@@ -103,9 +106,11 @@ namespace TimeTracker.Controllers
 
             if (nodeElement == null)
             {
+                var error = String.Format("NodeElement {0} has not been found", model.Id);
+                Log.Error($"ProjectController: {error}");
                 return NotFound(new
                 {
-                    Error = String.Format("NodeElement {0} has not been found", model.Id)
+                    Error = error
                 });
             }
 
@@ -129,9 +134,11 @@ namespace TimeTracker.Controllers
             // handle requests asking for non-existing nodeElement
             if (result == null)
             {
+                var error = String.Format("NodeElement {0} has not been found", id);
+                Log.Error($"ProjectController: {error}");
                 return NotFound(new
                 {
-                    Error = String.Format("NodeElement {0} has not been found", id)
+                    Error = error
                 });
             }
             // return an HTTP Status 200 (OK).

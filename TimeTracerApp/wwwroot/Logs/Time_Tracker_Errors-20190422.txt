@@ -1,0 +1,181 @@
+2019-04-22T10:21:41.2741933+03:00  [INF] Starting @angular/cli on port 52561... (c58aa545)
+2019-04-22T10:21:44.5118492+03:00  [INF] Entity Framework Core "2.2.2-servicing-10034" initialized '"ApplicationDbContext"' using provider '"MySql.Data.EntityFrameworkCore"' with options: "None" (9958f5bb)
+2019-04-22T10:21:47.4520059+03:00  [INF] Executed DbCommand ("16"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1 FROM information_schema.tables 
+WHERE table_name = '
+__EFMigrationsHistory' AND table_schema = DATABASE()" (0723d8ff)
+2019-04-22T10:21:47.4658990+03:00  [INF] Executed DbCommand ("2"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT 1 FROM information_schema.tables 
+WHERE table_name = '
+__EFMigrationsHistory' AND table_schema = DATABASE()" (0723d8ff)
+2019-04-22T10:21:47.5196562+03:00  [INF] Executed DbCommand ("33"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT `MigrationId`, `ProductVersion`
+FROM `__EFMigrationsHistory`
+ORDER BY `MigrationId`;" (0723d8ff)
+2019-04-22T10:21:47.5466207+03:00  [INF] No migrations were applied. The database is already up to date. (503cba9d)
+2019-04-22T10:21:47.7712105+03:00  [INF] Executed DbCommand ("43"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT `u`.`Id`, `u`.`AccessFailedCount`, `u`.`ConcurrencyStamp`, `u`.`CreatedDate`, `u`.`DisplayName`, `u`.`Email`, `u`.`EmailConfirmed`, `u`.`Flags`, `u`.`LastModifiedDate`, `u`.`LockoutEnabled`, `u`.`LockoutEnd`, `u`.`NormalizedEmail`, `u`.`NormalizedUserName`, `u`.`Notes`, `u`.`PasswordHash`, `u`.`PhoneNumber`, `u`.`PhoneNumberConfirmed`, `u`.`SecurityStamp`, `u`.`TwoFactorEnabled`, `u`.`Type`, `u`.`UserName`
+FROM `Users` AS `u`" (0723d8ff)
+2019-04-22T10:21:48.0007115+03:00  [INF] Executed DbCommand ("15"ms) [Parameters=[""], CommandType='Text', CommandTimeout='30']"
+""SELECT `n`.`Id`, `n`.`CreatedDate`, `n`.`Deleted`, `n`.`DeletedParentId`, `n`.`DeletedUserId`, `n`.`Description`, `n`.`Flags`, `n`.`LastModifiedDate`, `n`.`Notes`, `n`.`ParentId`, `n`.`Text`, `n`.`Title`, `n`.`Type`, `n`.`UserId`
+FROM `NodeElements` AS `n`" (0723d8ff)
+2019-04-22T10:21:57.2120588+03:00 0HLM6UCNDEVHL:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:5000/   (ca22a1cb)
+2019-04-22T10:21:57.2438804+03:00 0HLM6UCNDEVHL:00000001 [WRN] Failed to determine the https port for redirect. (ca76cc21)
+2019-04-22T10:22:03.1490205+03:00  [INF] > TimeTracker@0.0.0 start C:\Users\User\YandexDisk\Samples\TimeTracker\TimeTracerApp\ClientApp
+> ng serve --extract-css "--port" "52561"
+
+** NG Live Development Server is listening on localhost:52561, open your browser on http://localhost:52561/ **
+ (38cb64ff)
+2019-04-22T10:22:21.3020517+03:00  [INF] webpack: wait until bundle finished: /
+ (4d787c36)
+2019-04-22T10:22:42.4408679+03:00  [INF] Date: 2019-04-22T07:22:42.429Z
+ (1466a25a)
+2019-04-22T10:22:42.5720085+03:00  [INF] Hash: 2238e5c22e16aacbecc6
+Time: 38784ms
+chunk {inline} inline.bundle.js (inline) 3.85 kB [entry] [rendered]
+chunk {main} main.bundle.js (main) 335 kB [initial] [rendered]
+chunk {polyfills} polyfills.bundle.js (polyfills) 549 kB [initial] [rendered]
+chunk {styles} styles.bundle.css (styles) 155 kB [initial] [rendered]
+chunk {vendor} vendor.bundle.js (vendor) 14.6 MB [initial] [rendered]
+
+ (118fd5ca)
+2019-04-22T10:22:42.6306296+03:00  [INF] webpack: Compiled successfully.
+ (f274984e)
+2019-04-22T10:22:42.7873521+03:00 0HLM6UCNDEVHL:00000001 [INF] Request finished in 45543.468ms 200 text/html; charset=UTF-8 (791a596a)
+2019-04-22T10:22:43.0528592+03:00 0HLM6UCNDEVHM:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:5000/main.bundle.js   (ca22a1cb)
+2019-04-22T10:22:43.1890523+03:00 0HLM6UCNDEVHL:00000002 [INF] Request starting HTTP/1.1 GET http://localhost:5000/styles.bundle.css   (ca22a1cb)
+2019-04-22T10:22:43.5486573+03:00 0HLM6UCNDEVHP:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:5000/inline.bundle.js   (ca22a1cb)
+2019-04-22T10:22:43.7495464+03:00 0HLM6UCNDEVHO:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:5000/polyfills.bundle.js   (ca22a1cb)
+2019-04-22T10:22:44.1530668+03:00 0HLM6UCNDEVHN:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:5000/vendor.bundle.js   (ca22a1cb)
+2019-04-22T10:22:44.7214821+03:00 0HLM6UCNDEVHM:00000001 [INF] Request finished in 1743.1149ms 200 application/javascript; charset=UTF-8 (791a596a)
+2019-04-22T10:22:46.4052319+03:00 0HLM6UCNDEVHP:00000001 [INF] Request finished in 3381.8424ms 200 application/javascript; charset=UTF-8 (791a596a)
+2019-04-22T10:22:46.4091475+03:00 0HLM6UCNDEVHL:00000002 [INF] Request finished in 3418.5128ms 200 text/css; charset=UTF-8 (791a596a)
+2019-04-22T10:22:46.4249323+03:00 0HLM6UCNDEVHO:00000001 [INF] Request finished in 3449.527ms 200 application/javascript; charset=UTF-8 (791a596a)
+2019-04-22T10:22:48.7581383+03:00 0HLM6UCNDEVHN:00000001 [INF] Request finished in 5759.0737ms 200 application/javascript; charset=UTF-8 (791a596a)
+2019-04-22T10:22:52.2617141+03:00 0HLM6UCNDEVHN:00000002 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/user   (ca22a1cb)
+2019-04-22T10:22:52.4158910+03:00 0HLM6UCNDEVHN:00000002 [INF] Route matched with "{action = \"Get\", controller = \"User\", page = \"\"}". Executing action "TimeTracker.Controllers.UserController.Get (TimeTrackerApp)" (a44c0341)
+2019-04-22T10:22:53.8306818+03:00 0HLM6UCNDEVHP:00000002 [INF] Request starting HTTP/1.1 GET http://localhost:5000/glyphicons-halflings-regular.448c34a56d699c29117a.woff2   (ca22a1cb)
+2019-04-22T10:22:53.8677076+03:00 0HLM6UCNDEVHO:00000002 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/report/user   (ca22a1cb)
+2019-04-22T10:22:54.2030720+03:00 0HLM6UCNDEVHL:00000003 [INF] Request starting HTTP/1.1 GET http://localhost:5000/img/logo.svg   (ca22a1cb)
+2019-04-22T10:22:54.5043225+03:00 0HLM6UCNDEVHM:00000002 [INF] Request starting HTTP/1.1 GET http://localhost:5000/sockjs-node/info?t=1555917773589   (ca22a1cb)
+2019-04-22T10:22:54.8521555+03:00 0HLM6UCNDEVHO:00000002 [INF] Route matched with "{action = \"Report\", controller = \"Report\", page = \"\"}". Executing action "TimeTracker.Controllers.ReportController.Report (TimeTrackerApp)" (a44c0341)
+2019-04-22T10:22:54.8982145+03:00 0HLM6UCNDEVHL:00000003 [INF] Sending file. Request path: '"/img/logo.svg"'. Physical path: '"C:\Users\User\YandexDisk\Samples\TimeTracker\TimeTracerApp\wwwroot\img\logo.svg"' (27b0a520)
+2019-04-22T10:22:54.9195788+03:00 0HLM6UCNDEVHL:00000003 [INF] Request finished in 1284.2493ms 200 image/svg+xml (791a596a)
+2019-04-22T10:22:54.9228617+03:00 0HLM6UCNDEVHO:00000002 [INF] Authorization failed. (b15dd539)
+2019-04-22T10:22:54.9505329+03:00 0HLM6UCNDEVHN:00000002 [INF] Authorization failed. (b15dd539)
+2019-04-22T10:22:55.2342481+03:00 0HLM6UCNDEVHN:00000002 [INF] Authorization failed for the request at filter '"Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter"'. (8b6446cb)
+2019-04-22T10:22:55.2441779+03:00 0HLM6UCNDEVHO:00000002 [INF] Authorization failed for the request at filter '"Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter"'. (8b6446cb)
+2019-04-22T10:22:55.2741273+03:00 0HLM6UCNDEVHO:00000002 [INF] Executing ChallengeResult with authentication schemes (["Bearer"]). (f3dca807)
+2019-04-22T10:22:55.2741122+03:00 0HLM6UCNDEVHN:00000002 [INF] Executing ChallengeResult with authentication schemes (["Bearer"]). (f3dca807)
+2019-04-22T10:22:55.3041343+03:00 0HLM6UCNDEVHN:00000002 [INF] AuthenticationScheme: "Bearer" was challenged. (d45f1f38)
+2019-04-22T10:22:55.3082135+03:00 0HLM6UCNDEVHO:00000002 [INF] AuthenticationScheme: "Bearer" was challenged. (d45f1f38)
+2019-04-22T10:22:55.5885393+03:00 0HLM6UCNDEVHO:00000002 [INF] Executed action "TimeTracker.Controllers.ReportController.Report (TimeTrackerApp)" in 456.0981ms (afa2e885)
+2019-04-22T10:22:55.7553855+03:00 0HLM6UCNDEVHN:00000002 [INF] Executed action "TimeTracker.Controllers.UserController.Get (TimeTrackerApp)" in 2891.1671ms (afa2e885)
+2019-04-22T10:22:55.7874318+03:00 0HLM6UCNDEVHP:00000002 [INF] Request finished in 2143.5124ms 200 font/woff2; charset=UTF-8 (791a596a)
+2019-04-22T10:22:56.1607512+03:00 0HLM6UCNDEVHN:00000002 [INF] Request finished in 3497.0885ms 401  (791a596a)
+2019-04-22T10:22:56.2218762+03:00 0HLM6UCNDEVHO:00000002 [INF] Request finished in 2115.703ms 401  (791a596a)
+2019-04-22T10:22:56.4965712+03:00 0HLM6UCNDEVHM:00000002 [INF] Request finished in 2437.7589ms 200 application/json; charset=UTF-8 (791a596a)
+2019-04-22T10:22:56.5528663+03:00 0HLM6UCNDEVHQ:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:5000/sockjs-node/179/2wkreff2/websocket   (ca22a1cb)
+2019-04-22T10:23:01.5777957+03:00 0HLM6UCNDEVHR:00000001 [INF] Request starting HTTP/1.1 POST http://localhost:5000/api/token/auth application/json 133 (ca22a1cb)
+2019-04-22T10:23:01.5940524+03:00 0HLM6UCNDEVHR:00000001 [INF] Route matched with "{action = \"Jwt\", controller = \"Token\", page = \"\"}". Executing action "TimeTracker.Controllers.TokenController.Jwt (TimeTrackerApp)" (a44c0341)
+2019-04-22T10:23:01.9318338+03:00 0HLM6UCNDEVHR:00000001 [INF] Executing action method "TimeTracker.Controllers.TokenController.Jwt (TimeTrackerApp)" with arguments (["TimeTracker.ViewModels.TokenRequestViewModel"]) - Validation state: Valid (4e3479ed)
+2019-04-22T10:23:01.9556999+03:00 0HLM6UCNDEVHR:00000001 [INF] Entity Framework Core "2.2.2-servicing-10034" initialized '"ApplicationDbContext"' using provider '"MySql.Data.EntityFrameworkCore"' with options: "None" (9958f5bb)
+2019-04-22T10:23:02.1529290+03:00 0HLM6UCNDEVHR:00000001 [INF] Executed DbCommand ("15"ms) [Parameters=["@__normalizedUserName_0='?' (Size = -1)"], CommandType='Text', CommandTimeout='30']"
+""SELECT `u`.`Id`, `u`.`AccessFailedCount`, `u`.`ConcurrencyStamp`, `u`.`CreatedDate`, `u`.`DisplayName`, `u`.`Email`, `u`.`EmailConfirmed`, `u`.`Flags`, `u`.`LastModifiedDate`, `u`.`LockoutEnabled`, `u`.`LockoutEnd`, `u`.`NormalizedEmail`, `u`.`NormalizedUserName`, `u`.`Notes`, `u`.`PasswordHash`, `u`.`PhoneNumber`, `u`.`PhoneNumberConfirmed`, `u`.`SecurityStamp`, `u`.`TwoFactorEnabled`, `u`.`Type`, `u`.`UserName`
+FROM `Users` AS `u`
+WHERE `u`.`NormalizedUserName` = @__normalizedUserName_0
+LIMIT 1" (0723d8ff)
+2019-04-22T10:23:02.5085716+03:00 0HLM6UCNDEVHR:00000001 [INF] Executed DbCommand ("37"ms) [Parameters=["@p0='?' (Size = -1), @p1='?' (DbType = DateTime), @p2='?' (DbType = Int32), @p3='?' (Size = -1), @p4='?' (Size = -1)"], CommandType='Text', CommandTimeout='30']"
+""INSERT INTO `Tokens` (`ClientId`, `CreatedDate`, `Type`, `UserId`, `Value`)
+VALUES (@p0, @p1, @p2, @p3, @p4);
+SELECT `Id`
+FROM `Tokens`
+WHERE ROW_COUNT() = 1
+ AND `Id`=LAST_INSERT_ID();" (0723d8ff)
+2019-04-22T10:23:02.6098738+03:00 0HLM6UCNDEVHR:00000001 [INF] Executed action method "TimeTracker.Controllers.TokenController.Jwt (TimeTrackerApp)", returned result "Microsoft.AspNetCore.Mvc.JsonResult" in 669.6783ms. (50a9e262)
+2019-04-22T10:23:02.6270645+03:00 0HLM6UCNDEVHR:00000001 [INF] Executing JsonResult, writing value of type '"TimeTracker.ViewModels.TokenResponseViewModel"'. (2f513669)
+2019-04-22T10:23:02.6429399+03:00 0HLM6UCNDEVHR:00000001 [INF] Executed action "TimeTracker.Controllers.TokenController.Jwt (TimeTrackerApp)" in 1042.6962ms (afa2e885)
+2019-04-22T10:23:02.6524684+03:00 0HLM6UCNDEVHR:00000001 [INF] Request finished in 1079.3867ms 200 application/json; charset=utf-8 (791a596a)
+2019-04-22T10:23:02.6827121+03:00 0HLM6UCNDEVHR:00000002 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/project/root/   (ca22a1cb)
+2019-04-22T10:23:02.7042597+03:00 0HLM6UCNDEVHR:00000002 [INF] Route matched with "{action = \"Root\", controller = \"Project\", page = \"\"}". Executing action "TimeTracker.Controllers.ProjectController.Root (TimeTrackerApp)" (a44c0341)
+2019-04-22T10:23:02.7232192+03:00 0HLM6UCNDEVHS:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/user   (ca22a1cb)
+2019-04-22T10:23:02.7318105+03:00 0HLM6UCNDEVHS:00000001 [INF] Route matched with "{action = \"Get\", controller = \"User\", page = \"\"}". Executing action "TimeTracker.Controllers.UserController.Get (TimeTrackerApp)" (a44c0341)
+2019-04-22T10:23:02.7619017+03:00 0HLM6UCNDEVHS:00000001 [INF] Successfully validated the token. (60169667)
+2019-04-22T10:23:02.7621099+03:00 0HLM6UCNDEVHR:00000002 [INF] Successfully validated the token. (60169667)
+2019-04-22T10:23:02.7933271+03:00 0HLM6UCNDEVHR:00000002 [INF] Authorization was successful. (0d575a54)
+2019-04-22T10:23:02.8055357+03:00 0HLM6UCNDEVHS:00000001 [INF] Authorization was successful. (0d575a54)
+2019-04-22T10:23:02.9066778+03:00 0HLM6UCNDEVHR:00000002 [INF] Executing action method "TimeTracker.Controllers.ProjectController.Root (TimeTrackerApp)" with arguments (["10"]) - Validation state: Valid (4e3479ed)
+2019-04-22T10:23:03.0083045+03:00 0HLM6UCNDEVHS:00000001 [INF] Executing action method "TimeTracker.Controllers.UserController.Get (TimeTrackerApp)" - Validation state: Valid (dad538d7)
+2019-04-22T10:23:03.0224732+03:00 0HLM6UCNDEVHR:00000002 [INF] Entity Framework Core "2.2.2-servicing-10034" initialized '"ApplicationDbContext"' using provider '"MySql.Data.EntityFrameworkCore"' with options: "None" (9958f5bb)
+2019-04-22T10:23:03.0238086+03:00 0HLM6UCNDEVHS:00000001 [INF] Entity Framework Core "2.2.2-servicing-10034" initialized '"ApplicationDbContext"' using provider '"MySql.Data.EntityFrameworkCore"' with options: "None" (9958f5bb)
+2019-04-22T10:23:03.0719590+03:00 0HLM6UCNDEVHS:00000001 [INF] Executed DbCommand ("3"ms) [Parameters=["@__get_Item_0='?' (Size = -1)"], CommandType='Text', CommandTimeout='30']"
+""SELECT `e`.`Id`, `e`.`AccessFailedCount`, `e`.`ConcurrencyStamp`, `e`.`CreatedDate`, `e`.`DisplayName`, `e`.`Email`, `e`.`EmailConfirmed`, `e`.`Flags`, `e`.`LastModifiedDate`, `e`.`LockoutEnabled`, `e`.`LockoutEnd`, `e`.`NormalizedEmail`, `e`.`NormalizedUserName`, `e`.`Notes`, `e`.`PasswordHash`, `e`.`PhoneNumber`, `e`.`PhoneNumberConfirmed`, `e`.`SecurityStamp`, `e`.`TwoFactorEnabled`, `e`.`Type`, `e`.`UserName`
+FROM `Users` AS `e`
+WHERE `e`.`Id` = @__get_Item_0
+LIMIT 1" (0723d8ff)
+2019-04-22T10:23:03.2860787+03:00 0HLM6UCNDEVHS:00000001 [INF] Executed action method "TimeTracker.Controllers.UserController.Get (TimeTrackerApp)", returned result "Microsoft.AspNetCore.Mvc.JsonResult" in 274.81ms. (50a9e262)
+2019-04-22T10:23:03.2897361+03:00 0HLM6UCNDEVHS:00000001 [INF] Executing JsonResult, writing value of type '"TimeTracker.ViewModels.UserViewModel"'. (2f513669)
+2019-04-22T10:23:03.3082688+03:00 0HLM6UCNDEVHS:00000001 [INF] Executed action "TimeTracker.Controllers.UserController.Get (TimeTrackerApp)" in 571.6153ms (afa2e885)
+2019-04-22T10:23:03.3123645+03:00 0HLM6UCNDEVHS:00000001 [INF] Request finished in 596.0227ms 200 application/json; charset=utf-8 (791a596a)
+2019-04-22T10:23:03.3776535+03:00 0HLM6UCNDEVHR:00000002 [INF] Executed DbCommand ("6"ms) [Parameters=["@__userId_0='?' (Size = -1)"], CommandType='Text', CommandTimeout='30']"
+""SELECT `u`.`Id`, `u`.`CreatedDate`, `u`.`Deleted`, `u`.`DeletedParentId`, `u`.`DeletedUserId`, `u`.`Description`, `u`.`Flags`, `u`.`LastModifiedDate`, `u`.`Notes`, `u`.`ParentId`, `u`.`Text`, `u`.`Title`, `u`.`Type`, `u`.`UserId`
+FROM `NodeElements` AS `u`
+WHERE `u`.`UserId` = @__userId_0" (0723d8ff)
+2019-04-22T10:23:03.4531273+03:00 0HLM6UCNDEVHR:00000002 [INF] Executed action method "TimeTracker.Controllers.ProjectController.Root (TimeTrackerApp)", returned result "Microsoft.AspNetCore.Mvc.JsonResult" in 543.3819ms. (50a9e262)
+2019-04-22T10:23:03.4571712+03:00 0HLM6UCNDEVHR:00000002 [INF] Executing JsonResult, writing value of type '"TimeTracker.ViewModels.ElementViewModel[]"'. (2f513669)
+2019-04-22T10:23:03.4764169+03:00 0HLM6UCNDEVHR:00000002 [INF] Executed action "TimeTracker.Controllers.ProjectController.Root (TimeTrackerApp)" in 768.25ms (afa2e885)
+2019-04-22T10:23:03.4877022+03:00 0HLM6UCNDEVHR:00000002 [INF] Request finished in 798.0354ms 200 application/json; charset=utf-8 (791a596a)
+2019-04-22T10:23:11.4936161+03:00 0HLM6UCNDEVHT:00000001 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/report/user   (ca22a1cb)
+2019-04-22T10:23:11.4997997+03:00 0HLM6UCNDEVHT:00000001 [INF] Route matched with "{action = \"Report\", controller = \"Report\", page = \"\"}". Executing action "TimeTracker.Controllers.ReportController.Report (TimeTrackerApp)" (a44c0341)
+2019-04-22T10:23:11.5146367+03:00 0HLM6UCNDEVHT:00000001 [INF] Successfully validated the token. (60169667)
+2019-04-22T10:23:11.5213389+03:00 0HLM6UCNDEVHT:00000001 [INF] Authorization was successful. (0d575a54)
+2019-04-22T10:23:11.5657344+03:00 0HLM6UCNDEVHT:00000001 [INF] Executing action method "TimeTracker.Controllers.ReportController.Report (TimeTrackerApp)" with arguments (["", ""]) - Validation state: Valid (4e3479ed)
+2019-04-22T10:23:11.7376955+03:00 0HLM6UCNDEVHT:00000001 [INF] Entity Framework Core "2.2.2-servicing-10034" initialized '"ApplicationDbContext"' using provider '"MySql.Data.EntityFrameworkCore"' with options: "None" (9958f5bb)
+2019-04-22T10:23:11.9767540+03:00 0HLM6UCNDEVHT:00000001 [INF] Executed DbCommand ("2"ms) [Parameters=["@__userId_0='?' (Size = -1)"], CommandType='Text', CommandTimeout='30']"
+""SELECT `u`.`Id`, `u`.`CreatedDate`, `u`.`Deleted`, `u`.`DeletedParentId`, `u`.`DeletedUserId`, `u`.`Description`, `u`.`Flags`, `u`.`LastModifiedDate`, `u`.`Notes`, `u`.`ParentId`, `u`.`Text`, `u`.`Title`, `u`.`Type`, `u`.`UserId`
+FROM `NodeElements` AS `u`
+WHERE `u`.`UserId` = @__userId_0
+ORDER BY `u`.`Id`" (0723d8ff)
+2019-04-22T10:23:12.0661548+03:00 0HLM6UCNDEVHT:00000001 [INF] Executed DbCommand ("22"ms) [Parameters=["@__userId_0='?' (Size = -1)"], CommandType='Text', CommandTimeout='30']"
+""SELECT `u.TimeSpents`.`Id`, `u.TimeSpents`.`CreatedDate`, `u.TimeSpents`.`ElementId`, `u.TimeSpents`.`End`, `u.TimeSpents`.`IsOpen`, `u.TimeSpents`.`LastModifiedDate`, `u.TimeSpents`.`Start`, `u.TimeSpents`.`TotalSecond`, `u.TimeSpents`.`UserId`
+FROM `TimeSpent` AS `u.TimeSpents`
+INNER JOIN (
+    SELECT `u0`.`Id`
+    FROM `NodeElements` AS `u0`
+    WHERE `u0`.`UserId` = @__userId_0
+) AS `t` ON `u.TimeSpents`.`ElementId` = `t`.`Id`
+ORDER BY `t`.`Id`" (0723d8ff)
+2019-04-22T10:23:12.1316105+03:00 0HLM6UCNDEVHT:00000001 [INF] Executed action method "TimeTracker.Controllers.ReportController.Report (TimeTrackerApp)", returned result "Microsoft.AspNetCore.Mvc.JsonResult" in 546.6251ms. (50a9e262)
+2019-04-22T10:23:12.1483116+03:00 0HLM6UCNDEVHT:00000001 [INF] Executing JsonResult, writing value of type '"System.Collections.Generic.List`1[[TimeTracker.ViewModels.ReportElement, TimeTrackerApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'. (2f513669)
+2019-04-22T10:23:12.1683794+03:00 0HLM6UCNDEVHT:00000001 [INF] Executed action "TimeTracker.Controllers.ReportController.Report (TimeTrackerApp)" in 663.3867ms (afa2e885)
+2019-04-22T10:23:12.1925581+03:00 0HLM6UCNDEVHT:00000001 [INF] Request finished in 685.4252ms 200 application/json; charset=utf-8 (791a596a)
+2019-04-22T10:24:12.1859246+03:00 0HLM6UCNDEVHT:00000002 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/report/user   (ca22a1cb)
+2019-04-22T10:24:12.1902218+03:00 0HLM6UCNDEVHT:00000002 [INF] Route matched with "{action = \"Report\", controller = \"Report\", page = \"\"}". Executing action "TimeTracker.Controllers.ReportController.Report (TimeTrackerApp)" (a44c0341)
+2019-04-22T10:24:12.1951757+03:00 0HLM6UCNDEVHT:00000002 [INF] Successfully validated the token. (60169667)
+2019-04-22T10:24:12.1989580+03:00 0HLM6UCNDEVHT:00000002 [INF] Authorization was successful. (0d575a54)
+2019-04-22T10:24:12.2295045+03:00 0HLM6UCNDEVHT:00000002 [INF] Executing action method "TimeTracker.Controllers.ReportController.Report (TimeTrackerApp)" with arguments (["", ""]) - Validation state: Valid (4e3479ed)
+2019-04-22T10:24:26.2076853+03:00 0HLM6UCNDEVHT:00000002 [INF] Entity Framework Core "2.2.2-servicing-10034" initialized '"ApplicationDbContext"' using provider '"MySql.Data.EntityFrameworkCore"' with options: "None" (9958f5bb)
+2019-04-22T10:24:26.2667724+03:00 0HLM6UCNDEVHT:00000002 [INF] Executed DbCommand ("1"ms) [Parameters=["@__userId_0='?' (Size = -1)"], CommandType='Text', CommandTimeout='30']"
+""SELECT `u`.`Id`, `u`.`CreatedDate`, `u`.`Deleted`, `u`.`DeletedParentId`, `u`.`DeletedUserId`, `u`.`Description`, `u`.`Flags`, `u`.`LastModifiedDate`, `u`.`Notes`, `u`.`ParentId`, `u`.`Text`, `u`.`Title`, `u`.`Type`, `u`.`UserId`
+FROM `NodeElements` AS `u`
+WHERE `u`.`UserId` = @__userId_0
+ORDER BY `u`.`Id`" (0723d8ff)
+2019-04-22T10:24:26.2748233+03:00 0HLM6UCNDEVHT:00000002 [INF] Executed DbCommand ("3"ms) [Parameters=["@__userId_0='?' (Size = -1)"], CommandType='Text', CommandTimeout='30']"
+""SELECT `u.TimeSpents`.`Id`, `u.TimeSpents`.`CreatedDate`, `u.TimeSpents`.`ElementId`, `u.TimeSpents`.`End`, `u.TimeSpents`.`IsOpen`, `u.TimeSpents`.`LastModifiedDate`, `u.TimeSpents`.`Start`, `u.TimeSpents`.`TotalSecond`, `u.TimeSpents`.`UserId`
+FROM `TimeSpent` AS `u.TimeSpents`
+INNER JOIN (
+    SELECT `u0`.`Id`
+    FROM `NodeElements` AS `u0`
+    WHERE `u0`.`UserId` = @__userId_0
+) AS `t` ON `u.TimeSpents`.`ElementId` = `t`.`Id`
+ORDER BY `t`.`Id`" (0723d8ff)
+2019-04-22T10:24:26.3259375+03:00 0HLM6UCNDEVHT:00000002 [INF] Executed action method "TimeTracker.Controllers.ReportController.Report (TimeTrackerApp)", returned result "Microsoft.AspNetCore.Mvc.JsonResult" in 14054.6141ms. (50a9e262)
+2019-04-22T10:24:26.3296122+03:00 0HLM6UCNDEVHT:00000002 [INF] Executing JsonResult, writing value of type '"System.Collections.Generic.List`1[[TimeTracker.ViewModels.ReportElement, TimeTrackerApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'. (2f513669)
+2019-04-22T10:24:26.3606447+03:00 0HLM6UCNDEVHT:00000002 [INF] Executed action "TimeTracker.Controllers.ReportController.Report (TimeTrackerApp)" in 14142.0397ms (afa2e885)
+2019-04-22T10:24:26.4014514+03:00 0HLM6UCNDEVHT:00000002 [INF] Request finished in 14180.9889ms 200 application/json; charset=utf-8 (791a596a)
+2019-04-22T10:44:33.6081024+03:00 0HLM6UCNDEVHQ:00000001 [INF] Request finished in 1296920.8366ms 101  (791a596a)
+2019-04-22 12:39:06.257 +03:00 [Information] Hello from report
+2019-04-22 12:42:11.553 +03:00 [Information] Hello from report
+2019-04-22 13:29:16.862 +03:00 [Information] Hello from report
+2019-04-22 13:32:10.636 +03:00 [Information] Hello from report
+2019-04-22 13:32:17.918 +03:00 [Information] Hello from report

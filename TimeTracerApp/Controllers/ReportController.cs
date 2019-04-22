@@ -10,6 +10,8 @@ using TimeTracker.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using TimeTracker.ViewModels;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace TimeTracker.Controllers
 {
@@ -36,6 +38,7 @@ namespace TimeTracker.Controllers
         [HttpGet("user")]
         public async Task<IActionResult> Report(DateTime? start, DateTime? end)
         {
+           
             var userId = RequestUserProvider.GetUserId();
             var userElements = await NodeElementRepo.UserNodeElementsWithTimeSpentsAsync(userId);
 

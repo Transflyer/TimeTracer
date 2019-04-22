@@ -9,6 +9,7 @@ using TimeTracker.Data;
 using TimeTracker.Data.Models;
 using TimeTracker.Services;
 using TimeTracker.ViewModels;
+using Serilog;
 
 namespace TimeTracker.Controllers
 {
@@ -97,6 +98,7 @@ namespace TimeTracker.Controllers
                         model.Errors.Add(er.Description);
                     }
                 }
+                Log.Information($"UserController: New user {user.Email} has been created");
             }
 
             //When it has errors during creation new user
@@ -107,6 +109,7 @@ namespace TimeTracker.Controllers
                 foreach (var er in result.Errors)
                 {
                     model.Errors.Add(er.Description);
+                    Log.Error($"UserController: {er.Description}");
                 }
             }
 

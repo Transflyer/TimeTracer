@@ -28,6 +28,14 @@
 
 16. Add to report page button filter: Today, this week, this month, arbitraly period.
 
+17. Realise start button on Start page.
+
+18. Project Pagination.
+
+19. Count all data in hours, not using days.
+
+20. Create Logger.
+
 
 DONE:
 14. Add feature to add and edit time interval.

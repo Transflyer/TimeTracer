@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Mapster;
 using TimeTracker.ViewModels;
 using TimeTracker.ViewModels.Service;
+using Serilog;
 
 namespace TimeTracker.Controllers
 {
@@ -91,9 +92,11 @@ namespace TimeTracker.Controllers
             //handle requests asking for non-existing NodeElement
             if (nodeElement == null)
             {
+                var error = String.Format("NodeElement {0} has not been found", elementId);
+                Log.Error($"TimeSpentController: {error}");
                 return NotFound(new
                 {
-                    Error = String.Format("NodeElement {0} has not been found", elementId)
+                    Error = error
                 });
             }
 
@@ -102,9 +105,11 @@ namespace TimeTracker.Controllers
             //handle requests asking for non-existing NodeElement
             if (timeSpentItem == null)
             {
+                var error = String.Format("There is no TimeSpent with property IsOpen == true on NodeElement {0}", elementId);
+                Log.Error($"TimeSpentController: {error}");
                 return NotFound(new
                 {
-                    Error = String.Format("There is no TimeSpent with property IsOpen == true on NodeElement {0}", elementId)
+                    Error = error
                 });
             }
 
@@ -137,9 +142,11 @@ namespace TimeTracker.Controllers
             //handle requests asking for non-existing NodeElement
             if (nodeElement == null)
             {
+                var error = String.Format("NodeElement {0} has not been found", elementId);
+                Log.Error($"TimeSpentController: {error}");
                 return NotFound(new
                 {
-                    Error = String.Format("NodeElement {0} has not been found", elementId)
+                    Error = error
                 });
             }
 
@@ -148,9 +155,11 @@ namespace TimeTracker.Controllers
             //handle requests asking for non-existing NodeElement
             if (result == null)
             {
+                var error = String.Format("There is no TimeSpent with property IsOpen == true on NodeElement {0}", elementId);
+                Log.Error($"TimeSpentController: {error}");
                 return NotFound(new
                 {
-                    Error = String.Format("There is no TimeSpent with property IsOpen == true on NodeElement {0}", elementId)
+                    Error = error
                 });
             }
 
@@ -172,9 +181,11 @@ namespace TimeTracker.Controllers
             // handle requests asking for non-existing nodeElement
             if (result == null)
             {
+                var error = String.Format("TimeSpent {0} has not been found", id);
+                Log.Error($"TimeSpentController: {error}");
                 return NotFound(new
                 {
-                    Error = String.Format("TimeSpent {0} has not been found", id)
+                    Error = error
                 });
             }
 
@@ -198,9 +209,11 @@ namespace TimeTracker.Controllers
             //handle requests asking for non-existing NodeElement
             if (intervals == null)
             {
+                var error = String.Format("TimeSpent {0} has not been found", id);
+                Log.Error($"TimeSpentController: {error}");
                 return NotFound(new
                 {
-                    Error = String.Format("TimeSpent {0} has not been found", id)
+                    Error = error
                 });
             }
 
