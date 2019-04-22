@@ -1,4 +1,6 @@
-﻿1. Add session SQL Server cache.
+﻿0. Bug (when creating new element dont show Intervals)
+
+1. Add session SQL Server cache.
 
 2. Add to repo skip take methods.
 
@@ -24,12 +26,10 @@
 
 13. Add User log to show when some buttons was pressed.
 
-14. Add feature to add and edit time interval.
-
-15. Set One button to START and END.
-
 16. Add to report page button filter: Today, this week, this month, arbitraly period.
 
 
 DONE:
+14. Add feature to add and edit time interval.
+15. Set One button to START and END.
 
