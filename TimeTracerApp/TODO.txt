@@ -36,6 +36,8 @@
 
 20. Create Logger.
 
+21. Relise browser notification.
+
 
 DONE:
 14. Add feature to add and edit time interval.
