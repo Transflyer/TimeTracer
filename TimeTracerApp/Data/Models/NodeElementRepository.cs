@@ -40,8 +40,8 @@ namespace TimeTracker.Data.Models
             //Persist the newly-created NodeElement into the Database
             await context.SaveChangesAsync();
 
-            //Create empty TimeSpent element
-            TimeSpent timeSpent = new TimeSpent()
+            //Create empty Interval element
+            Interval interval = new Interval()
             {
                 Id = 0,
                 CreatedDate = nodeElement.CreatedDate,
@@ -54,7 +54,7 @@ namespace TimeTracker.Data.Models
                 UserId = nodeElement.UserId
             };
 
-            context.TimeSpents.Add(timeSpent);
+            context.Intervals.Add(interval);
             await context.SaveChangesAsync();
 
             return nodeElement;
@@ -72,9 +72,9 @@ namespace TimeTracker.Data.Models
             //add new nodeElement
             context.NodeElements.Add(nodeElement);
 
-            //Create initial child TimeSpent entity
+            //Create initial child Interval entity
             var cd = DateTime.UtcNow;
-            context.TimeSpents.Add(new TimeSpent()
+            context.Intervals.Add(new Interval()
             {
                 CreatedDate = cd,
                 TotalSecond = 0,
@@ -190,11 +190,11 @@ namespace TimeTracker.Data.Models
             .ToArrayAsync();
         }
 
-        public async Task<IEnumerable<NodeElement>> UserNodeElementsWithTimeSpentsAsync(string userId)
+        public async Task<IEnumerable<NodeElement>> UserNodeElementsWithIntervalsAsync(string userId)
         {
             var userElements = await NodeElements
                 .Where(u => u.UserId == userId)
-                .Include(t=>t.TimeSpents)
+                .Include(t=>t.Intervals)
                 .ToArrayAsync();
 
             //Constraction NodeElement tree

@@ -9,14 +9,14 @@ using TimeTracker.Data;
 namespace TimeTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190226194804_Initial")]
+    [Migration("20190429122447_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.8-servicing-32085");
+                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -241,6 +241,42 @@ namespace TimeTracker.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("TimeTracker.Data.Models.Interval", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<long>("ElementId");
+
+                    b.Property<DateTime>("End");
+
+                    b.Property<int>("IsOpen");
+
+                    b.Property<DateTime>("LastModifiedDate");
+
+                    b.Property<DateTime>("Start");
+
+                    b.Property<long?>("TotalSecond");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ElementId");
+
+                    b.HasIndex("End");
+
+                    b.HasIndex("IsOpen");
+
+                    b.HasIndex("Start");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Intervals");
+                });
+
             modelBuilder.Entity("TimeTracker.Data.Models.NodeElement", b =>
                 {
                     b.Property<long>("Id")
@@ -280,42 +316,6 @@ namespace TimeTracker.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("NodeElements");
-                });
-
-            modelBuilder.Entity("TimeTracker.Data.Models.TimeSpent", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreatedDate");
-
-                    b.Property<long>("ElementId");
-
-                    b.Property<DateTime>("End");
-
-                    b.Property<int>("IsOpen");
-
-                    b.Property<DateTime>("LastModifiedDate");
-
-                    b.Property<DateTime>("Start");
-
-                    b.Property<long?>("TotalSecond");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ElementId");
-
-                    b.HasIndex("End");
-
-                    b.HasIndex("IsOpen");
-
-                    b.HasIndex("Start");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("TimeSpent");
                 });
 
             modelBuilder.Entity("TimeTracker.Data.Models.Token", b =>
@@ -390,6 +390,14 @@ namespace TimeTracker.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("TimeTracker.Data.Models.Interval", b =>
+                {
+                    b.HasOne("TimeTracker.Data.Models.NodeElement", "NodeElement")
+                        .WithMany("Intervals")
+                        .HasForeignKey("ElementId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("TimeTracker.Data.Models.NodeElement", b =>
                 {
                     b.HasOne("TimeTracker.Data.Models.NodeElement", "ParentNode")
@@ -399,14 +407,6 @@ namespace TimeTracker.Migrations
                     b.HasOne("TimeTracker.Data.Models.ApplicationUser", "User")
                         .WithMany("RootElements")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("TimeTracker.Data.Models.TimeSpent", b =>
-                {
-                    b.HasOne("TimeTracker.Data.Models.NodeElement", "NodeElement")
-                        .WithMany("TimeSpents")
-                        .HasForeignKey("ElementId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("TimeTracker.Data.Models.Token", b =>

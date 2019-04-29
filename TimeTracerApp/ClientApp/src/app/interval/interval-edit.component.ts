@@ -50,7 +50,7 @@ export class IntervalEditComponent implements OnInit {
     this.updatedInterval.Minutes = this.form.value.Minutes;
     this.updatedInterval.Seconds = this.form.value.Seconds;
 
-    var url = this.baseUrl + "api/timespent/updateend/element/";
+    var url = this.baseUrl + "api/interval/updateend/element/";
 
     this.http.post<IntervalElement>(url, this.updatedInterval).subscribe(result => {
       this.interval = result;

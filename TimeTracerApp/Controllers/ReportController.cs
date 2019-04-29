@@ -40,7 +40,7 @@ namespace TimeTracker.Controllers
         {
            
             var userId = RequestUserProvider.GetUserId();
-            var userElements = await NodeElementRepo.UserNodeElementsWithTimeSpentsAsync(userId);
+            var userElements = await NodeElementRepo.UserNodeElementsWithIntervalsAsync(userId);
 
             List<ReportElement> ReportView = new List<ReportElement>();
 
@@ -50,8 +50,8 @@ namespace TimeTracker.Controllers
                 //Recursively call func ReportTree for each elem
                 var childList = ReportTree(elem);
 
-                //Set TimeSpan from all TimeSpent records in DB
-                var ts = TimeSpan.FromSeconds(Convert.ToInt64(elem.TimeSpents.Sum(t => t.TotalSecond))
+                //Set TimeSpan from all Interval records in DB
+                var ts = TimeSpan.FromSeconds(Convert.ToInt64(elem.Intervals.Sum(t => t.TotalSecond))
                     + (childList == null ? 0 : childList.Sum(t => t.TotalSeconds)));
 
                 //Create report element for model to client
@@ -102,16 +102,16 @@ namespace TimeTracker.Controllers
                     }
 
                     //If it have open Node Element, then counting total seconds to current time
-                    var openTimeSpents = elem.TimeSpents.FirstOrDefault(i => i.IsOpen == true);
-                    e.IsOpen = openTimeSpents == null ? false : true;
-                    if (openTimeSpents != null)
+                    var openIntervals = elem.Intervals.FirstOrDefault(i => i.IsOpen == true);
+                    e.IsOpen = openIntervals == null ? false : true;
+                    if (openIntervals != null)
                     {
-                        openTimeSpents.End = DateTime.UtcNow;
-                        openTimeSpents.TotalSecond = Convert.ToInt64((openTimeSpents.End - openTimeSpents.Start).TotalSeconds);
+                        openIntervals.End = DateTime.UtcNow;
+                        openIntervals.TotalSecond = Convert.ToInt64((openIntervals.End - openIntervals.Start).TotalSeconds);
                     }
 
                     //Fill client model properties
-                    e.TotalSeconds = Convert.ToInt64(elem.TimeSpents.Sum(t => t.TotalSecond)) + childrenTotalSeconds;
+                    e.TotalSeconds = Convert.ToInt64(elem.Intervals.Sum(t => t.TotalSecond)) + childrenTotalSeconds;
                     var ts = TimeSpan.FromSeconds(e.TotalSeconds);
                     e.Days = ts.Days;
                     e.Hours = ts.Hours;

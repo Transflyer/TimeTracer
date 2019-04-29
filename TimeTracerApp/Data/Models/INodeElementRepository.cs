@@ -28,6 +28,6 @@ namespace TimeTracker.Data.Models
 
         Task<IEnumerable<NodeElement>> UserNodeElementsAsync(string userId);
 
-        Task<IEnumerable<NodeElement>> UserNodeElementsWithTimeSpentsAsync(string userId);
+        Task<IEnumerable<NodeElement>> UserNodeElementsWithIntervalsAsync(string userId);
     }
 }

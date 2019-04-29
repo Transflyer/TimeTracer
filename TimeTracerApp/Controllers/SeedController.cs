@@ -21,7 +21,7 @@ namespace TimeTracker.Controllers
     {
         #region Properties
         private readonly INodeElementRepository NodeElementRepo;
-        private readonly ITimeSpentRepository TimeSpentRepo;
+        private readonly IIntervalRepository IntervalRepo;
         protected UserManager<ApplicationUser> UserManager;
         #endregion
 
@@ -32,11 +32,11 @@ namespace TimeTracker.Controllers
             IRequestUserProvider requstUserProvider,
             IConfiguration configuration,
             INodeElementRepository erepo, 
-            ITimeSpentRepository trepo)
+            IIntervalRepository trepo)
             : base(context, roleManager, requstUserProvider, configuration)
         {
             NodeElementRepo = erepo;
-            TimeSpentRepo = trepo;
+            IntervalRepo = trepo;
             UserManager = userManager;
         }
         #endregion Constructor
@@ -84,7 +84,7 @@ namespace TimeTracker.Controllers
                     DateTime createdDate = new DateTime(2018, 08, 08, 12, 30, 00);
                     DateTime lastModifiedDate = DateTime.UtcNow;
                     List<NodeElement> nodeElementsList = new List<NodeElement>();
-                    List<TimeSpent> timeSpentList = new List<TimeSpent>();
+                    List<Interval> intervalList = new List<Interval>();
                     do
                     {
                         var element = new NodeElement()
@@ -105,7 +105,7 @@ namespace TimeTracker.Controllers
 
                     foreach (var element in nodeElementsList)
                     {
-                        var timeSpentsCount = new Random().Next(1, 100);
+                        var intervalsCount = new Random().Next(1, 100);
                         do
                         {
                             var month = new Random().Next(1, 13);
@@ -117,7 +117,7 @@ namespace TimeTracker.Controllers
                             var end = start.AddSeconds(new Random().Next(10000));
                             var span = Convert.ToInt64((end - start).TotalSeconds);
 
-                            var timeSpent = new TimeSpent()
+                            var interval = new Interval()
                             {
                                 CreatedDate = createdDate,
                                 LastModifiedDate = DateTime.UtcNow,
@@ -129,12 +129,12 @@ namespace TimeTracker.Controllers
                                 UserId = user.Id
                             };
 
-                            timeSpentList.Add(timeSpent);
-                            timeSpentsCount--;
-                        } while (timeSpentsCount > 0);
+                            intervalList.Add(interval);
+                            intervalsCount--;
+                        } while (intervalsCount > 0);
                     }
 
-                    DbContext.TimeSpents.AddRange(timeSpentList);
+                    DbContext.Intervals.AddRange(intervalList);
                     await DbContext.SaveChangesAsync();
 
                     count--;

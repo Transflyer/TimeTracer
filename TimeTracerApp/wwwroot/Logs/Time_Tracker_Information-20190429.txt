@@ -1,0 +1,7 @@
+2019-04-29 14:38:48.750 +03:00 [Error] UserController: Passwords must be at least 7 characters.
+2019-04-29 14:38:48.835 +03:00 [Error] UserController: Passwords must have at least one lowercase ('a'-'z').
+2019-04-29 14:38:48.836 +03:00 [Error] UserController: Passwords must have at least one uppercase ('A'-'Z').
+2019-04-29 14:39:00.867 +03:00 [Error] UserController: Passwords must have at least one lowercase ('a'-'z').
+2019-04-29 14:39:00.883 +03:00 [Error] UserController: Passwords must have at least one uppercase ('A'-'Z').
+2019-04-29 14:39:20.255 +03:00 [Information] UserController: New user a@diakov.top has been created
+2019-04-29 15:36:11.391 +03:00 [Information] UserController: New user a@diakov.top has been created

@@ -40,14 +40,14 @@ namespace TimeTracker.Data
             modelBuilder.Entity<Token>().HasIndex(p => p.ClientId);
             modelBuilder.Entity<Token>().HasIndex(p => p.UserId);
 
-            modelBuilder.Entity<TimeSpent>().ToTable("TimeSpent");
-            modelBuilder.Entity<TimeSpent>().Property(i => i.Id).ValueGeneratedOnAdd();
-            modelBuilder.Entity<TimeSpent>().HasOne(i => i.NodeElement).WithMany(t => t.TimeSpents);
-            modelBuilder.Entity<TimeSpent>().HasIndex(p => p.UserId);
-            modelBuilder.Entity<TimeSpent>().HasIndex(p => p.ElementId);
-            modelBuilder.Entity<TimeSpent>().HasIndex(p => p.IsOpen);
-            modelBuilder.Entity<TimeSpent>().HasIndex(p => p.Start);
-            modelBuilder.Entity<TimeSpent>().HasIndex(p => p.End);
+            modelBuilder.Entity<Interval>().ToTable("Intervals");
+            modelBuilder.Entity<Interval>().Property(i => i.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Interval>().HasOne(i => i.NodeElement).WithMany(t => t.Intervals);
+            modelBuilder.Entity<Interval>().HasIndex(p => p.UserId);
+            modelBuilder.Entity<Interval>().HasIndex(p => p.ElementId);
+            modelBuilder.Entity<Interval>().HasIndex(p => p.IsOpen);
+            modelBuilder.Entity<Interval>().HasIndex(p => p.Start);
+            modelBuilder.Entity<Interval>().HasIndex(p => p.End);
 
 
             #region MySQL restrictions on MySQL
@@ -99,7 +99,7 @@ namespace TimeTracker.Data
 
         public DbSet<Token> Tokens { get; set; }
 
-        public DbSet<TimeSpent> TimeSpents { get; set; }
+        public DbSet<Interval> Intervals { get; set; }
 
         #endregion Properties
     }

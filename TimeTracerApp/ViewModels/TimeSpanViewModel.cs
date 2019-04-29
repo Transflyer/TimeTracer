@@ -12,7 +12,7 @@ namespace TimeTracker.ViewModels
         public int Hours { get; set; }
         public int Minutes { get; set; }
         public int Seconds { get; set; }
-        public long IsOpenTimeSpentId { get; set; }
+        public long IsOpenIntervalId { get; set; }
     }
 }
 

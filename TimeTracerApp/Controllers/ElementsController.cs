@@ -20,7 +20,7 @@ namespace TimeTracker.Controllers
     {
         #region Properties
         private readonly INodeElementRepository NodeElementRepo;
-        private readonly ITimeSpentRepository TimeSpentRepo;
+        private readonly IIntervalRepository IntervalRepo;
         #endregion
 
         #region Constructor
@@ -29,11 +29,11 @@ namespace TimeTracker.Controllers
            IRequestUserProvider requstUserProvider,
            IConfiguration configuration,
            INodeElementRepository elementRepo,
-           ITimeSpentRepository timeRepo)
+           IIntervalRepository timeRepo)
            : base(context, roleManager, requstUserProvider, configuration)
         {
             NodeElementRepo = elementRepo;
-            TimeSpentRepo = timeRepo;
+            IntervalRepo = timeRepo;
         }
         #endregion
 
@@ -105,7 +105,7 @@ namespace TimeTracker.Controllers
                 });
             }
             
-            bool isStarted = (await TimeSpentRepo.GetOpenTimeSpentAsync(nodeElement.Id))==null ? false:true;
+            bool isStarted = (await IntervalRepo.GetOpenIntervalAsync(nodeElement.Id))==null ? false:true;
             var model = nodeElement.Adapt<ElementViewModel>();
             model.IsStarted = isStarted;
 

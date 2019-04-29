@@ -20,53 +20,53 @@ namespace TimeTracker.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Policy = "JwtAuthorization")]
-    public class TimeSpentController : BaseApiController
+    public class IntervalController : BaseApiController
     {
         #region Properties
         private readonly INodeElementRepository NodeElementRepo;
-        private readonly ITimeSpentRepository TimeSpentRepo;
+        private readonly IIntervalRepository IntervalRepo;
         #endregion
 
         #region Constructor
-        public TimeSpentController(ApplicationDbContext context,
+        public IntervalController(ApplicationDbContext context,
             RoleManager<IdentityRole> roleManager,
             IRequestUserProvider requstUserProvider,
             IConfiguration configuration,
-            ITimeSpentRepository timerepo,
+            IIntervalRepository timerepo,
             INodeElementRepository noderepo)
             : base(context, roleManager, requstUserProvider, configuration)
         {
-            TimeSpentRepo = timerepo;
+            IntervalRepo = timerepo;
             NodeElementRepo = noderepo;
         }
         #endregion
 
         #region Attribute-based routing methods
         /// <summary>
-        /// GET: api/timespent/element/{id}
+        /// GET: api/interval/element/{id}
         /// </summary>
-        /// <param name="id">The Id of NodeElement which own TimeSpents </param>
-        /// <returns>Array of timespents</returns>
+        /// <param name="id">The Id of NodeElement which own Intervals </param>
+        /// <returns>Array of intervals</returns>
         [HttpGet("element/{id?}")]
         public async Task<IActionResult> GetElementTimeSpan(long? id)
         {
-            var result = await TimeSpentRepo.GetElementTimeSpentsAsync(id);
+            var result = await IntervalRepo.GetElementIntervalsAsync(id);
 
-            //handle requests asking for non-existing TimeSpents on NodeElement
+            //handle requests asking for non-existing Intervals on NodeElement
             if (result == null)
             {
                 return NotFound(new
                 {
-                    Error = String.Format("There are no TimeSpents for NodeElement {0} has been found", id)
+                    Error = String.Format("There are no Intervals for NodeElement {0} has been found", id)
                 });
             }
 
 
-            //If exist open TimeSpent Element - update current total seconds 
-            var openTimeSpent = result.FirstOrDefault(r => r.IsOpen == true);
-            if (openTimeSpent != null)
+            //If exist open Interval Element - update current total seconds 
+            var openInterval = result.FirstOrDefault(r => r.IsOpen == true);
+            if (openInterval != null)
             {
-                openTimeSpent = await TimeSpentRepo.SetEndAsync(openTimeSpent.Id);
+                openInterval = await IntervalRepo.SetEndAsync(openInterval.Id);
             }
             
             var timeSpan = TimeSpan.FromSeconds(Convert.ToDouble(result.Sum(s => s.TotalSecond)));
@@ -78,7 +78,7 @@ namespace TimeTracker.Controllers
                 Hours = timeSpan.Hours,
                 Minutes = timeSpan.Minutes,
                 Seconds = timeSpan.Seconds,
-                IsOpenTimeSpentId = openTimeSpent == null? 0:openTimeSpent.Id
+                IsOpenIntervalId = openInterval == null? 0:openInterval.Id
             };
             return new JsonResult(viewModel, JsonSettings);
         }
@@ -93,27 +93,27 @@ namespace TimeTracker.Controllers
             if (nodeElement == null)
             {
                 var error = String.Format("NodeElement {0} has not been found", elementId);
-                Log.Error($"TimeSpentController: {error}");
+                Log.Error($"IntervalController: {error}");
                 return NotFound(new
                 {
                     Error = error
                 });
             }
 
-            var timeSpentItem = await TimeSpentRepo.GetOpenTimeSpentAsync(nodeElement.Id);
+            var intervalItem = await IntervalRepo.GetOpenIntervalAsync(nodeElement.Id);
 
             //handle requests asking for non-existing NodeElement
-            if (timeSpentItem == null)
+            if (intervalItem == null)
             {
-                var error = String.Format("There is no TimeSpent with property IsOpen == true on NodeElement {0}", elementId);
-                Log.Error($"TimeSpentController: {error}");
+                var error = String.Format("There is no Interval with property IsOpen == true on NodeElement {0}", elementId);
+                Log.Error($"IntervalController: {error}");
                 return NotFound(new
                 {
                     Error = error
                 });
             }
 
-            var result = await TimeSpentRepo.SetEndAsync(timeSpentItem.Id, 
+            var result = await IntervalRepo.SetEndAsync(intervalItem.Id, 
                 finish == null ? false : (bool)finish);
 
             return new JsonResult(result.Adapt<IntervalViewModel>(), JsonSettings);
@@ -125,10 +125,10 @@ namespace TimeTracker.Controllers
         {
             if (model == null) return new StatusCodeResult(500);
 
-            var interval = await TimeSpentRepo.GetTimeSpent(model.Id);
+            var interval = await IntervalRepo.GetInterval(model.Id);
             DateTime end = interval.End.AddSeconds(
                 Convert.ToDouble((model.Seconds + model.Minutes * 60 + model.Hours * 60 * 60)-interval.TotalSecond));
-            var result = await TimeSpentRepo.UpdateEndAsync(model.Id, end);
+            var result = await IntervalRepo.UpdateEndAsync(model.Id, end);
 
             return new JsonResult(result.Adapt<IntervalViewModel>(), JsonSettings);
         }
@@ -143,20 +143,20 @@ namespace TimeTracker.Controllers
             if (nodeElement == null)
             {
                 var error = String.Format("NodeElement {0} has not been found", elementId);
-                Log.Error($"TimeSpentController: {error}");
+                Log.Error($"IntervalController: {error}");
                 return NotFound(new
                 {
                     Error = error
                 });
             }
 
-            var result = await TimeSpentRepo.SetStartAsync(nodeElement.Id, start);
+            var result = await IntervalRepo.SetStartAsync(nodeElement.Id, start);
 
             //handle requests asking for non-existing NodeElement
             if (result == null)
             {
-                var error = String.Format("There is no TimeSpent with property IsOpen == true on NodeElement {0}", elementId);
-                Log.Error($"TimeSpentController: {error}");
+                var error = String.Format("There is no Interval with property IsOpen == true on NodeElement {0}", elementId);
+                Log.Error($"IntervalController: {error}");
                 return NotFound(new
                 {
                     Error = error
@@ -176,13 +176,13 @@ namespace TimeTracker.Controllers
         {
             if (id == null) return new StatusCodeResult(500);
 
-            var result = await TimeSpentRepo.DeleteTimeSpentAsync((long)id);
+            var result = await IntervalRepo.DeleteIntervalAsync((long)id);
 
             // handle requests asking for non-existing nodeElement
             if (result == null)
             {
-                var error = String.Format("TimeSpent {0} has not been found", id);
-                Log.Error($"TimeSpentController: {error}");
+                var error = String.Format("Interval {0} has not been found", id);
+                Log.Error($"IntervalController: {error}");
                 return NotFound(new
                 {
                     Error = error
@@ -194,23 +194,23 @@ namespace TimeTracker.Controllers
         }
 
         /// <summary>
-        ///  GET: api/timespent/{id}
-        ///  Retrieves the TimeSpentViewModel object with the given {id}
+        ///  GET: api/interval/{id}
+        ///  Retrieves the IntervalViewModel object with the given {id}
         /// </summary>
-        /// <param name="id">The ID of an existing TimeSpent</param>
+        /// <param name="id">The ID of an existing Interval</param>
         /// <returns>NodeElement intervals with the given {id}</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(long? id)
         {
             if (id == null) return new StatusCodeResult(500);
 
-            var intervals = await TimeSpentRepo.GetElementTimeSpentsAsync((long)id);
+            var intervals = await IntervalRepo.GetElementIntervalsAsync((long)id);
 
             //handle requests asking for non-existing NodeElement
             if (intervals == null)
             {
-                var error = String.Format("TimeSpent {0} has not been found", id);
-                Log.Error($"TimeSpentController: {error}");
+                var error = String.Format("Interval {0} has not been found", id);
+                Log.Error($"IntervalController: {error}");
                 return NotFound(new
                 {
                     Error = error
@@ -226,22 +226,22 @@ namespace TimeTracker.Controllers
             return new JsonResult(viewModel, JsonSettings);
         }
 
-        // POST: api/TimeSpent
+        // POST: api/Interval
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] IntervalViewModel model)
         {
             if (model == null) return new StatusCodeResult(500);
-            var itemToUpdate = model.Adapt<TimeSpent>();
-            var result = await TimeSpentRepo.UpdateTimeSpentAsync(itemToUpdate);
+            var itemToUpdate = model.Adapt<Interval>();
+            var result = await IntervalRepo.UpdateIntervalAsync(itemToUpdate);
             return new JsonResult(result.Adapt<IntervalViewModel>());
         }
 
-        // PUT: api/timespent/{id}
+        // PUT: api/interval/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(long? id)
         {
             if (id == null) return new StatusCodeResult(500);
-            var result = await TimeSpentRepo.CreateTimeSpentAsync((long)id);
+            var result = await IntervalRepo.CreateIntervalAsync((long)id);
             return new JsonResult(result.Adapt<IntervalViewModel>(), JsonSettings);
         }
         #endregion

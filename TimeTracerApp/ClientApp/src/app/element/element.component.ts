@@ -46,7 +46,7 @@ export class ElementComponent implements OnInit {
       this.nodeElement = result;
     }, error => console.error(error));
    
-    //url = this.baseUrl + "api/timespent/element/" + id;
+    //url = this.baseUrl + "api/interval/element/" + id;
     //this.http.get<TimeSpanElement>(url).subscribe(result => {
     //  this.elementTimeSpan = result;
     //}, error => console.error(error));
@@ -73,10 +73,10 @@ export class ElementComponent implements OnInit {
   }
 
   onStart() {
-    var url = this.baseUrl + "api/timespent/" + this.nodeElement.Id;
+    var url = this.baseUrl + "api/interval/" + this.nodeElement.Id;
     this.http.
       put(url, null).subscribe(result => {
-        console.log("TimeSpents for " + this.nodeElement.Id + " has been created.");
+        console.log("Intervals for " + this.nodeElement.Id + " has been created.");
         this.stopWatchChild.StartTimer();
         this.nodeElement.IsStarted = true;
       }, error => console.error(error));
@@ -84,7 +84,7 @@ export class ElementComponent implements OnInit {
 
   onStop()
   {
-    var url = this.baseUrl + "api/timespent/end/element/" + this.nodeElement.Id + "/" + true;
+    var url = this.baseUrl + "api/interval/end/element/" + this.nodeElement.Id + "/" + true;
     this.http.
       post(url, null).subscribe(result => {
         console.log("End timing for NodeElement " + this.nodeElement.Id + " has been set.");

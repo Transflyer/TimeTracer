@@ -137,13 +137,13 @@ FROM `NodeElements` AS `u`
 WHERE `u`.`UserId` = @__userId_0
 ORDER BY `u`.`Id`" (0723d8ff)
 2019-04-22T10:23:12.0661548+03:00 0HLM6UCNDEVHT:00000001 [INF] Executed DbCommand ("22"ms) [Parameters=["@__userId_0='?' (Size = -1)"], CommandType='Text', CommandTimeout='30']"
-""SELECT `u.TimeSpents`.`Id`, `u.TimeSpents`.`CreatedDate`, `u.TimeSpents`.`ElementId`, `u.TimeSpents`.`End`, `u.TimeSpents`.`IsOpen`, `u.TimeSpents`.`LastModifiedDate`, `u.TimeSpents`.`Start`, `u.TimeSpents`.`TotalSecond`, `u.TimeSpents`.`UserId`
-FROM `TimeSpent` AS `u.TimeSpents`
+""SELECT `u.Intervals`.`Id`, `u.Intervals`.`CreatedDate`, `u.Intervals`.`ElementId`, `u.Intervals`.`End`, `u.Intervals`.`IsOpen`, `u.Intervals`.`LastModifiedDate`, `u.Intervals`.`Start`, `u.Intervals`.`TotalSecond`, `u.Intervals`.`UserId`
+FROM `Interval` AS `u.Intervals`
 INNER JOIN (
     SELECT `u0`.`Id`
     FROM `NodeElements` AS `u0`
     WHERE `u0`.`UserId` = @__userId_0
-) AS `t` ON `u.TimeSpents`.`ElementId` = `t`.`Id`
+) AS `t` ON `u.Intervals`.`ElementId` = `t`.`Id`
 ORDER BY `t`.`Id`" (0723d8ff)
 2019-04-22T10:23:12.1316105+03:00 0HLM6UCNDEVHT:00000001 [INF] Executed action method "TimeTracker.Controllers.ReportController.Report (TimeTrackerApp)", returned result "Microsoft.AspNetCore.Mvc.JsonResult" in 546.6251ms. (50a9e262)
 2019-04-22T10:23:12.1483116+03:00 0HLM6UCNDEVHT:00000001 [INF] Executing JsonResult, writing value of type '"System.Collections.Generic.List`1[[TimeTracker.ViewModels.ReportElement, TimeTrackerApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'. (2f513669)
@@ -161,13 +161,13 @@ FROM `NodeElements` AS `u`
 WHERE `u`.`UserId` = @__userId_0
 ORDER BY `u`.`Id`" (0723d8ff)
 2019-04-22T10:24:26.2748233+03:00 0HLM6UCNDEVHT:00000002 [INF] Executed DbCommand ("3"ms) [Parameters=["@__userId_0='?' (Size = -1)"], CommandType='Text', CommandTimeout='30']"
-""SELECT `u.TimeSpents`.`Id`, `u.TimeSpents`.`CreatedDate`, `u.TimeSpents`.`ElementId`, `u.TimeSpents`.`End`, `u.TimeSpents`.`IsOpen`, `u.TimeSpents`.`LastModifiedDate`, `u.TimeSpents`.`Start`, `u.TimeSpents`.`TotalSecond`, `u.TimeSpents`.`UserId`
-FROM `TimeSpent` AS `u.TimeSpents`
+""SELECT `u.Intervals`.`Id`, `u.Intervals`.`CreatedDate`, `u.Intervals`.`ElementId`, `u.Intervals`.`End`, `u.Intervals`.`IsOpen`, `u.Intervals`.`LastModifiedDate`, `u.Intervals`.`Start`, `u.Intervals`.`TotalSecond`, `u.Intervals`.`UserId`
+FROM `Interval` AS `u.Intervals`
 INNER JOIN (
     SELECT `u0`.`Id`
     FROM `NodeElements` AS `u0`
     WHERE `u0`.`UserId` = @__userId_0
-) AS `t` ON `u.TimeSpents`.`ElementId` = `t`.`Id`
+) AS `t` ON `u.Intervals`.`ElementId` = `t`.`Id`
 ORDER BY `t`.`Id`" (0723d8ff)
 2019-04-22T10:24:26.3259375+03:00 0HLM6UCNDEVHT:00000002 [INF] Executed action method "TimeTracker.Controllers.ReportController.Report (TimeTrackerApp)", returned result "Microsoft.AspNetCore.Mvc.JsonResult" in 14054.6141ms. (50a9e262)
 2019-04-22T10:24:26.3296122+03:00 0HLM6UCNDEVHT:00000002 [INF] Executing JsonResult, writing value of type '"System.Collections.Generic.List`1[[TimeTracker.ViewModels.ReportElement, TimeTrackerApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"'. (2f513669)

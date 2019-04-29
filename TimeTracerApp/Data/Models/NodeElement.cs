@@ -69,9 +69,9 @@ namespace TimeTracker.Data.Models
         public virtual List<NodeElement> NodeElements { get; set; }
 
         /// <summary>
-        /// A list containing all TimeSpents
+        /// A list containing all Intervals
         /// </summary>
-        public virtual List<TimeSpent> TimeSpents { get; set; }
+        public virtual List<Interval> Intervals { get; set; }
 
         #endregion Lazy-Load Properties
     }

@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "importHelpers": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -14,10 +15,17 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "module": "es2015",
+    "baseUrl": "./"
   },
-  "exclude": [ "bin", "node_modules" ],
-  "atom": { "rewriteTsconfig": false },
+  "exclude": [
+    "bin",
+    "node_modules"
+  ],
+  "atom": {
+    "rewriteTsconfig": false
+  },
   "angularCompilerOptions": {
     "strictMetadataEmit": true
   }

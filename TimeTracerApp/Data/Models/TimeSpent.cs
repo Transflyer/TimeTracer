@@ -7,10 +7,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TimeTracker.Data.Models
 {
-    public class TimeSpent
+    public class Interval
     {
         #region Constructor
-        public TimeSpent()
+        public Interval()
         {
         }
         #endregion Constructor

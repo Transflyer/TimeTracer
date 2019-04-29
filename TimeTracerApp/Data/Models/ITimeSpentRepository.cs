@@ -5,26 +5,26 @@ using System.Threading.Tasks;
 
 namespace TimeTracker.Data.Models
 {
-    public interface ITimeSpentRepository
+    public interface IIntervalRepository
     {
-        IQueryable<TimeSpent> TimeSpents { get; }
+        IQueryable<Interval> Intervals { get; }
 
-        Task<TimeSpent> CreateTimeSpentAsync(long elementId);
+        Task<Interval> CreateIntervalAsync(long elementId);
 
-        Task<TimeSpent> DeleteTimeSpentAsync(long id);
+        Task<Interval> DeleteIntervalAsync(long id);
 
-        Task<TimeSpent> UpdateTimeSpentAsync(TimeSpent timeSpent);
+        Task<Interval> UpdateIntervalAsync(Interval interval);
 
-        Task<TimeSpent> SetStartAsync(long? id, DateTime start);
+        Task<Interval> SetStartAsync(long? id, DateTime start);
 
-        Task<TimeSpent> SetEndAsync(long id, bool finish = false);
+        Task<Interval> SetEndAsync(long id, bool finish = false);
 
-        Task<TimeSpent> UpdateEndAsync(long id, DateTime end);
+        Task<Interval> UpdateEndAsync(long id, DateTime end);
 
-        Task<IEnumerable<TimeSpent>> GetElementTimeSpentsAsync(long? nodeElementId, DateTime? from = null, DateTime? to = null);
+        Task<IEnumerable<Interval>> GetElementIntervalsAsync(long? nodeElementId, DateTime? from = null, DateTime? to = null);
 
-        Task<TimeSpent> GetOpenTimeSpentAsync(long? nodeElementId);
+        Task<Interval> GetOpenIntervalAsync(long? nodeElementId);
 
-        Task<TimeSpent> GetTimeSpent(long id);
+        Task<Interval> GetInterval(long id);
     }
 }

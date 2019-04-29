@@ -17,7 +17,7 @@ namespace TimeTracker.Tests
         #region Properties
 
         private Mock<INodeElementRepository> mockNodeElements;
-        private Mock<ITimeSpentRepository> mockIntervals;
+        private Mock<IIntervalRepository> mockIntervals;
         private Mock<IRequestUserProvider> mockRequestUserProvider;
         private ElementsController controller;
 
@@ -30,23 +30,23 @@ namespace TimeTracker.Tests
             //Common arrange
             mockNodeElements = new Mock<INodeElementRepository>();
             mockRequestUserProvider = new Mock<IRequestUserProvider>();
-            mockIntervals = new Mock<ITimeSpentRepository>();
+            mockIntervals = new Mock<IIntervalRepository>();
 
             //Number of elements
-            mockIntervals.Setup(p => p.TimeSpents).Returns(() =>
+            mockIntervals.Setup(p => p.Intervals).Returns(() =>
               {
-                  TimeSpent[] timeSpents = new TimeSpent[2];
-                  timeSpents[0] = new TimeSpent()
+                  Interval[] intervals = new Interval[2];
+                  intervals[0] = new Interval()
                   {
                       Id =1,
                       IsOpen = true,
                   };
-                  timeSpents[1] = new TimeSpent()
+                  intervals[1] = new Interval()
                   {
                       Id = 1,
                       IsOpen = true,
                   };
-                  return timeSpents.AsQueryable<TimeSpent>();
+                  return intervals.AsQueryable<Interval>();
               }
             );
 
@@ -131,12 +131,12 @@ namespace TimeTracker.Tests
             //Arrange
             var mockId = 5;
             var mockElementToPut = mockNodeElements.Object.NodeElements.FirstOrDefault(e => e.Id == mockId);
-            TimeSpent timeSpent = null;
+            Interval interval = null;
 
             mockNodeElements.Setup(repo => repo.GetNodeElementAsync(mockId))
                 .Returns(Task.FromResult(mockElementToPut));
-            mockIntervals.Setup(repo => repo.GetOpenTimeSpentAsync(mockId))
-                .Returns(Task.FromResult(timeSpent));
+            mockIntervals.Setup(repo => repo.GetOpenIntervalAsync(mockId))
+                .Returns(Task.FromResult(interval));
 
             //Act
             var resultType = await controller.Get(mockId);

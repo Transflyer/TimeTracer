@@ -244,7 +244,7 @@ namespace TimeTracker.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TimeSpent",
+                name: "Intervals",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
@@ -260,9 +260,9 @@ namespace TimeTracker.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TimeSpent", x => x.Id);
+                    table.PrimaryKey("PK_Intervals", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TimeSpent_NodeElements_ElementId",
+                        name: "FK_Intervals_NodeElements_ElementId",
                         column: x => x.ElementId,
                         principalTable: "NodeElements",
                         principalColumn: "Id",
@@ -296,6 +296,31 @@ namespace TimeTracker.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Intervals_ElementId",
+                table: "Intervals",
+                column: "ElementId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Intervals_End",
+                table: "Intervals",
+                column: "End");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Intervals_IsOpen",
+                table: "Intervals",
+                column: "IsOpen");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Intervals_Start",
+                table: "Intervals",
+                column: "Start");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Intervals_UserId",
+                table: "Intervals",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_NodeElements_ParentId",
                 table: "NodeElements",
                 column: "ParentId");
@@ -303,31 +328,6 @@ namespace TimeTracker.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_NodeElements_UserId",
                 table: "NodeElements",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TimeSpent_ElementId",
-                table: "TimeSpent",
-                column: "ElementId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TimeSpent_End",
-                table: "TimeSpent",
-                column: "End");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TimeSpent_IsOpen",
-                table: "TimeSpent",
-                column: "IsOpen");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TimeSpent_Start",
-                table: "TimeSpent",
-                column: "Start");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TimeSpent_UserId",
-                table: "TimeSpent",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -373,7 +373,7 @@ namespace TimeTracker.Migrations
                 name: "IdentityUser");
 
             migrationBuilder.DropTable(
-                name: "TimeSpent");
+                name: "Intervals");
 
             migrationBuilder.DropTable(
                 name: "Tokens");

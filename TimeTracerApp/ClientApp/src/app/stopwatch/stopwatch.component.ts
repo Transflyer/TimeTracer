@@ -52,14 +52,14 @@ export class StopwatchComponent implements OnInit {
  
 
   getElementTimeSpan() {
-    var url = this.baseUrl + "api/timespent/element/" + this.elementId;
+    var url = this.baseUrl + "api/interval/element/" + this.elementId;
     this.http.get<TimeSpanElement>(url).subscribe(result => {
       this.elementTimeSpan = result;
 
       //if swithed to other NodeElement
       this.StopTimer();
 
-      if (this.elementTimeSpan.IsOpenTimeSpentId != 0) {
+      if (this.elementTimeSpan.IsOpenIntervalId != 0) {
         this.StartTimer();
       }
       else {
@@ -122,9 +122,9 @@ export class StopwatchComponent implements OnInit {
       this.hours = "" + hour;
       this.days = "" + days;
 
-      //Update end value of TimeSpent entity every 10 sec
+      //Update end value of Interval entity every 10 sec
       if (sec % 10 == 0 || sec == 0) {
-        var url = this.baseUrl + "api/timespent/end/element/" + this.elementId;
+        var url = this.baseUrl + "api/interval/end/element/" + this.elementId;
         this.http.
           post(url, null).subscribe(result => {
             console.log("End timing element" + this.elementId + " has been set.");

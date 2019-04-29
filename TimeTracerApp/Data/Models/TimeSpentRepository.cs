@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace TimeTracker.Data.Models
 {
-    public class TimeSpentRepository : ITimeSpentRepository
+    public class IntervalRepository : IIntervalRepository
     {
         private readonly ApplicationDbContext context;
         private readonly INodeElementRepository nodeElementRepo;
 
         #region Constructor
 
-        public TimeSpentRepository(ApplicationDbContext ctx,
+        public IntervalRepository(ApplicationDbContext ctx,
             INodeElementRepository repo)
         {
             context = ctx;
@@ -22,32 +22,32 @@ namespace TimeTracker.Data.Models
 
         #endregion Constructor
 
-        public IQueryable<TimeSpent> TimeSpents => context.TimeSpents;
+        public IQueryable<Interval> Intervals => context.Intervals;
 
-        public async Task<TimeSpent> CreateTimeSpentAsync(long elementId)
+        public async Task<Interval> CreateIntervalAsync(long elementId)
         {
             var element = await nodeElementRepo.GetNodeElementAsync(elementId);
             if (element == null) return null;
 
-            //Only one TimeSpent must be with property IsOpen == true,
-            //thus we need set every existing TimeSpents property IsOpen to false regarding Current User
-            var IsElementHasOpenedTimeSpents = TimeSpents
+            //Only one Interval must be with property IsOpen == true,
+            //thus we need set every existing Intervals property IsOpen to false regarding Current User
+            var IsElementHasOpenedIntervals = Intervals
                 .Where(o => o.IsOpen == true && o.UserId == element.UserId).ToArray();
 
-            if (IsElementHasOpenedTimeSpents.Count() != 0)
+            if (IsElementHasOpenedIntervals.Count() != 0)
             {
-                foreach (var item in IsElementHasOpenedTimeSpents)
+                foreach (var item in IsElementHasOpenedIntervals)
                 {
                     item.IsOpen = false;
                     item.End = DateTime.UtcNow;
                     item.TotalSecond = Convert.ToInt64((item.End - item.Start).TotalSeconds);
                 }
-                context.TimeSpents.UpdateRange(IsElementHasOpenedTimeSpents);
+                context.Intervals.UpdateRange(IsElementHasOpenedIntervals);
                 await context.SaveChangesAsync();
             }
 
             var CreatedDate = DateTime.UtcNow;
-            TimeSpent timeSpent = new TimeSpent()
+            Interval interval = new Interval()
             {
                 //properties set from server-side
                 CreatedDate = CreatedDate,
@@ -58,17 +58,17 @@ namespace TimeTracker.Data.Models
                 IsOpen = true,
                 UserId = element.UserId
             };
-            timeSpent.ElementId = elementId;
+            interval.ElementId = elementId;
 
-            context.TimeSpents.Add(timeSpent);
+            context.Intervals.Add(interval);
             await context.SaveChangesAsync();
 
-            return timeSpent;
+            return interval;
         }
 
-        public async Task<TimeSpent> DeleteTimeSpentAsync(long id)
+        public async Task<Interval> DeleteIntervalAsync(long id)
         {
-            var item = await TimeSpents.FirstOrDefaultAsync(i => i.Id == id);
+            var item = await Intervals.FirstOrDefaultAsync(i => i.Id == id);
             if (item == null) return null;
             item.ElementId = 0;
             item.UserId = "";
@@ -77,36 +77,36 @@ namespace TimeTracker.Data.Models
             return item;
         }
 
-        public async Task<TimeSpent> GetOpenTimeSpentAsync(long? nodeElementId) =>
-            await TimeSpents.FirstOrDefaultAsync(e => e.ElementId == nodeElementId && e.IsOpen == true);
+        public async Task<Interval> GetOpenIntervalAsync(long? nodeElementId) =>
+            await Intervals.FirstOrDefaultAsync(e => e.ElementId == nodeElementId && e.IsOpen == true);
 
-        public async Task<IEnumerable<TimeSpent>> GetElementTimeSpentsAsync(
+        public async Task<IEnumerable<Interval>> GetElementIntervalsAsync(
             long? nodeElementId, DateTime? from = null, DateTime? to = null)
         {
             if (nodeElementId == null) return null;
 
-            if (from == null && to == null) return await TimeSpents
+            if (from == null && to == null) return await Intervals
                     .Where(n => n.ElementId == nodeElementId)
                     .ToArrayAsync();
 
-            if (from != null && to == null) return await TimeSpents
+            if (from != null && to == null) return await Intervals
                     .Where(n => n.ElementId == nodeElementId && n.Start > from)
                     .ToArrayAsync();
 
-            if (from == null && to != null) return await TimeSpents
+            if (from == null && to != null) return await Intervals
                     .Where(n => n.ElementId == nodeElementId && n.End < to)
                     .ToArrayAsync();
 
-            if (from != null && to != null) return await TimeSpents
+            if (from != null && to != null) return await Intervals
                     .Where(n => n.ElementId == nodeElementId && n.Start > from && n.End < to)
                     .ToArrayAsync();
 
             return null;
         }
 
-        public async Task<TimeSpent> SetEndAsync(long id, bool finish = false)
+        public async Task<Interval> SetEndAsync(long id, bool finish = false)
         {
-            var result = await context.TimeSpents.FindAsync(id);
+            var result = await context.Intervals.FindAsync(id);
             if (result == null) return null;
             result.End = DateTime.UtcNow;
             result.TotalSecond = Convert.ToInt64((result.End - result.Start).TotalSeconds);
@@ -116,9 +116,9 @@ namespace TimeTracker.Data.Models
             return result;
         }
 
-        public async Task<TimeSpent> SetStartAsync(long? id, DateTime start)
+        public async Task<Interval> SetStartAsync(long? id, DateTime start)
         {
-            TimeSpent item = await TimeSpents.FirstOrDefaultAsync(e => e.Id == id);
+            Interval item = await Intervals.FirstOrDefaultAsync(e => e.Id == id);
             if (item == null) return null;
             item.Start = start;
             item.LastModifiedDate = DateTime.UtcNow;
@@ -126,26 +126,26 @@ namespace TimeTracker.Data.Models
             return item;
         }
 
-        public async Task<TimeSpent> UpdateTimeSpentAsync(TimeSpent timeSpent)
+        public async Task<Interval> UpdateIntervalAsync(Interval interval)
         {
-            var updatedItem = await TimeSpents.FirstOrDefaultAsync(i => i.Id == timeSpent.Id);
+            var updatedItem = await Intervals.FirstOrDefaultAsync(i => i.Id == interval.Id);
             if (updatedItem == null) return null;
 
-            updatedItem.CreatedDate = timeSpent.CreatedDate;
-            updatedItem.ElementId = timeSpent.ElementId;
-            updatedItem.End = timeSpent.End;
+            updatedItem.CreatedDate = interval.CreatedDate;
+            updatedItem.ElementId = interval.ElementId;
+            updatedItem.End = interval.End;
             updatedItem.LastModifiedDate = DateTime.UtcNow;
-            updatedItem.Start = timeSpent.Start;
-            updatedItem.IsOpen = timeSpent.IsOpen;
-            updatedItem.UserId = timeSpent.UserId;
+            updatedItem.Start = interval.Start;
+            updatedItem.IsOpen = interval.IsOpen;
+            updatedItem.UserId = interval.UserId;
 
             await context.SaveChangesAsync();
             return updatedItem;
         }
 
-        public async Task<TimeSpent> UpdateEndAsync(long id, DateTime end)
+        public async Task<Interval> UpdateEndAsync(long id, DateTime end)
         {
-            var result = await context.TimeSpents.FindAsync(id);
+            var result = await context.Intervals.FindAsync(id);
             if (result == null) return null;
             result.End = end;
             result.TotalSecond = Convert.ToInt64((result.End - result.Start).TotalSeconds);
@@ -154,8 +154,8 @@ namespace TimeTracker.Data.Models
             return result;
         }
 
-        public Task<TimeSpent> GetTimeSpent(long id) =>
-            TimeSpents.FirstOrDefaultAsync(e => e.Id == id);
+        public Task<Interval> GetInterval(long id) =>
+            Intervals.FirstOrDefaultAsync(e => e.Id == id);
         
     }
 }

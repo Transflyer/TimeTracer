@@ -4,5 +4,5 @@ interface TimeSpanElement {
   Hours: number;
   Minutes: number;
   Seconds: number;
-  IsOpenTimeSpentId: number;
+  IsOpenIntervalId: number;
 }

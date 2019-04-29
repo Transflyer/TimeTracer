@@ -26,7 +26,7 @@ export class IntervalListComponent implements OnInit {
   }
 
   updateIntervalList(id: number) {
-    var url = this.baseUrl + "api/timespent/" + this.nodeElementId;
+    var url = this.baseUrl + "api/interval/" + this.nodeElementId;
     this.http.get<IntervalElement[]>(url).subscribe(result => {
       this.elementIntervals = result;
     }), error => console.error(error);
