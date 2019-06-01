@@ -15,9 +15,10 @@ import { isUndefined } from "util";
 
 export class StopwatchComponent implements OnInit {
   elementTimeSpan: TimeSpanElement;
-  elementId: number;
+  @Input() elementId: number;
+  @Input() class: string;
+  @Input() currentInterval: boolean;
   IsOpen: boolean;
-  days: string;
   hours: string;
   minutes: string;
   seconds: string;
@@ -39,9 +40,16 @@ export class StopwatchComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       var id = params["id"];
       if (id) {
-        this.elementId = id;
+
+         //In case if there wasn't input initiation
+        if (this.elementId != id) this.elementId = id;
+        
         this.getElementTimeSpan();
         console.log("Element with id" + this.elementId + " has been got time spent data");
+      }
+      else {
+        console.log("Stopwatch element Id:" + this.elementId);
+        this.getElementTimeSpan();
       }
     })
   }
@@ -52,7 +60,9 @@ export class StopwatchComponent implements OnInit {
  
 
   getElementTimeSpan() {
-    var url = this.baseUrl + "api/interval/element/" + this.elementId;
+    var url = this.baseUrl;
+    if (this.currentInterval) url += "api/interval/current/" + this.elementId;
+      else url += "api/interval/element/" + this.elementId;
     this.http.get<TimeSpanElement>(url).subscribe(result => {
       this.elementTimeSpan = result;
 
@@ -63,7 +73,6 @@ export class StopwatchComponent implements OnInit {
         this.StartTimer();
       }
       else {
-        this.days = "" + this.elementTimeSpan.Days;
         this.hours = "" + this.elementTimeSpan.Hours;
         this.minutes = this.elementTimeSpan.Minutes < 10 ? "0" + this.elementTimeSpan.Minutes : "" + this.elementTimeSpan.Minutes;
         this.seconds = this.elementTimeSpan.Seconds < 10 ? "0" + this.elementTimeSpan.Seconds : "" + this.elementTimeSpan.Seconds;
@@ -83,13 +92,11 @@ export class StopwatchComponent implements OnInit {
     var sec = this.elementTimeSpan.Seconds;
     var min = this.elementTimeSpan.Minutes;
     var hour = this.elementTimeSpan.Hours;
-    var days = this.elementTimeSpan.Days;
 
     //Properties that used in stopwatch.component.html
     this.seconds = sec < 10 ? "0" + sec : "" + sec;
     this.minutes = min < 10 ? "0" + min : "" + min;
     this.hours = "" + hour;
-    this.days = "" + days;
 
     //if timer still work on this element
     if (this.timerSubscription) {
@@ -104,11 +111,6 @@ export class StopwatchComponent implements OnInit {
         min++;
         if (min == 60) {
           hour++;
-          if (hour == 24) {
-            days++;
-            hour = 0;
-            this.elementTimeSpan.Days = days;
-          }
           min = 0;
           this.elementTimeSpan.Hours = hour;
         }
@@ -120,7 +122,6 @@ export class StopwatchComponent implements OnInit {
       this.seconds = sec < 10 ? "0" + sec : "" + sec;
       this.minutes = min < 10 ? "0" + min : "" + min;
       this.hours = "" + hour;
-      this.days = "" + days;
 
       //Update end value of Interval entity every 10 sec
       if (sec % 10 == 0 || sec == 0) {

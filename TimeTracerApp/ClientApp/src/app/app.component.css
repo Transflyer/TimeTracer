@@ -4,12 +4,17 @@
   left: 0;
   right: 0;
   z-index: 2;
-  height: 85px;
+  height: 55px;
   background-color: #f4f4f4;
   border-bottom: 1px solid #dedede;
 }
 .header-content .navbar-header {
   text-align: left;
+}
+.header-content a {
+  text-align: left;
+  font-size: 35px;
+  color: white;
 }
 .header-content img {
   height: 80px;

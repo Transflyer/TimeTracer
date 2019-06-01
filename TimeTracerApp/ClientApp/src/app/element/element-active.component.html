@@ -1,0 +1,15 @@
+<div *ngIf="activeElement.Id" class="atTheTop">
+  Active element: 
+  <span *ngIf="activeElement.Id" class="pointer" (click)="moveToActive(activeElement.Id)">
+    {{activeElement.Title}}
+  </span>
+  <div *ngIf="activeElement.Id">
+    Current Interval: 
+    <stopwatch [elementId]="activeElement.Id"
+               [currentInterval]="true"
+               class="atTheTop">
+    </stopwatch>
+  </div>
+</div>
+
+

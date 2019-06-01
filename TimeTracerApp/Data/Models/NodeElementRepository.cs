@@ -96,9 +96,18 @@ namespace TimeTracker.Data.Models
             if (id == null) return null;
 
             // retrieve the nodeElement
-            var detetedElement = NodeElements.Where(i => i.Id == id).FirstOrDefault();
+            var detetedElement = NodeElements
+                .Where(i => i.Id == id)
+                .Include("Intervals")
+                .FirstOrDefault();
 
             if (detetedElement == null) return null;
+
+            //stop counting if this was an active element
+            var interval = detetedElement.Intervals.FirstOrDefault(r => r.IsOpen == true);
+            interval.IsOpen = false;
+            interval.LastModifiedDate = DateTime.UtcNow;
+            context.Intervals.Update(interval);
 
             //set properties of deleted element
             detetedElement.Deleted = true;
@@ -106,11 +115,30 @@ namespace TimeTracker.Data.Models
             detetedElement.UserId = null;
             detetedElement.DeletedParentId = detetedElement.ParentId;
             detetedElement.ParentId = null;
+            detetedElement.LastModifiedDate = DateTime.UtcNow;
 
             // persist the changes into the Database.
             await context.SaveChangesAsync();
 
             return detetedElement;
+        }
+
+        /// <summary>
+        /// Get active nodeElement
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>NodeElement</returns>
+        public async Task<NodeElement> GetActiveElementAsync(string userId)
+        {
+            //Getting active interval of param userId
+            if (string.IsNullOrEmpty(userId)) return null;
+            var activeInterval = await context.Intervals
+                .Where(r => r.UserId == userId)
+                .FirstOrDefaultAsync(i=> i.IsOpen == true);
+
+            if (activeInterval == null) return null;
+
+            return await NodeElements.FirstOrDefaultAsync(r=>r.Id  == activeInterval.ElementId);
         }
 
         public async Task<IEnumerable<NodeElement>> GetChildElementsAsync(long? parentElementId)

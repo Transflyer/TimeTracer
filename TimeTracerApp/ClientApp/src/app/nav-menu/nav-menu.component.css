@@ -1,6 +1,6 @@
 .main-nav {
   position: fixed;
-  top: 85px;
+  top: 95px;
   left: 0;
   right: 0;
   z-index: 2;
@@ -17,8 +17,8 @@
 }
 @media (min-width: 768px) {
   .main-nav {
-    top: 100px;
-    width: calc(25% - 30px);
+    top: 95px;
+    width: calc(25% - 40px);
     min-width: 180px;
   }
   .main-nav .navbar {

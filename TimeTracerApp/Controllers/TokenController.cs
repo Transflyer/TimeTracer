@@ -71,6 +71,239 @@ namespace TimeTracker.Controllers
             }
         }
 
+        [HttpPost("Facebook")]
+        public async Task<IActionResult> Facebook([FromBody]ExternalLoginRequestViewModel model)
+        {
+            try
+            {
+                var fbAPI_url = "https://graph.facebook.com/v2.10/";
+                var fbAPI_queryString = String.Format(
+                    "me?scope=email&access_token={0}&fields=id,name,email",
+                    model.access_token);
+                string result = null;
+
+                // fetch the user info from Facebook Graph v2.10
+                using (var c = new HttpClient())
+                {
+                    c.BaseAddress = new Uri(fbAPI_url);
+                    var response = await c
+                        .GetAsync(fbAPI_queryString);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        result = await response.Content.ReadAsStringAsync();
+                    }
+                    else throw new Exception("Authentication error");
+                };
+
+                // load the resulting Json into a dictionary
+                var epInfo = JsonConvert.DeserializeObject<Dictionary<string, string>>(result);
+                var info = new UserLoginInfo("facebook", epInfo["id"], "Facebook");
+
+                // Check if this user already registered himself with this external provider before
+                var user = await UserManager.FindByLoginAsync(
+                    info.LoginProvider, info.ProviderKey);
+                if (user == null)
+                {
+                    // If we reach this point, it means that this user never tried to logged in
+                    // using this external provider. However, it could have used other providers 
+                    // and /or have a local account. 
+                    // We can find out if that's the case by looking for his e-mail address.
+
+                    // Lookup if there's an username with this e-mail address in the Db
+                    user = await UserManager.FindByEmailAsync(epInfo["email"]);
+                    if (user == null)
+                    {
+                        // No user has been found: register a new user using the info 
+                        //  retrieved from the provider
+                        DateTime now = DateTime.Now;
+                        var username = String.Format("FB{0}{1}",
+                                epInfo["id"],
+                                Guid.NewGuid().ToString("N")
+                            );
+                        user = new ApplicationUser()
+                        {
+                            SecurityStamp = Guid.NewGuid().ToString(),
+                            // ensure the user will have an unique username
+                            UserName = username,
+                            Email = epInfo["email"],
+                            DisplayName = epInfo["name"],
+                            CreatedDate = now,
+                            LastModifiedDate = now
+                        };
+
+                        // Add the user to the Db with a random password
+                        await UserManager.CreateAsync(user, DataHelper.GenerateRandomPassword());
+
+                        // Assign the user to the 'RegisteredUser' role.
+                        await UserManager.AddToRoleAsync(user, "RegisteredUser");
+
+                        // Remove Lockout and E-Mail confirmation
+                        user.EmailConfirmed = true;
+                        user.LockoutEnabled = false;
+
+                        // Persist everything into the Db
+                        DbContext.SaveChanges();
+                    }
+                    // Register this external provider to the user
+                    var ir = await UserManager.AddLoginAsync(user, info);
+                    if (ir.Succeeded)
+                    {
+                        // Persist everything into the Db
+                        DbContext.SaveChanges();
+                    }
+                    else throw new Exception("Authentication error");
+                }
+
+                // create the refresh token
+                var rt = CreateRefreshToken(model.client_id, user.Id);
+
+                // add the new refresh token to the DB
+                DbContext.Tokens.Add(rt);
+                DbContext.SaveChanges();
+
+                // create & return the access token
+                var t = CreateAccessToken(user.Id, rt.Value);
+                return Json(t);
+            }
+            catch (Exception ex)
+            {
+                // return a HTTP Status 400 (Bad Request) to the client
+                return BadRequest(new { Error = ex.Message });
+            }
+        }
+        [HttpGet("ExternalLogin/{provider}")]
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            switch (provider.ToLower())
+            {
+                case "facebook":
+                    // case "google":
+                    // case "twitter":
+                    // todo: add all supported providers here
+
+                    // Redirect the request to the external provider.
+                    var redirectUrl = Url.Action(
+                        nameof(ExternalLoginCallback),
+                        "Token",
+                        new { returnUrl });
+                    var properties =
+                        SignInManager.ConfigureExternalAuthenticationProperties(
+                            provider,
+                            redirectUrl);
+                    return Challenge(properties, provider);
+                default:
+                    // provider not supported
+                    return BadRequest(new
+                    {
+                        Error = String.Format("Provider '{0}' is not supported.", provider)
+                    });
+            }
+        }
+
+        [HttpGet("ExternalLoginCallback")]
+        public async Task<IActionResult> ExternalLoginCallback(
+            string returnUrl = null, string remoteError = null)
+        {
+            if (!String.IsNullOrEmpty(remoteError))
+            {
+                // TODO: handle external provider errors
+                throw new Exception(String.Format("External Provider error: {0}", remoteError));
+            }
+
+            // Extract the login info obtained from the External Provider
+            var info = await SignInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                // if there's none, emit an error
+                throw new Exception("ERROR: No login info available.");
+            }
+
+            // Check if this user already registered himself with this external provider before
+            var user = await UserManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+            if (user == null)
+            {
+                // If we reach this point, it means that this user never tried to logged in
+                // using this external provider. However, it could have used other providers 
+                // and /or have a local account. 
+                // We can find out if that's the case by looking for his e-mail address.
+
+                // Retrieve the 'emailaddress' claim
+                var emailKey = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
+                var email = info.Principal.FindFirst(emailKey).Value;
+
+                // Lookup if there's an username with this e-mail address in the Db
+                user = await UserManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    // No user has been found: register a new user 
+                    // using the info retrieved from the provider
+                    DateTime now = DateTime.Now;
+
+                    // Create a unique username using the 'nameidentifier' claim
+                    var idKey = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
+                    var username = String.Format("{0}{1}{2}",
+                        info.LoginProvider,
+                        info.Principal.FindFirst(idKey).Value,
+                        Guid.NewGuid().ToString("N")
+                        );
+
+                    user = new ApplicationUser()
+                    {
+                        SecurityStamp = Guid.NewGuid().ToString(),
+                        UserName = username,
+                        Email = email,
+                        CreatedDate = now,
+                        LastModifiedDate = now
+                    };
+
+                    // Add the user to the Db with a random password
+                    await UserManager.CreateAsync(
+                        user,
+                        DataHelper.GenerateRandomPassword());
+
+                    // Assign the user to the 'RegisteredUser' role.
+                    await UserManager.AddToRoleAsync(user, "RegisteredUser");
+
+                    // Remove Lockout and E-Mail confirmation
+                    user.EmailConfirmed = true;
+                    user.LockoutEnabled = false;
+
+                    // Persist everything into the Db
+                    await DbContext.SaveChangesAsync();
+                }
+                // Register this external provider to the user
+                var ir = await UserManager.AddLoginAsync(user, info);
+                if (ir.Succeeded)
+                {
+                    // Persist everything into the Db
+                    DbContext.SaveChanges();
+                }
+                else throw new Exception("Authentication error");
+            }
+
+            // create the refresh token
+            var rt = CreateRefreshToken("TimeTracker", user.Id);
+
+            // add the new refresh token to the DB
+            DbContext.Tokens.Add(rt);
+            DbContext.SaveChanges();
+
+            // create & return the access token
+            var t = CreateAccessToken(user.Id, rt.Value);
+
+            // output a <SCRIPT> tag to call a JS function 
+            // registered into the parent window global scope
+            return Content(
+                "<script type=\"text/javascript\">" +
+                "window.opener.externalProviderLogin(" +
+                    JsonConvert.SerializeObject(t, JsonSettings) +
+                ");" +
+                "window.close();" +
+                "</script>",
+                "text/html"
+                );
+        }
+
         private async Task<IActionResult> RefreshToken(TokenRequestViewModel model)
         {
             try

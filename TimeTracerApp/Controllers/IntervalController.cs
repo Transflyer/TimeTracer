@@ -42,13 +42,14 @@ namespace TimeTracker.Controllers
         #endregion
 
         #region Attribute-based routing methods
+
         /// <summary>
         /// GET: api/interval/element/{id}
         /// </summary>
         /// <param name="id">The Id of NodeElement which own Intervals </param>
         /// <returns>Array of intervals</returns>
         [HttpGet("element/{id?}")]
-        public async Task<IActionResult> GetElementTimeSpan(long? id)
+        public async Task<IActionResult> GetElementTotalInterval(long? id)
         {
             var result = await IntervalRepo.GetElementIntervalsAsync(id);
 
@@ -75,13 +76,44 @@ namespace TimeTracker.Controllers
             {
                 NodeElementId = (long)id,
                 Days = timeSpan.Days,
-                Hours = timeSpan.Hours,
+                Hours = timeSpan.Hours + timeSpan.Days * 24,
                 Minutes = timeSpan.Minutes,
                 Seconds = timeSpan.Seconds,
                 IsOpenIntervalId = openInterval == null? 0:openInterval.Id
             };
             return new JsonResult(viewModel, JsonSettings);
         }
+
+        [HttpGet("current/{id?}")]
+        public async Task<IActionResult> GetElementCurrentInterval(long? id)
+        {
+            var openInterval = await IntervalRepo.GetOpenIntervalAsync(id);
+
+            //handle requests asking for non-existing Intervals on NodeElement
+            if (openInterval == null)
+            {
+                return NotFound(new
+                {
+                    Error = String.Format("There are no Open Intervals for NodeElement {0} has been found", id)
+                });
+            }
+
+            //Setting end of open interval to count total 
+            openInterval = await IntervalRepo.SetEndAsync(openInterval.Id);
+
+            var timeSpan = TimeSpan.FromSeconds(Convert.ToDouble(openInterval.TotalSecond));
+            ElementSpanViewModel viewModel = new ElementSpanViewModel()
+            {
+                NodeElementId = (long)id,
+                Days = timeSpan.Days,
+                Hours = timeSpan.Hours + timeSpan.Days * 24,
+                Minutes = timeSpan.Minutes,
+                Seconds = timeSpan.Seconds,
+                IsOpenIntervalId = openInterval == null ? 0 : openInterval.Id
+            };
+            return new JsonResult(viewModel, JsonSettings);
+        }
+
 
         [HttpPost("end/element/{elementId}/{finish?}")]
         public async Task<IActionResult> SetEnd(long? elementId, bool? finish)

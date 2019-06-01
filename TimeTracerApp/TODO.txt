@@ -42,4 +42,10 @@
 DONE:
 14. Add feature to add and edit time interval.
 15. Set One button to START and END.
+9. Login FaceBook
+
+
+Current:
+1. create get current active interval if exist
+2. Create front end active element
 

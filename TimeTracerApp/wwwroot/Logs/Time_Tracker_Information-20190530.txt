@@ -1,0 +1,81 @@
+2019-05-30 12:27:16.830 +03:00 [Error] TokenController: Database operation expected to affect 1 row(s) but actually affected 0 row(s). Data may have been modified or deleted since entities were loaded. See http://go.microsoft.com/fwlink/?LinkId=527962 for information on understanding and handling optimistic concurrency exceptions.
+2019-05-30 12:27:17.209 +03:00 [Error] TokenController: Database operation expected to affect 1 row(s) but actually affected 0 row(s). Data may have been modified or deleted since entities were loaded. See http://go.microsoft.com/fwlink/?LinkId=527962 for information on understanding and handling optimistic concurrency exceptions.
+2019-05-30 12:27:23.107 +03:00 [Error] TokenController: Database operation expected to affect 1 row(s) but actually affected 0 row(s). Data may have been modified or deleted since entities were loaded. See http://go.microsoft.com/fwlink/?LinkId=527962 for information on understanding and handling optimistic concurrency exceptions.
+2019-05-30 12:29:14.117 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-30 12:30:48.939 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-30 12:32:55.232 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-30 12:34:02.393 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-30 12:37:53.851 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-30 12:40:05.275 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-30 12:45:34.168 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-30 12:48:12.159 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-30 12:49:01.911 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-30 14:09:56.486 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-30 14:11:08.045 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-30 14:11:55.326 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-30 14:13:04.488 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-30 16:48:20.262 +03:00 [Error] TokenController: Database operation expected to affect 1 row(s) but actually affected 0 row(s). Data may have been modified or deleted since entities were loaded. See http://go.microsoft.com/fwlink/?LinkId=527962 for information on understanding and handling optimistic concurrency exceptions.
+2019-05-30 16:48:23.800 +03:00 [Error] TokenController: Database operation expected to affect 1 row(s) but actually affected 0 row(s). Data may have been modified or deleted since entities were loaded. See http://go.microsoft.com/fwlink/?LinkId=527962 for information on understanding and handling optimistic concurrency exceptions.
+2019-05-30 16:48:26.153 +03:00 [Error] TokenController: Database operation expected to affect 1 row(s) but actually affected 0 row(s). Data may have been modified or deleted since entities were loaded. See http://go.microsoft.com/fwlink/?LinkId=527962 for information on understanding and handling optimistic concurrency exceptions.
+2019-05-30 17:15:20.402 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:15:30.454 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:15:40.430 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:15:50.429 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:16:00.366 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:16:10.428 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:16:20.410 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:16:30.423 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:16:40.434 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:16:50.393 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:17:00.446 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:17:10.397 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:17:20.388 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:17:30.376 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:17:40.388 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:17:50.379 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:18:00.390 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:18:10.381 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:18:20.400 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:18:30.410 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:18:40.389 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:18:50.409 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:19:00.371 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:19:10.369 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:19:20.386 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:19:30.383 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:19:40.401 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:19:50.388 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:20:00.396 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:20:10.443 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:20:20.391 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:20:30.385 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:20:40.392 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:20:50.420 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:21:00.400 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:21:10.378 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:21:20.394 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:21:30.426 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:21:40.362 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:21:50.393 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:22:00.405 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:22:10.401 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:22:20.420 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:22:30.364 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:22:40.440 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:22:50.421 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:23:00.434 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:23:10.439 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:23:20.417 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:23:30.410 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:23:40.399 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:23:50.383 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:24:00.407 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:24:10.399 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:24:20.404 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:24:30.390 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:24:40.383 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:24:50.390 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:25:00.404 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 17:25:10.410 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 8
+2019-05-30 18:22:18.311 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 7
+2019-05-30 18:22:18.493 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 7

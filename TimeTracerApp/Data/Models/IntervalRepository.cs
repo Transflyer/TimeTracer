@@ -70,9 +70,9 @@ namespace TimeTracker.Data.Models
         {
             var item = await Intervals.FirstOrDefaultAsync(i => i.Id == id);
             if (item == null) return null;
+
             item.ElementId = 0;
             item.UserId = "";
-
             await context.SaveChangesAsync();
             return item;
         }

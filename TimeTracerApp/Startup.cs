@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
@@ -32,7 +33,6 @@ namespace TimeTracker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
             services.AddDbContext<ApplicationDbContext>(options => 
             options.UseMySQL(Configuration.GetConnectionString("MySQL"))
             );
@@ -74,7 +74,11 @@ namespace TimeTracker
                    ValidateIssuerSigningKey = true,
                    ValidateAudience = true
                };
-           });
+           })
+           .AddFacebook(opts=> {
+               opts.AppId = Configuration["Auth:FaceBook:AppId"];
+               opts.AppSecret = Configuration["Auth:FaceBook:AppSecret"];
+           } );
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

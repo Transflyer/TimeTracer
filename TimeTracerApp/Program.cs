@@ -9,6 +9,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;
 
+using Microsoft.Extensions.DependencyInjection;
+
+using Microsoft.Extensions.Configuration.UserSecrets;
+
 
 namespace TimeTracker
 {
@@ -16,6 +20,7 @@ namespace TimeTracker
     {
                 public static void Main(string[] args)
         {
+            
             CreateWebHostBuilder(args).Build().Run();
         }
 

@@ -12,9 +12,11 @@
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <AssemblyName>TimeTrackerApp</AssemblyName>
     <RootNamespace>TimeTracker</RootNamespace>
+    <UserSecretsId>41618686-eff7-4f80-97be-02ef6c5407bb</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspose.Tasks" Version="19.4.0" />
     <PackageReference Include="Mapster" Version="3.3.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -25,6 +27,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.13" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore.Design" Version="8.0.13" />

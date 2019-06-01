@@ -1,1 +1,3 @@
-<h3>{{this.days}}.{{this.hours}}:{{this.minutes}}:{{this.seconds}}</h3>
+  <span *ngIf="class == 'atTheTop'">{{this.hours}}:{{this.minutes}}:{{this.seconds}}</span>
+  <h3 *ngIf="!class">{{this.hours}}:{{this.minutes}}:{{this.seconds}}</h3>
+

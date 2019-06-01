@@ -60,8 +60,7 @@ namespace TimeTracker.Controllers
                     NodeElementTitle = elem.Title,
                     Children = childList,
                     TotalSeconds = Convert.ToInt64(ts.TotalSeconds),
-                    Days = ts.Days,
-                    Hours = ts.Hours,
+                    Hours = ts.Hours + ts.Days*24,
                     Minutes = ts.Minutes,
                     Seconds = ts.Seconds,
                 });

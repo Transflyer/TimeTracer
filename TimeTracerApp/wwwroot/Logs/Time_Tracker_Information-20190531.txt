@@ -1,0 +1,15 @@
+2019-05-31 10:42:30.464 +03:00 [Error] TokenController: Database operation expected to affect 1 row(s) but actually affected 0 row(s). Data may have been modified or deleted since entities were loaded. See http://go.microsoft.com/fwlink/?LinkId=527962 for information on understanding and handling optimistic concurrency exceptions.
+2019-05-31 10:56:20.352 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 9
+2019-05-31 10:56:41.530 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-31 16:49:15.109 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 11
+2019-05-31 16:49:21.704 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 12
+2019-05-31 16:55:09.324 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-31 17:12:42.205 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-31 17:16:02.681 +03:00 [Error] ElementsController: There is no active elements for user with ID: 7cd60e15-50b1-48f2-9064-7e2ba44190b5
+2019-05-31 17:16:24.495 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 12
+2019-05-31 17:16:34.461 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 12
+2019-05-31 17:17:15.793 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 13
+2019-05-31 17:17:43.040 +03:00 [Error] IntervalController: There is no Interval with property IsOpen == true on NodeElement 12
+2019-05-31 19:55:24.805 +03:00 [Error] TokenController: Database operation expected to affect 1 row(s) but actually affected 0 row(s). Data may have been modified or deleted since entities were loaded. See http://go.microsoft.com/fwlink/?LinkId=527962 for information on understanding and handling optimistic concurrency exceptions.
+2019-05-31 19:55:24.805 +03:00 [Error] TokenController: Database operation expected to affect 1 row(s) but actually affected 0 row(s). Data may have been modified or deleted since entities were loaded. See http://go.microsoft.com/fwlink/?LinkId=527962 for information on understanding and handling optimistic concurrency exceptions.
+2019-05-31 19:55:25.685 +03:00 [Error] TokenController: Database operation expected to affect 1 row(s) but actually affected 0 row(s). Data may have been modified or deleted since entities were loaded. See http://go.microsoft.com/fwlink/?LinkId=527962 for information on understanding and handling optimistic concurrency exceptions.

@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { AuthService } from '../service/auth.service';
 import { error } from "protractor";
 import { StopwatchComponent } from '../stopwatch/stopwatch.component';
+import { ElementService } from '../service/element.service';
 
 @Component({
   selector: 'element',
@@ -21,6 +22,7 @@ export class ElementComponent implements OnInit {
     private router: Router,
     private http: HttpClient,
     public auth: AuthService,
+    private changed: ElementService, 
     @Inject('BASE_URL') private baseUrl: string) {
   }
 
@@ -68,6 +70,8 @@ export class ElementComponent implements OnInit {
         .subscribe(res => {
           console.log("Element " + this.nodeElement.Id + " has been deleted.");
           this.router.navigate(["projects"]);
+          //emit event through element service
+          this.changed.elementChanged();
         }, error => console.log(error));
     }
   }
@@ -79,6 +83,10 @@ export class ElementComponent implements OnInit {
         console.log("Intervals for " + this.nodeElement.Id + " has been created.");
         this.stopWatchChild.StartTimer();
         this.nodeElement.IsStarted = true;
+
+        //emit event through element service
+        this.changed.elementChanged();
+
       }, error => console.error(error));
   }
 
@@ -88,13 +96,19 @@ export class ElementComponent implements OnInit {
     this.http.
       post(url, null).subscribe(result => {
         console.log("End timing for NodeElement " + this.nodeElement.Id + " has been set.");
-        this.stopWatchChild.StopTimer();
-        this.nodeElement.IsStarted = false;
+        this.stopCounting();
       }, error => {
         console.error(error);
-        this.stopWatchChild.StopTimer();
-        this.nodeElement.IsStarted = false;
+        this.stopCounting();
       });
-    
   }
+
+  stopCounting() {
+    this.stopWatchChild.StopTimer();
+    this.nodeElement.IsStarted = false;
+
+    //emit event through element service
+    this.changed.elementChanged();
+  }
+
 }

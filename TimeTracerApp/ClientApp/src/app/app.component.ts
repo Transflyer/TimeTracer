@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ElementActiveComponent } from './element/element-active.component';
 
 @Component({
   selector: 'app-root',

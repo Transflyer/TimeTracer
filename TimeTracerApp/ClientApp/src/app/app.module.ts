@@ -19,8 +19,11 @@ import { ProjectsComponent } from './project/projects.component';
 import { ElementComponent } from './element/element.component';
 import { ElementEditComponent } from './element/element-edit.component';
 import { ElementListComponent } from './element/element-list.component';
+import { ElementActiveComponent } from './element/element-active.component';
 
 import { LoginComponent } from './login/login.component';
+import { LoginFacebookComponent } from './login/login.facebook.component';
+import { LoginExternalProvidersComponent } from './login/login.externalproviders.component';
 import { RegisterComponent } from './user/register.component';
 import { AboutComponent } from './about/about.component';
 
@@ -32,8 +35,6 @@ import { IntervalListComponent } from './interval/interval-list.component';
 import { IntervalEditComponent } from './interval/interval-edit.component';
 
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,6 +44,8 @@ import { IntervalEditComponent } from './interval/interval-edit.component';
     ProjectsComponent,
     ProjectListComponent,
     LoginComponent,
+    LoginFacebookComponent,
+    LoginExternalProvidersComponent,
     RegisterComponent,
     PageNotFoundComponent,
     AfterIfDirective,
@@ -54,7 +57,9 @@ import { IntervalEditComponent } from './interval/interval-edit.component';
     StopwatchComponent,
     ReportComponent,
     IntervalListComponent,
-    IntervalEditComponent
+    IntervalEditComponent,
+    ElementActiveComponent,
+
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

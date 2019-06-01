@@ -38,6 +38,7 @@ namespace TimeTracker.Controllers
         #endregion
 
         #region  Attribute-based routing methods
+
         // GET: api/elements/root/
         [HttpGet("root/{parentId?}")]
         public async Task<IActionResult> GetChildElements(long? parentId)
@@ -79,6 +80,35 @@ namespace TimeTracker.Controllers
 
             return new JsonResult(nodeElements.Adapt<ElementViewModel[]>(), JsonSettings);
         }
+
+
+        [HttpGet("active")]
+        public async Task<IActionResult> GetActiveInterval()
+        {
+            var userId = RequestUserProvider.GetUserId();
+            if (userId == null) return new StatusCodeResult(500);
+            
+            var activeElement = await NodeElementRepo.GetActiveElementAsync(userId);
+
+            if (activeElement == null)
+            {
+                var error = String.Format($"There is no active elements for user with ID: {userId}");
+                Log.Error($"ElementsController: {error}");
+                return NotFound(new
+                {
+                    Error = error
+                });
+            }
+
+            var model = activeElement.Adapt<ElementViewModel>();
+            model.IsStarted = true;
+
+            // output the result in JSON format
+            return new JsonResult(model, JsonSettings);
+
+
+        }
+
         #endregion
 
         #region RESTful conventions methods
